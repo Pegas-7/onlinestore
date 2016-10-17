@@ -1,0 +1,64 @@
+CREATE TABLE "client" (
+	"client_id" serial NOT NULL,
+	"first_name" character varying(256) NOT NULL,
+	"last_name" character varying(256) NOT NULL,
+	"age" int NOT NULL,
+	"amount_orders" int NOT NULL,
+	CONSTRAINT client_pk PRIMARY KEY ("client_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "order" (
+	"order_id" serial NOT NULL,
+	"date_order" DATE NOT NULL,
+	"product_id" int NOT NULL,
+	"client_id" int NOT NULL,
+	"administrator_id" int NOT NULL,
+	CONSTRAINT order_pk PRIMARY KEY ("order_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "product" (
+	"product_id" serial NOT NULL,
+	"item" character varying(256) NOT NULL,
+	"price" int NOT NULL,
+	CONSTRAINT product_pk PRIMARY KEY ("product_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE " administrator" (
+	"administrator_id" serial NOT NULL,
+	"first_name" character varying(256) NOT NULL,
+	"last_name" character varying(256) NOT NULL,
+	CONSTRAINT  administrator_pk PRIMARY KEY ("administrator_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE " black_list" (
+	"client_id" int NOT NULL
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+
+ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("product_id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("client_id") REFERENCES "client"("client_id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk2" FOREIGN KEY ("administrator_id") REFERENCES " administrator"("administrator_id");
+
+
+
+ALTER TABLE " black_list" ADD CONSTRAINT " black_list_fk0" FOREIGN KEY ("client_id") REFERENCES "order"("order_id");
