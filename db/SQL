@@ -35,7 +35,7 @@ CREATE TABLE "product" (
 
 
 
-CREATE TABLE " administrator" (
+CREATE TABLE "administrator" (
 	"id" serial NOT NULL,
 	"first_name" character varying(256) NOT NULL,
 	"last_name" character varying(256) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE " administrator" (
 
 
 
-CREATE TABLE " black_list" (
+CREATE TABLE "black_list" (
 	"client_id" int NOT NULL
 ) WITH (
   OIDS=FALSE
@@ -57,8 +57,8 @@ CREATE TABLE " black_list" (
 
 ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("id");
 ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("client_id") REFERENCES "client"("id");
-ALTER TABLE "order" ADD CONSTRAINT "order_fk2" FOREIGN KEY ("administrator_id") REFERENCES " administrator"("id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk2" FOREIGN KEY ("administrator_id") REFERENCES "administrator"("id");
 
 
 
-ALTER TABLE " black_list" ADD CONSTRAINT " black_list_fk0" FOREIGN KEY ("client_id") REFERENCES "client"("id");
+ALTER TABLE "black_list" ADD CONSTRAINT "black_list_fk0" FOREIGN KEY ("client_id") REFERENCES "client"("id");
