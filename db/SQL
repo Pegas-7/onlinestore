@@ -24,11 +24,11 @@ CREATE TABLE "product" (
 
 
 
-CREATE TABLE " administrator" (
+CREATE TABLE "administrator" (
 	"id" serial NOT NULL,
 	"first_name" character varying(256) NOT NULL,
 	"last_name" character varying(256) NOT NULL,
-	CONSTRAINT  administrator_pk PRIMARY KEY ("id")
+	CONSTRAINT administrator_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -75,7 +75,7 @@ ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("category_id") R
 
 
 ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("client_id") REFERENCES "client"("id");
-ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("administrator_id") REFERENCES " administrator"("id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("administrator_id") REFERENCES "administrator"("id");
 
 ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk0" FOREIGN KEY ("order_id") REFERENCES "order"("id");
 ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk1" FOREIGN KEY ("product_id") REFERENCES "product"("id");
