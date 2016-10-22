@@ -7,9 +7,9 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 public interface ClientDao {
 	Client get(Long id);
 
-	void save(Client entity);
+	Integer add(Client client);
 
-	void update(Client entity);
+	void update(Client client);
 
 	void delete(Long id);
 

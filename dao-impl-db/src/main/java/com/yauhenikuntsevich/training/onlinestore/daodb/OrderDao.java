@@ -2,14 +2,16 @@ package com.yauhenikuntsevich.training.onlinestore.daodb;
 
 import java.util.List;
 
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
+
 public interface OrderDao {
-	OrderDao get(Long id);
+	Order get(Long id);
 
-	void save(OrderDao entity);
+	Integer create(Order order);
 
-	void update(OrderDao entity);
+	void update(Order order);
 
 	void delete(Long id);
 
-	List<OrderDao> getAll();
+	List<Order> getAll();
 }

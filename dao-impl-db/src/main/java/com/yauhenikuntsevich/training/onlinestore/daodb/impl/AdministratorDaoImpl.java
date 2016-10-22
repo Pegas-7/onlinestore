@@ -15,12 +15,6 @@ public class AdministratorDaoImpl implements AdministratorDao {
 	}
 
 	@Override
-	public void save(Administrator entity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update(Administrator entity) {
 		// TODO Auto-generated method stub
 
@@ -34,6 +28,12 @@ public class AdministratorDaoImpl implements AdministratorDao {
 
 	@Override
 	public List<Administrator> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer add(Administrator administrator) {
 		// TODO Auto-generated method stub
 		return null;
 	}

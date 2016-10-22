@@ -3,11 +3,6 @@ package com.yauhenikuntsevich.training.onlinestore.datamodel;
 public class Administrator extends AbstractModel {
 	private String firstName;
 	private String lastName;
-	
-	public Administrator(String firstName, String lastName) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
 
 	public Administrator() {
 	}

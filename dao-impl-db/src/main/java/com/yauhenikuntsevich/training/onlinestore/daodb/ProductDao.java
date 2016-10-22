@@ -7,9 +7,9 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 public interface ProductDao {
 	Product get(Long id);
 
-	void save(Product entity);
+	void add(Product product);
 
-	void update(Product entity);
+	void update(Product product);
 
 	void delete(Long id);
 

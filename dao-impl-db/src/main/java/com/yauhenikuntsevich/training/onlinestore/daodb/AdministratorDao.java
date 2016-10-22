@@ -7,9 +7,9 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 public interface AdministratorDao {
 	Administrator get(Long id);
 
-	void save(Administrator entity);
+	Integer add(Administrator administrator);
 
-	void update(Administrator entity);
+	void update(Administrator administrator);
 
 	void delete(Long id);
 

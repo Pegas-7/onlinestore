@@ -4,16 +4,9 @@ import java.time.LocalDateTime;
 
 public class Order extends AbstractModel {
 	private LocalDateTime dateOrder;
-	private Integer productId;
-	private Integer clientId;
-	private Integer administratorId;
-	
-	public Order(LocalDateTime dateOrder, Integer productId, Integer clientId, Integer administratorId) {
-		this.dateOrder = dateOrder;
-		this.productId = productId;
-		this.clientId = clientId;
-		this.administratorId = administratorId;
-	}
+	private Client client;
+	private Administrator administrator;
+	private Integer priceAllPurchases;
 
 	public Order() {
 	}
@@ -26,27 +19,27 @@ public class Order extends AbstractModel {
 		this.dateOrder = dateOrder;
 	}
 
-	public Integer getProductId() {
-		return productId;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setProductId(Integer productId) {
-		this.productId = productId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
-	public Integer getClientId() {
-		return clientId;
+	public Administrator getAdministrator() {
+		return administrator;
 	}
 
-	public void setClientId(Integer clientId) {
-		this.clientId = clientId;
+	public void setAdministrator(Administrator administrator) {
+		this.administrator = administrator;
 	}
 
-	public Integer getAdministratorId() {
-		return administratorId;
+	public Integer getPriceAllPurchases() {
+		return priceAllPurchases;
 	}
 
-	public void setAdministratorId(Integer administratorId) {
-		this.administratorId = administratorId;
+	public void setPriceAllPurchases(Integer priceAllPurchases) {
+		this.priceAllPurchases = priceAllPurchases;
 	}
 }

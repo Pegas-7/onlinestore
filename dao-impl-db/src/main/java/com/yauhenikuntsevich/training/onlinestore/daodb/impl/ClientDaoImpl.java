@@ -16,12 +16,6 @@ public class ClientDaoImpl implements ClientDao {
 	}
 
 	@Override
-	public void save(Client entity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update(Client entity) {
 		// TODO Auto-generated method stub
 
@@ -35,6 +29,12 @@ public class ClientDaoImpl implements ClientDao {
 
 	@Override
 	public List<Client> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer add(Client client) {
 		// TODO Auto-generated method stub
 		return null;
 	}

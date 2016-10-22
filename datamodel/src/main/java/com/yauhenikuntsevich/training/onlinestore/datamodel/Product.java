@@ -1,23 +1,28 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
 public class Product extends AbstractModel {
-	private String item;
+	private Category category;
+	private String name;
 	private Integer price;
-
-	public Product(String item, Integer price) {
-		this.item = item;
-		this.price = price;
-	}
+	private Integer quantity;
 
 	public Product() {
 	}
 
-	public String getItem() {
-		return item;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setItem(String item) {
-		this.item = item;
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Integer getPrice() {
@@ -26,5 +31,13 @@ public class Product extends AbstractModel {
 
 	public void setPrice(Integer price) {
 		this.price = price;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 }

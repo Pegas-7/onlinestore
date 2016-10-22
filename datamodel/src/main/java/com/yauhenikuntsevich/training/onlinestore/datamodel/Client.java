@@ -4,16 +4,7 @@ public class Client extends AbstractModel {
 	private String firstName;
 	private String lastName;
 	private Integer age;
-	private Integer amountOrders;
-	private Boolean isInBlackList;
-
-	public Client(String firstName, String lastName, Integer age, Integer amountOrders, Boolean isInBlackList) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.age = age;
-		this.amountOrders = amountOrders;
-		this.isInBlackList = isInBlackList;
-	}
+	private Boolean blacklisted;
 
 	public Client() {
 	}
@@ -42,19 +33,11 @@ public class Client extends AbstractModel {
 		this.age = age;
 	}
 
-	public Integer getAmountOrders() {
-		return amountOrders;
+	public Boolean getBlacklisted() {
+		return blacklisted;
 	}
 
-	public void setAmountOrders(Integer amountOrders) {
-		this.amountOrders = amountOrders;
-	}
-
-	public Boolean getIsInBlackList() {
-		return isInBlackList;
-	}
-
-	public void setIsInBlackList(Boolean isInBlackList) {
-		this.isInBlackList = isInBlackList;
+	public void setBlacklisted(Boolean blacklisted) {
+		this.blacklisted = blacklisted;
 	}
 }

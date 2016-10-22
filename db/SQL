@@ -3,21 +3,8 @@ CREATE TABLE "client" (
 	"first_name" character varying(256) NOT NULL,
 	"last_name" character varying(256) NOT NULL,
 	"age" int NOT NULL,
-	"amount_orders" int NOT NULL,
+	"blacklisted" BOOLEAN NOT NULL,
 	CONSTRAINT client_pk PRIMARY KEY ("id")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
-CREATE TABLE "order" (
-	"id" serial NOT NULL,
-	"date_order" DATE NOT NULL,
-	"product_id" int NOT NULL,
-	"client_id" int NOT NULL,
-	"administrator_id" int NOT NULL,
-	CONSTRAINT order_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -26,8 +13,10 @@ CREATE TABLE "order" (
 
 CREATE TABLE "product" (
 	"id" serial NOT NULL,
-	"item" character varying(256) NOT NULL,
+	"category_id" bigint NOT NULL,
+	"name" character varying(256) NOT NULL,
 	"price" int NOT NULL,
+	"quantity" bigint NOT NULL,
 	CONSTRAINT product_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -35,7 +24,7 @@ CREATE TABLE "product" (
 
 
 
-CREATE TABLE "administrator" (
+CREATE TABLE " administrator" (
 	"id" serial NOT NULL,
 	"first_name" character varying(256) NOT NULL,
 	"last_name" character varying(256) NOT NULL,
@@ -46,8 +35,35 @@ CREATE TABLE "administrator" (
 
 
 
-CREATE TABLE "black_list" (
-	"client_id" int NOT NULL
+CREATE TABLE "order" (
+	"id" serial NOT NULL,
+	"date_order" DATE NOT NULL,
+	"client_id" bigint NOT NULL,
+	"administrator_id" bigint NOT NULL,
+	"price_all_purchases" bigint NOT NULL,
+	CONSTRAINT order_pk PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "order_item" (
+	"id" serial NOT NULL,
+	"order_id" bigint NOT NULL,
+	"product_id" bigint NOT NULL,
+	"quantity" int NOT NULL,
+	CONSTRAINT order_item_pk PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "category" (
+	"id" serial NOT NULL,
+	"item" character varying NOT NULL,
+	CONSTRAINT category_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
@@ -55,10 +71,12 @@ CREATE TABLE "black_list" (
 
 
 
-ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("product_id") REFERENCES "product"("id");
-ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("client_id") REFERENCES "client"("id");
-ALTER TABLE "order" ADD CONSTRAINT "order_fk2" FOREIGN KEY ("administrator_id") REFERENCES "administrator"("id");
+ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("category_id") REFERENCES "category"("id");
 
 
+ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("client_id") REFERENCES "client"("id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("administrator_id") REFERENCES " administrator"("id");
 
-ALTER TABLE "black_list" ADD CONSTRAINT "black_list_fk0" FOREIGN KEY ("client_id") REFERENCES "client"("id");
+ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk0" FOREIGN KEY ("order_id") REFERENCES "order"("id");
+ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk1" FOREIGN KEY ("product_id") REFERENCES "product"("id");
+

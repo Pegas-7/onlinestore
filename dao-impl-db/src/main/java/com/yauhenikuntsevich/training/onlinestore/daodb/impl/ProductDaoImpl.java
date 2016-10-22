@@ -16,12 +16,6 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void save(Product entity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void update(Product entity) {
 		// TODO Auto-generated method stub
 
@@ -37,5 +31,11 @@ public class ProductDaoImpl implements ProductDao {
 	public List<Product> getAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void add(Product product) {
+		// TODO Auto-generated method stub
+
 	}
 }
