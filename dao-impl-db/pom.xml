@@ -12,7 +12,6 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>com.yauhenikuntsevich.training</groupId>
 			<artifactId>datamodel</artifactId>

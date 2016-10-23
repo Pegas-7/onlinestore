@@ -16,12 +16,14 @@
 
 	<context:annotation-config />
 
-	<context:component-scan base-package="com.yauhenikuntsevich.training.onlinestore.daodb.impl" />
-	<context:component-scan base-package="com.yauhenikuntsevich.training.onlinestore.services.impl" />
-	
+	<context:component-scan
+		base-package="com.yauhenikuntsevich.training.onlinestore.daodb.impl" />
+	<context:component-scan
+		base-package="com.yauhenikuntsevich.training.onlinestore.services.impl" />
+
 	<context:property-placeholder
 		ignore-unresolvable="true" location="classpath:db.properties" />
-		
+
 	<!-- Initialization for data source -->
 	<bean id="dataSource"
 		class="com.yauhenikuntsevich.training.onlinestore.daodb.util.SchemaNameAwareBasicDataSource"
@@ -36,5 +38,12 @@
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource" />
-	</bean>	
+	</bean>
+
+
+
+
+
+	<bean id="categoryDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.CategoryDaoImpl"></bean>
+	<bean id="administratorDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.AdministratorDaoImpl"></bean>
 </beans>
