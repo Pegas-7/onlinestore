@@ -5,16 +5,22 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 
-public final class CategoryMapper implements RowMapper<Category> {
+public final class ClientMapper implements RowMapper<Client> {
 	@Override
-	public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
-		String item = rs.getString("item");
-		Category entity = new Category();
+		String firstName = rs.getString("first_name");
+		String lastName = rs.getString("last_name");
+		Integer age = rs.getInt("age");
+		Boolean blacklisted = rs.getBoolean("blacklisted");
+		Client entity = new Client();
 		entity.setId(id);
-		entity.setItem(item);
+		entity.setFirstName(firstName);
+		entity.setLastName(lastName);
+		entity.setAge(age);
+		entity.setBlacklisted(blacklisted);
 		return entity;
 	}
 }

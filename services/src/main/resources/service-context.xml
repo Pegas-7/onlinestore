@@ -46,4 +46,5 @@
 
 	<bean id="categoryDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.CategoryDaoImpl"></bean>
 	<bean id="administratorDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.AdministratorDaoImpl"></bean>
+	<bean id="clientDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ClientDaoImpl"></bean>
 </beans>

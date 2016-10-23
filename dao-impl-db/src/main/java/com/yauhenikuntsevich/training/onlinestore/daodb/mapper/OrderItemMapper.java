@@ -7,12 +7,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 
-public final class CategoryMapper implements RowMapper<Category> {
+public final class OrderItemMapper implements RowMapper<OrderItem> {
 	@Override
-	public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public OrderItem mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
 		String item = rs.getString("item");
-		Category entity = new Category();
+		OrderItem entity = new OrderItem();
 		entity.setId(id);
 		entity.setItem(item);
 		return entity;

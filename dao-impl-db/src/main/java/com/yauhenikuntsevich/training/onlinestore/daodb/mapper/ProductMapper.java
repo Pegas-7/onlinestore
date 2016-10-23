@@ -5,16 +5,15 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
-public final class CategoryMapper implements RowMapper<Category> {
+public final class ProductMapper implements RowMapper<Product> {
 	@Override
-	public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long id = rs.getLong("id");
 		String item = rs.getString("item");
-		Category entity = new Category();
+		Product entity = new Product();
 		entity.setId(id);
-		entity.setItem(item);
 		return entity;
 	}
 }
