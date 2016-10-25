@@ -6,11 +6,21 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.yauhenikuntsevich.training.onlinestore.daodb.AdministratorDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.CategoryDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.ClientDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.ProductDao;
 
 public class TestGettingFromDB {
 	public static void main(String[] args) {
 
 		ApplicationContext context = new ClassPathXmlApplicationContext("service-context.xml");
+
+		// Test query to BD in table 'product'
+		ProductDao productDao = (ProductDao) context.getBean("productDao");
+
+		Long idProduct = 9L;
+
+		System.out.println(productDao.get(idProduct).getId() + " " + productDao.get(idProduct).getCategory() + " "
+				+ productDao.get(idProduct).getName() + " " + productDao.get(idProduct).getPrice() + " "
+				+ productDao.get(idProduct).getQuantity() + "\n");
 
 		// Test query to BD in table 'client'
 		ClientDao сlientDao = (ClientDao) context.getBean("clientDao");

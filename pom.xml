@@ -5,7 +5,7 @@
 	<groupId>com.yauhenikuntsevich.training</groupId>
 	<artifactId>onlinestore</artifactId>
 	<version>1.0.0</version>
-	
+
 	<packaging>pom</packaging>
 
 	<properties>
@@ -22,8 +22,8 @@
 		<module>dao-impl-xml</module>
 		<module>services</module>
 		<module>webapp</module>
-        <module>TestModule</module>
-  </modules>
+		<module>TestModule</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -63,21 +63,21 @@
 				<artifactId>webapp</artifactId>
 				<version>1.0.0</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.yauhenikuntsevich.training</groupId>
 				<artifactId>TestModule</artifactId>
 				<version>1.0.0</version>
 			</dependency>
-			
+
 			<!-- Other libraries -->
-			
+
 			<dependency>
 				<groupId>javax.inject</groupId>
 				<artifactId>javax.inject</artifactId>
 				<version>1</version>
 			</dependency>
-			
+
 			<!-- Spring framework -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -125,7 +125,7 @@
 				<version>${spring.version}</version>
 				<scope>test</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
@@ -135,15 +135,23 @@
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
-				<version>9.3-1100-jdbc41</version>
+				<version>9.3-1104-jdbc41</version>
 			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>9.3-1102.jdbc41</version>
+			</dependency>
+
 
 			<dependency>
 				<groupId>commons-dbcp</groupId>
 				<artifactId>commons-dbcp</artifactId>
 				<version>1.4</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
