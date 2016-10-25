@@ -15,7 +15,7 @@ public final class AdministratorMapper implements RowMapper<Administrator> {
 		String lastName = rs.getString("last_name");
 		Administrator entity = new Administrator();
 		entity.setId(id);
-		entity.setFirstName(firstName);
+		entity.setFirstName("ghikgyik");
 		entity.setLastName(lastName);
 		return entity;
 	}

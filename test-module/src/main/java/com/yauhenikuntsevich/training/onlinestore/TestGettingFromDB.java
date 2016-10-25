@@ -18,16 +18,16 @@ public class TestGettingFromDB {
 
 		Long idProduct = 9L;
 
-		System.out.println(productDao.get(idProduct).getId() + " " + productDao.get(idProduct).getCategory() + " "
-				+ productDao.get(idProduct).getName() + " " + productDao.get(idProduct).getPrice() + " "
-				+ productDao.get(idProduct).getQuantity() + "\n");
+		System.out.println("Test query to BD in table 'product': \n" + productDao.get(idProduct).getId() + " "
+				+ productDao.get(idProduct).getCategory().getItem() + " " + productDao.get(idProduct).getName() + " "
+				+ productDao.get(idProduct).getPrice() + " " + productDao.get(idProduct).getQuantity() + "\n");
 
 		// Test query to BD in table 'client'
 		ClientDao сlientDao = (ClientDao) context.getBean("clientDao");
 
 		Long idClient = 4L;
 
-		System.out.println(сlientDao.get(idClient).getId() + " " + сlientDao.get(idClient).getFirstName() + " "
+		System.out.println("Test query to BD in table 'client': \n" + сlientDao.get(idClient).getId() + " " + сlientDao.get(idClient).getFirstName() + " "
 				+ сlientDao.get(idClient).getLastName() + " " + сlientDao.get(idClient).getAge() + " "
 				+ сlientDao.get(idClient).getBlacklisted() + "\n");
 
@@ -36,7 +36,7 @@ public class TestGettingFromDB {
 
 		Long idAdministrator = 2L;
 
-		System.out.println(administratorDao.get(idAdministrator).getId() + " "
+		System.out.println("Test query to BD in table 'administrator': \n" + administratorDao.get(idAdministrator).getId() + " "
 				+ administratorDao.get(idAdministrator).getFirstName() + " "
 				+ administratorDao.get(idAdministrator).getLastName() + "\n");
 
@@ -45,6 +45,6 @@ public class TestGettingFromDB {
 
 		Long idCategory = 3L;
 
-		System.out.println(categoryDao.get(idCategory).getId() + " " + categoryDao.get(idCategory).getItem() + "\n");
+		System.out.println("Test query to BD in table 'category': \n" + categoryDao.get(idCategory).getId() + " " + categoryDao.get(idCategory).getItem() + "\n");
 	}
 }

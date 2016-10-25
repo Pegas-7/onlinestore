@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.ProductDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ProductMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
 @Repository
@@ -18,8 +18,9 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Product get(Long id) {
-		return jdbcTemplate.queryForObject("select * from product where id = ?", new Object[] { id },
-				new BeanPropertyRowMapper<Product>(Product.class));
+		return jdbcTemplate.queryForObject(
+				"SELECT * FROM (SELECT * FROM product p JOIN category c ON p.category_id = c.id WHERE p.id_product = ?) AS res",
+				new Object[] { id }, new ProductMapper());
 	}
 
 	@Override
