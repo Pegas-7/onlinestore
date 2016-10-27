@@ -1,10 +1,16 @@
 package com.yauhenikuntsevich.training.onlinestore.daodb.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
@@ -23,9 +29,25 @@ public class ClientDaoImpl implements EntityDao<Client> {
 	}
 
 	@Override
-	public void add(Client entity) {
-		// TODO Auto-generated method stub
+	public Long add(Client entity) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO \"client\" (first_name, last_name, age, blacklisted) VALUES (?, ?, ?, ?)",
+						new String[] { "client_id" });
+				ps.setString(1, entity.getFirstName());
+				ps.setString(2, entity.getLastName());
+				ps.setInt(3, entity.getAge());
+				ps.setBoolean(4, entity.getBlacklisted());
+				return ps;
+			}
+
+		}, keyHolder);
+
+		return keyHolder.getKey().longValue();
 	}
 
 	@Override

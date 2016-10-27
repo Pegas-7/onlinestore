@@ -5,7 +5,7 @@ import java.util.List;
 public interface EntityDao<T>{
 	T get(Long id);
 
-	void add(T entity);
+	Long add(T entity);
 
 	void update(T entity);
 

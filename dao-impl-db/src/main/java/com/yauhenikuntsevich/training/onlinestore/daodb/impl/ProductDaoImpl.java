@@ -1,14 +1,19 @@
 package com.yauhenikuntsevich.training.onlinestore.daodb.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
-import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.AdministratorMapper;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ProductMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
@@ -25,8 +30,25 @@ public class ProductDaoImpl implements EntityDao<Product> {
 	}
 
 	@Override
-	public void add(Product entity) {
-		// TODO Auto-generated method stub
+	public Long add(Product entity) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO \"product\" (category_id, name, price, quantity) VALUES (?, ?, ?, ?)",
+						new String[] { "product_id" });
+				ps.setLong(1, entity.getCategory().getId());
+				ps.setString(2, entity.getName());
+				ps.setInt(3, entity.getPrice());
+				ps.setInt(4, entity.getQuantity());
+				return ps;
+			}
+
+		}, keyHolder);
+
+		return keyHolder.getKey().longValue();
 
 	}
 

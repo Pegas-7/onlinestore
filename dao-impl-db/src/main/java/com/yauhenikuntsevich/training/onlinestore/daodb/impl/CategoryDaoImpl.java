@@ -1,10 +1,16 @@
 package com.yauhenikuntsevich.training.onlinestore.daodb.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
@@ -24,8 +30,22 @@ public class CategoryDaoImpl implements EntityDao<Category> {
 	}
 
 	@Override
-	public void add(Category entity) {
-		// TODO Auto-generated method stub
+	public Long add(Category entity) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO \"category\" (item) VALUES (?)",
+						new String[] { "category_id" });
+				ps.setString(1, entity.getItem());
+				return ps;
+			}
+
+		}, keyHolder);
+
+		return keyHolder.getKey().longValue();
 
 	}
 
