@@ -4,22 +4,28 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.ClientDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ClientMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 
 @Repository
-public class ClientDaoImpl implements ClientDao {
+public class ClientDaoImpl implements EntityDao<Client> {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Client get(Long id) {
-		return jdbcTemplate.queryForObject("select * from client where id = ?", new Object[] { id },
-				new BeanPropertyRowMapper<Client>(Client.class));
+		return jdbcTemplate.queryForObject("select * from client where client_id = ?", new Object[] { id },
+				new ClientMapper());
+	}
+
+	@Override
+	public void add(Client entity) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -36,13 +42,6 @@ public class ClientDaoImpl implements ClientDao {
 
 	@Override
 	public List<Client> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer add(Client client) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query("select * from client", new ClientMapper());
 	}
 }

@@ -4,27 +4,33 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.CategoryDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.CategoryMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 
 @Repository
-public class CategoryDaoImpl implements CategoryDao {
+public class CategoryDaoImpl implements EntityDao<Category> {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Category get(Long id) {
-		return jdbcTemplate.queryForObject("select * from category where id = ?", new Object[] { id },
-				new BeanPropertyRowMapper<Category>(Category.class));
+		return jdbcTemplate.queryForObject("select * from category where category_id = ?", new Object[] { id },
+				new CategoryMapper());
 	}
 
 	@Override
-	public void addCategory(Category category) {
+	public void add(Category entity) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void update(Category entity) {
 		// TODO Auto-generated method stub
 
 	}
@@ -37,7 +43,6 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	@Override
 	public List<Category> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query("select * from category", new CategoryMapper());
 	}
 }

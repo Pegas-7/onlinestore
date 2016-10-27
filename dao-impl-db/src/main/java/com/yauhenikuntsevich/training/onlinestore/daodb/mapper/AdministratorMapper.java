@@ -10,12 +10,12 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 public final class AdministratorMapper implements RowMapper<Administrator> {
 	@Override
 	public Administrator mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Long id = rs.getLong("id");
+		Long administrator_id = rs.getLong("administrator_id");
 		String firstName = rs.getString("first_name");
 		String lastName = rs.getString("last_name");
 		Administrator entity = new Administrator();
-		entity.setId(id);
-		entity.setFirstName("ghikgyik");
+		entity.setId(administrator_id);
+		entity.setFirstName(firstName);
 		entity.setLastName(lastName);
 		return entity;
 	}

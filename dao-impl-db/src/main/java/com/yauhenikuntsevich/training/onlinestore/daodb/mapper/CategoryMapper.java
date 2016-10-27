@@ -10,10 +10,10 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 public final class CategoryMapper implements RowMapper<Category> {
 	@Override
 	public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Long id = rs.getLong("id");
+		Long category_id = rs.getLong("category_id");
 		String item = rs.getString("item");
 		Category entity = new Category();
-		entity.setId(id);
+		entity.setId(category_id);
 		entity.setItem(item);
 		return entity;
 	}

@@ -5,7 +5,7 @@ INSERT INTO "administrator" (first_name, last_name) VALUES ('Denis_admin', 'Trol
 --add categories
 INSERT INTO "category" (item) VALUES ('Camera'); --1
 INSERT INTO "category" (item) VALUES ('Navigator'); --2
-INSERT INTO "category" (item) VALUES ('Mobile phone'); --3
+INSERT INTO "category" (item) VALUES ('Cellphone'); --3
 INSERT INTO "category" (item) VALUES ('Tablet'); --4
 
 --add clients
@@ -26,12 +26,12 @@ INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Sony Cybe
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'NAVITEL N500', 55, 12); --4
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'Prestigio GeoVision 5057', 47, 18); --5
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'Prology iMap-580TR', 59, 5); --6
-INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Huawei P9 32GB Mystic Silver', 147, 15); --7
-INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Samsung Galaxy A3 (2016) Black', 185, 9); --8
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Huawei P9', 147, 15); --7
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Samsung Galaxy A3', 185, 9); --8
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Lenovo P70-A', 144, 22); --9
-INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'Xiaomi Mi Pad 2 16GB Dark Grey', 155, 14); --10
-INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'Lenovo Tab 2 A10-30L 16GB', 99, 17); --11
-INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'ASUS Transformer Book T101HA-GR004T', 105, 11); --12
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'Xiaomi Mi Pad 2', 155, 14); --10
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'Lenovo Tab 2 A10-30L', 99, 17); --11
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'ASUS T101HA-GR004T', 105, 11); --12
 
 --add orders
 INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('14-09-2015', 1, 1, 150); --1

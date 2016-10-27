@@ -10,13 +10,13 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 public final class ClientMapper implements RowMapper<Client> {
 	@Override
 	public Client mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Long id = rs.getLong("id");
+		Long client_id = rs.getLong("client_id");
 		String firstName = rs.getString("first_name");
 		String lastName = rs.getString("last_name");
 		Integer age = rs.getInt("age");
 		Boolean blacklisted = rs.getBoolean("blacklisted");
 		Client entity = new Client();
-		entity.setId(id);
+		entity.setId(client_id);
 		entity.setFirstName(firstName);
 		entity.setLastName(lastName);
 		entity.setAge(age);

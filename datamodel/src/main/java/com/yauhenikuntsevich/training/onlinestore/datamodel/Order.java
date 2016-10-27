@@ -1,9 +1,9 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 public class Order extends AbstractModel {
-	private LocalDateTime dateOrder;
+	private Date dateOrder;
 	private Client client;
 	private Administrator administrator;
 	private Integer priceAllPurchases;
@@ -11,11 +11,11 @@ public class Order extends AbstractModel {
 	public Order() {
 	}
 
-	public LocalDateTime getDateOrder() {
+	public Date getDateOrder() {
 		return dateOrder;
 	}
 
-	public void setDateOrder(LocalDateTime dateOrder) {
+	public void setDateOrder(Date dateOrder) {
 		this.dateOrder = dateOrder;
 	}
 

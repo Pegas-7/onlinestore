@@ -1,0 +1,15 @@
+package com.yauhenikuntsevich.training.onlinestore.daodb;
+
+import java.util.List;
+
+public interface EntityDao<T>{
+	T get(Long id);
+
+	void add(T entity);
+
+	void update(T entity);
+
+	void delete(Long id);
+
+	List<T> getAll();
+}

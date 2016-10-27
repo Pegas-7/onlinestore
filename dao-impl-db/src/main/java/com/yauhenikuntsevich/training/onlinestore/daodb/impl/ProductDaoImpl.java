@@ -7,20 +7,27 @@ import javax.inject.Inject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.ProductDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.AdministratorMapper;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ProductMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
 @Repository
-public class ProductDaoImpl implements ProductDao {
+public class ProductDaoImpl implements EntityDao<Product> {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Product get(Long id) {
 		return jdbcTemplate.queryForObject(
-				"SELECT * FROM (SELECT * FROM product p JOIN category c ON p.category_id = c.id WHERE p.id_product = ?) AS res",
+				"SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE p.product_id = ?",
 				new Object[] { id }, new ProductMapper());
+	}
+
+	@Override
+	public void add(Product entity) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -37,13 +44,7 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public List<Product> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void add(Product product) {
-		// TODO Auto-generated method stub
-
+		return jdbcTemplate.query("SELECT * FROM product p JOIN category c ON p.category_id = c.category_id",
+				new ProductMapper());
 	}
 }

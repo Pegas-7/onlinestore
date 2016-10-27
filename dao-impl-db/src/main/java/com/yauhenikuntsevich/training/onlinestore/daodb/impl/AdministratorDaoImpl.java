@@ -4,22 +4,28 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.AdministratorDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.AdministratorMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 
 @Repository
-public class AdministratorDaoImpl implements AdministratorDao {
+public class AdministratorDaoImpl implements EntityDao<Administrator> {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
 	@Override
 	public Administrator get(Long id) {
-		return jdbcTemplate.queryForObject("select * from administrator where id = ?", new Object[] { id },
-				new BeanPropertyRowMapper<Administrator>(Administrator.class));
+		return jdbcTemplate.queryForObject("select * from administrator where administrator_id = ?",
+				new Object[] { id }, new AdministratorMapper());
+	}
+
+	@Override
+	public void add(Administrator entity) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -36,13 +42,6 @@ public class AdministratorDaoImpl implements AdministratorDao {
 
 	@Override
 	public List<Administrator> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer add(Administrator administrator) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query("select * from administrator", new AdministratorMapper());
 	}
 }

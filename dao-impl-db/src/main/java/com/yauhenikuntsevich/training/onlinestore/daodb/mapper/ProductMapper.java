@@ -11,19 +11,19 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 public final class ProductMapper implements RowMapper<Product> {
 	@Override
 	public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Long id_product = rs.getLong("id_product");
+		Long product_id = rs.getLong("product_id");
 		Long categoryId = rs.getLong("category_id");
 		String name = rs.getString("name");
 		Integer price = rs.getInt("price");
 		Integer quantity = rs.getInt("quantity");
 		String item = rs.getString("item");
-		
+
 		Product entity = new Product();
 		Category category = new Category();
 		category.setId(categoryId);
 		category.setItem(item);
 
-		entity.setId(id_product);
+		entity.setId(product_id);
 		entity.setCategory(category);
 		entity.setName(name);
 		entity.setPrice(price);
