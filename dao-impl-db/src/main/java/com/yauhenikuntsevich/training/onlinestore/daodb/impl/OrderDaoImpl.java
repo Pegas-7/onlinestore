@@ -1,10 +1,18 @@
 package com.yauhenikuntsevich.training.onlinestore.daodb.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
@@ -28,20 +36,38 @@ public class OrderDaoImpl implements EntityDao<Order> {
 	}
 
 	@Override
-	public void add(Order entity) {
-		// TODO Auto-generated method stub
+	public Long add(Order entity) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO \"order\" (date_order, client_id, administrator_id, price_all_purchases) VALUES ( ?, ?, ?, ?)",
+						new String[] { "order_id" });
+				ps.setTimestamp(1, new Timestamp(entity.getDateOrder().getTime()));
+				ps.setLong(2, entity.getClient().getId());
+				ps.setLong(3, entity.getAdministrator().getId());
+				ps.setInt(4, entity.getPriceAllPurchases());
+				return ps;
+			}
+
+		}, keyHolder);
+
+		return keyHolder.getKey().longValue();
 	}
 
 	@Override
 	public void update(Order entity) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update(
+				"update \"order\" set date_order = ?, client_id = ?, administrator_id = ?, price_all_purchases = ? where order_id = ?",
+				entity.getDateOrder(), entity.getClient().getId(), entity.getAdministrator().getId(),
+				entity.getPriceAllPurchases(), entity.getId());
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
+		jdbcTemplate.update("delete from \"order\" where order_id = ?", id);
 
 	}
 

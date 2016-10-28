@@ -50,14 +50,13 @@ public class AdministratorDaoImpl implements EntityDao<Administrator> {
 
 	@Override
 	public void update(Administrator entity) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update("update administrator set first_name = ?, last_name = ? where administrator_id = ?",
+				entity.getFirstName(), entity.getLastName(), entity.getId());
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update("delete from administrator where administrator_id = ?", id);
 	}
 
 	@Override

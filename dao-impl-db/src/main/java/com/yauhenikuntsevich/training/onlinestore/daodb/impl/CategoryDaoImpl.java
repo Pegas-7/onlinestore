@@ -51,13 +51,13 @@ public class CategoryDaoImpl implements EntityDao<Category> {
 
 	@Override
 	public void update(Category entity) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update("update category set item = ? where category_id = ?",
+				entity.getItem(), entity.getId());
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
+		jdbcTemplate.update("delete from category where category_id = ?", id);
 
 	}
 

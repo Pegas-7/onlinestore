@@ -54,14 +54,16 @@ public class ProductDaoImpl implements EntityDao<Product> {
 
 	@Override
 	public void update(Product entity) {
-		// TODO Auto-generated method stub
+		jdbcTemplate.update(
+				"update product set category_id = ?, name = ?, price = ?, quantity = ? where product_id = ?",
+				entity.getCategory().getId(), entity.getName(), entity.getPrice(), entity.getQuantity(),
+				entity.getId());
 
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update("delete from product where product_id = ?", id);
 	}
 
 	@Override

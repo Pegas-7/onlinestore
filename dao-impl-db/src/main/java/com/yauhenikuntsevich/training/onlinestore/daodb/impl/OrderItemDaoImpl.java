@@ -1,10 +1,16 @@
 package com.yauhenikuntsevich.training.onlinestore.daodb.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
@@ -28,21 +34,37 @@ public class OrderItemDaoImpl implements EntityDao<OrderItem> {
 	}
 
 	@Override
-	public void add(OrderItem entity) {
-		// TODO Auto-generated method stub
+	public Long add(OrderItem entity) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement(
+						"INSERT INTO \"order_item\" (order_id, product_id, quantity) VALUES (?, ?, ?)",
+						new String[] { "order_item_id" });
+				ps.setLong(1, entity.getOrder().getId());
+				ps.setLong(2, entity.getProduct().getId());
+				ps.setInt(3, entity.getQuantity());
+
+				return ps;
+			}
+
+		}, keyHolder);
+
+		return keyHolder.getKey().longValue();
 	}
 
 	@Override
 	public void update(OrderItem entity) {
-		// TODO Auto-generated method stub
+		jdbcTemplate.update("update order_item set order_id = ?, product_id = ?, quantity = ? where order_item_id = ?",
+				entity.getOrder().getId(), entity.getProduct().getId(), entity.getQuantity(), entity.getId());
 
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update("delete from \"order_item\" where order_item_id = ?", id);
 	}
 
 	@Override

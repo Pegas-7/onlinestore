@@ -1,0 +1,151 @@
+--Drop all tables
+DROP TABLE "order_item";
+DROP TABLE "order";
+DROP TABLE "product";
+DROP TABLE "category";
+DROP TABLE "administrator";
+DROP TABLE "client";
+
+--Create new schema
+CREATE TABLE "client" (
+	"client_id" serial NOT NULL,
+	"first_name" character varying(256) NOT NULL,
+	"last_name" character varying(256) NOT NULL,
+	"age" int NOT NULL,
+	"blacklisted" BOOLEAN NOT NULL,
+	CONSTRAINT client_pk PRIMARY KEY ("client_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "product" (
+	"product_id" serial NOT NULL,
+	"category_id" bigint NOT NULL,
+	"name" character varying(256) NOT NULL,
+	"price" int NOT NULL,
+	"quantity" bigint NOT NULL,
+	CONSTRAINT product_pk PRIMARY KEY ("product_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "administrator" (
+	"administrator_id" serial NOT NULL,
+	"first_name" character varying(256) NOT NULL,
+	"last_name" character varying(256) NOT NULL,
+	CONSTRAINT administrator_pk PRIMARY KEY ("administrator_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "order" (
+	"order_id" serial NOT NULL,
+	"date_order" DATE NOT NULL,
+	"client_id" bigint NOT NULL,
+	"administrator_id" bigint NOT NULL,
+	"price_all_purchases" bigint NOT NULL,
+	CONSTRAINT order_pk PRIMARY KEY ("order_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "order_item" (
+	"order_item_id" serial NOT NULL,
+	"order_id" bigint NOT NULL,
+	"product_id" bigint NOT NULL,
+	"quantity" int NOT NULL,
+	CONSTRAINT order_item_pk PRIMARY KEY ("order_item_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "category" (
+	"category_id" serial NOT NULL,
+	"item" character varying NOT NULL,
+	CONSTRAINT category_pk PRIMARY KEY ("category_id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+
+ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("category_id") REFERENCES "category"("category_id");
+
+
+ALTER TABLE "order" ADD CONSTRAINT "order_fk0" FOREIGN KEY ("client_id") REFERENCES "client"("client_id");
+ALTER TABLE "order" ADD CONSTRAINT "order_fk1" FOREIGN KEY ("administrator_id") REFERENCES "administrator"("administrator_id");
+
+ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk0" FOREIGN KEY ("order_id") REFERENCES "order"("order_id");
+ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk1" FOREIGN KEY ("product_id") REFERENCES "product"("product_id");
+
+--add data into tables
+--add administrators
+INSERT INTO "administrator" (first_name, last_name) VALUES ('Petr_admin', 'Doncov'); --1
+INSERT INTO "administrator" (first_name, last_name) VALUES ('Denis_admin', 'Trol'); --2
+
+--add categories
+INSERT INTO "category" (item) VALUES ('Camera'); --1
+INSERT INTO "category" (item) VALUES ('Navigator'); --2
+INSERT INTO "category" (item) VALUES ('Cellphone'); --3
+INSERT INTO "category" (item) VALUES ('Tablet'); --4
+
+--add clients
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Max_client', 'Dertin', 35, false); --1
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Gena_client', 'Krot', 18, false); --2
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Anton_client', 'Plut', 24, false); --3
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Jenia_client', 'Drozd', 19, false); --4
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Andrey_client', 'Perec', 50, false); --5
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Kolia_client', 'Zlot', 45, false); --6
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Tolia_client', 'Dron', 22, false); --7
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Victor_client', 'Werty', 27, false); --8
+INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Ura_client', 'Ontron', 63, false); --9
+
+--add products
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Canon EOS 6D Body', 65, 15); --1
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Nikon Coolpix L340', 88, 9); --2
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Sony Cyber-shot DSC-H300', 122, 2); --3
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'NAVITEL N500', 55, 12); --4
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'Prestigio GeoVision 5057', 47, 18); --5
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'Prology iMap-580TR', 59, 5); --6
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Huawei P9', 147, 15); --7
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Samsung Galaxy A3', 185, 9); --8
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (3, 'Lenovo P70-A', 144, 22); --9
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'Xiaomi Mi Pad 2', 155, 14); --10
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'Lenovo Tab 2 A10-30L', 99, 17); --11
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (4, 'ASUS T101HA-GR004T', 105, 11); --12
+
+--add orders
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('14-09-2015', 1, 1, 150); --1
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('05-12-2014', 2, 2, 430); --2
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('21-07-2015', 3, 1, 670); --3
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('07-03-2016', 4, 2, 110); --4
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('11-06-2014', 5, 1, 90); --5
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('22-07-2013', 6, 2, 177); --6
+INSERT INTO "order" (date_order, client_id, administrator_id, price_all_purchases) VALUES ('22-07-2013', 6, 1, 58); --7
+
+--add order_items
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (2, 1, 2); --1
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (2, 5, 1); --2
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (2, 8, 1); --3
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (1, 7, 1); --4
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (1, 1, 2); --5
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (3, 12, 2); --6
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (4, 2, 2); --7
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (4, 10, 1); --8
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (5, 3, 2); --9
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (5, 12, 3); --10
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (6, 4, 1); --11
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (6, 6, 2); --12
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (6, 11, 1); --13
+INSERT INTO "order_item" (order_id, product_id, quantity) VALUES (3, 9, 2); --14

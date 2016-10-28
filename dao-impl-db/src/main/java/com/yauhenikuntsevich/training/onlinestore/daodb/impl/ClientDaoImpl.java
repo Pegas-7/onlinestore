@@ -52,14 +52,14 @@ public class ClientDaoImpl implements EntityDao<Client> {
 
 	@Override
 	public void update(Client entity) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update(
+				"update client set first_name = ?, last_name = ? , age = ?, blacklisted = ? where client_id = ?",
+				entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getBlacklisted(), entity.getId());
 	}
 
 	@Override
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-
+		jdbcTemplate.update("delete from client where client_id = ?", id);
 	}
 
 	@Override
