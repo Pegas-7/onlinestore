@@ -15,12 +15,15 @@ public final class ClientMapper implements RowMapper<Client> {
 		String lastName = rs.getString("last_name");
 		Integer age = rs.getInt("age");
 		Boolean blacklisted = rs.getBoolean("blacklisted");
+		
 		Client entity = new Client();
+		
 		entity.setId(client_id);
 		entity.setFirstName(firstName);
 		entity.setLastName(lastName);
 		entity.setAge(age);
 		entity.setBlacklisted(blacklisted);
+		
 		return entity;
 	}
 }
