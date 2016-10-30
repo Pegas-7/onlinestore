@@ -5,33 +5,34 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
-import com.yauhenikuntsevich.training.onlinestore.services.CategoryService;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
+import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 
-public class CategoryServiceImpl implements CategoryService {
+public class AdministratorServiceImpl implements AdministratorService {
+	
 	@Inject
-	private EntityDao<Category> categoryDao;
+	private EntityDao<Administrator> administratorDao;
 
 	@Override
-	public void saveAll(List<Category> category) {
+	public void saveAll(List<Administrator> administrator) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Long save(Category category) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Category get(Long id) {
+	public Long save(Administrator administrator) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Category> getAll() {
+	public Administrator get(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Administrator> getAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -41,5 +42,4 @@ public class CategoryServiceImpl implements CategoryService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

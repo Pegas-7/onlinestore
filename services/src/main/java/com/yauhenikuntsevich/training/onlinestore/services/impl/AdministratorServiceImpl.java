@@ -2,14 +2,20 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 
 public class AdministratorServiceImpl implements AdministratorService {
+	
+	@Inject
+	private EntityDao<Administrator> administratorDao;
 
 	@Override
 	public void saveAll(List<Administrator> administrator) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -21,8 +27,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public Administrator get(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return administratorDao.get(id);
 	}
 
 	@Override
