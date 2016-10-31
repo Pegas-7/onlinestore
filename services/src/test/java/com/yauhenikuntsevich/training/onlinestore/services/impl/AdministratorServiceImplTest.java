@@ -1,45 +1,132 @@
 package com.yauhenikuntsevich.training.onlinestore.services.impl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
-import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 
-public class AdministratorServiceImpl implements AdministratorService {
-	
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "file:src/main/resources/service-context.xml" })
+public class AdministratorServiceImplTest {
+
+	@Inject
+	private AdministratorServiceImpl administratorServiceImpl;
+
 	@Inject
 	private EntityDao<Administrator> administratorDao;
 
-	@Override
-	public void saveAll(List<Administrator> administrator) {
-		// TODO Auto-generated method stub
+	Administrator administrator1;
+	Administrator administrator2;
+	Long id1;
+	Long id2;
 
+	@Before
+	public void beforeTest() {
+		administrator1 = new Administrator();
+		administrator1.setFirstName("FirstNameAdministrator1");
+		administrator1.setLastName("LastNameAdministrator1");
+
+		administrator2 = new Administrator();
+		administrator2.setFirstName("FirstNameAdministrator2");
+		administrator2.setLastName("LastNameAdministrator2");
+
+		id1 = administratorDao.add(administrator1);
+		id2 = administratorDao.add(administrator2);
 	}
 
-	@Override
-	public Long save(Administrator administrator) {
-		// TODO Auto-generated method stub
-		return null;
+	@After
+	public void afterTest() {
+		administratorDao.delete(id1);
+		administratorDao.delete(id2);
 	}
 
-	@Override
-	public Administrator get(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	@Test
+	public void getTest() {
+		Administrator administratorFromDb1 = administratorServiceImpl.get(id1);
+
+		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1.getFirstName());
+		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1.getLastName());
 	}
 
-	@Override
-	public List<Administrator> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	@Test
+	public void getAllTest() throws Exception {
+		Administrator administratorFromDb1 = administratorServiceImpl.get(id1);
+		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
+
+		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1.getFirstName());
+		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1.getLastName());
+		Assert.assertEquals(administrator2.getFirstName(), administratorFromDb2.getFirstName());
+		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
 	}
 
-	@Override
-	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+	@Test
+	public void saveTest() {
+		administrator1.setId(id1);
+
+		administratorDao.delete(id2);
+
+		Long id1Resave = administratorServiceImpl.save(administrator1);
+		id2 = administratorServiceImpl.save(administrator2);
+
+		Assert.assertEquals(id1, id1Resave);
+		Assert.assertNotNull(id1Resave);
+		Assert.assertNotNull(id2);
+
+		Administrator administratorFromDb1Resave = administratorServiceImpl.get(id1Resave);
+		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
+
+		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1Resave.getFirstName());
+		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1Resave.getLastName());
+		Assert.assertEquals(administrator2.getFirstName(), administratorFromDb2.getFirstName());
+		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
+	}
+
+	@Test
+	public void saveAllTest() {
+		administrator1.setId(id1);
+
+		List<Administrator> administrator = new LinkedList<>();
+		administrator.add(administrator1);
+		administrator.add(administrator2);
+
+		int amountRowBeforeSaving = administratorDao.getAll().size();
+
+		// liberation variable
+		administratorDao.delete(id2);
+
+		List<Administrator> administrators = administratorServiceImpl.saveAll(administrator);
+
+		id1 = administrators.get(0).getId();
+		id2 = administrators.get(1).getId();
+
+		int amountRowAfterSaving = administratorDao.getAll().size();
+
+		Assert.assertEquals(amountRowBeforeSaving, amountRowAfterSaving);
+
+		Administrator administratorFromDb1 = administratorServiceImpl.get(id1);
+		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
+
+		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1.getFirstName());
+		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1.getLastName());
+		Assert.assertEquals(administrator2.getFirstName(), administratorFromDb2.getFirstName());
+		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
+	}
+
+	@Test
+	public void delete() {
+		Boolean IsDeleted = administratorServiceImpl.delete(id1);
+
+		Assert.assertTrue(IsDeleted);
 	}
 }

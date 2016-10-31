@@ -1,28 +1,43 @@
 package com.yauhenikuntsevich.training.onlinestore.services.impl;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 
+@Service
 public class AdministratorServiceImpl implements AdministratorService {
-	
+
 	@Inject
 	private EntityDao<Administrator> administratorDao;
 
 	@Override
-	public void saveAll(List<Administrator> administrator) {
-		
+	public List<Administrator> saveAll(List<Administrator> administrators) {
+		List<Administrator> administrators1 = new LinkedList<>();
 
+		for (Administrator administrator2 : administrators) {
+			Long id = save(administrator2);
+			administrator2.setId(id);
+			administrators1.add(administrator2);
+		}
+		
+		return administrators1;
 	}
 
 	@Override
 	public Long save(Administrator administrator) {
-		// TODO Auto-generated method stub
-		return null;
+		if (administrator.getId() == null) {
+			return administratorDao.add(administrator);
+		} else {
+			administratorDao.update(administrator);
+			return administrator.getId();
+		}
 	}
 
 	@Override
@@ -32,13 +47,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public List<Administrator> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return administratorDao.getAll();
 	}
 
 	@Override
 	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		administratorDao.delete(id);
+		return true;
 	}
 }
