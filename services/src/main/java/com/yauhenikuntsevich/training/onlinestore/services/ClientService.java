@@ -9,7 +9,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 public interface ClientService {
 
 	@Transactional
-	List<Client> saveAll(List<Client> client);
+	List<Client> saveAll(List<Client> clients);
 
 	Long save(Client client);
 

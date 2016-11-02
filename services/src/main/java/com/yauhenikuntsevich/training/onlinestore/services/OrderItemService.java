@@ -10,7 +10,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 public interface OrderItemService {
 
 	@Transactional
-	List<OrderItem> saveAll(List<OrderItem> orderItem);
+	List<OrderItem> saveAll(List<OrderItem> orderItems);
 
 	Long save(OrderItem orderItem);
 

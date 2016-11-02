@@ -9,7 +9,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 public interface AdministratorService {
 
 	@Transactional
-	List<Administrator> saveAll(List<Administrator> administrator);
+	List<Administrator> saveAll(List<Administrator> administrators);
 
 	Long save(Administrator administrator);
 
