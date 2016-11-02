@@ -9,7 +9,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 public interface ClientService {
 
 	@Transactional
-	void saveAll(List<Client> client);
+	List<Client> saveAll(List<Client> client);
 
 	Long save(Client client);
 
@@ -19,5 +19,5 @@ public interface ClientService {
 
 	boolean delete(Long id);
 
-	List<Client> getAllClientWhichBlacklisted(Boolean blacklisted);
+	List<Client> getAllClientBlacklisted(Boolean blacklisted);
 }

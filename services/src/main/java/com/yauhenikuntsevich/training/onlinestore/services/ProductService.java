@@ -9,7 +9,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 public interface ProductService {
 
 	@Transactional
-	void saveAll(List<Product> product);
+	List<Product> saveAll(List<Product> product);
 
 	Long save(Product product);
 

@@ -3,15 +3,18 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 import java.sql.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
 
-public class OrderServiceImpl implements OrderService{
+@Service
+public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void saveAll(List<Order> order) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

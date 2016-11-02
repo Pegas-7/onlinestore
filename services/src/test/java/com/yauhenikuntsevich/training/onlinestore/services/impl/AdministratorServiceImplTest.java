@@ -96,37 +96,45 @@ public class AdministratorServiceImplTest {
 	public void saveAllTest() {
 		administrator1.setId(id1);
 
-		List<Administrator> administrator = new LinkedList<>();
-		administrator.add(administrator1);
-		administrator.add(administrator2);
-
-		int amountRowBeforeSaving = administratorDao.getAll().size();
+		List<Administrator> administrators1 = new LinkedList<>();
+		administrators1.add(administrator1);
+		administrators1.add(administrator2);
 
 		// liberation variable
 		administratorDao.delete(id2);
 
-		List<Administrator> administrators = administratorServiceImpl.saveAll(administrator);
+		int amountRowBeforeSaving = administratorDao.getAll().size();
 
-		id1 = administrators.get(0).getId();
+		List<Administrator> administrators = administratorServiceImpl.saveAll(administrators1);
+
+		Long id1Resave = administrators.get(0).getId();
 		id2 = administrators.get(1).getId();
 
 		int amountRowAfterSaving = administratorDao.getAll().size();
 
-		Assert.assertEquals(amountRowBeforeSaving, amountRowAfterSaving);
+		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
 
-		Administrator administratorFromDb1 = administratorServiceImpl.get(id1);
+		Administrator administratorFromDb1 = administratorServiceImpl.get(id1Resave);
 		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
 
 		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1.getFirstName());
 		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1.getLastName());
 		Assert.assertEquals(administrator2.getFirstName(), administratorFromDb2.getFirstName());
 		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
+
+		// liberation variable
+		administratorDao.delete(id1Resave);
 	}
 
 	@Test
-	public void delete() {
+	public void deleteTest() {
+		int amountRowBeforeSaving = administratorDao.getAll().size();
+
 		Boolean IsDeleted = administratorServiceImpl.delete(id1);
 
+		int amountRowAfterSaving = administratorDao.getAll().size();
+
 		Assert.assertTrue(IsDeleted);
+		Assert.assertEquals(amountRowBeforeSaving, amountRowAfterSaving + 1);
 	}
 }

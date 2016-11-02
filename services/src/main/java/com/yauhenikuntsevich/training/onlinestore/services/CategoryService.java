@@ -9,7 +9,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 public interface CategoryService {
 	
 	@Transactional
-	void saveAll(List<Category> category);
+	List<Category> saveAll(List<Category> category);
 
 	Long save(Category category);
 

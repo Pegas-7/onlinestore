@@ -2,16 +2,19 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
 
-public class OrderItemServiceImpl implements OrderItemService{
+@Service
+public class OrderItemServiceImpl implements OrderItemService {
 
 	@Override
 	public void saveAll(List<OrderItem> orderItem) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -2,9 +2,12 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 import com.yauhenikuntsevich.training.onlinestore.services.ProductService;
 
+@Service
 public class ProductServiceImpl implements ProductService{
 
 	@Override
