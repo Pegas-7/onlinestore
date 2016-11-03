@@ -67,8 +67,17 @@ public class ClientServiceImplTest {
 
 	@Test
 	public void getAllTest() throws Exception {
-		Client clientFromDb1 = clientServiceImpl.get(id1);
-		Client clientFromDb2 = clientServiceImpl.get(id2);
+		List<Client> сlients = clientServiceImpl.getAll();
+
+		Client clientFromDb1 = null;
+		Client clientFromDb2 = null;
+
+		for (Client сlient : сlients) {
+			if (сlient.getId().equals(id1))
+				clientFromDb1 = сlient;
+			if (сlient.getId().equals(id2))
+				clientFromDb2 = сlient;
+		}
 
 		Assert.assertEquals(client1.getFirstName(), clientFromDb1.getFirstName());
 		Assert.assertEquals(client1.getLastName(), clientFromDb1.getLastName());
@@ -163,11 +172,15 @@ public class ClientServiceImplTest {
 	public void getAllClientBlacklistedTest() {
 		List<Client> clientsBlacklistedTrue = clientServiceImpl.getAllClientBlacklisted(true);
 
+		Assert.assertFalse(clientsBlacklistedTrue.isEmpty());
+
 		for (Client client : clientsBlacklistedTrue) {
 			Assert.assertTrue(client.getBlacklisted());
 		}
 
 		List<Client> clientsBlacklistedFalse = clientServiceImpl.getAllClientBlacklisted(false);
+
+		Assert.assertFalse(clientsBlacklistedFalse.isEmpty());
 
 		for (Client client : clientsBlacklistedFalse) {
 			Assert.assertFalse(client.getBlacklisted());

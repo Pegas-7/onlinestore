@@ -73,8 +73,17 @@ public class ProductServiceImplTest {
 
 	@Test
 	public void getAllTest() throws Exception {
-		Product productFromDb1 = productServiceImpl.get(id1);
-		Product productFromDb2 = productServiceImpl.get(id2);
+		List<Product> products = productServiceImpl.getAll();
+
+		Product productFromDb1 = null;
+		Product productFromDb2 = null;
+
+		for (Product product : products) {
+			if (product.getId().equals(id1))
+				productFromDb1 = product;
+			if (product.getId().equals(id2))
+				productFromDb2 = product;
+		}
 
 		Assert.assertEquals(product1.getName(), productFromDb1.getName());
 		Assert.assertEquals(product1.getCategory().getId(), productFromDb1.getCategory().getId());
@@ -132,6 +141,10 @@ public class ProductServiceImplTest {
 		Long id1Resave = products.get(0).getId();
 		id2 = products.get(1).getId();
 
+		Assert.assertEquals(id1, id1Resave);
+		Assert.assertNotNull(id1Resave);
+		Assert.assertNotNull(id2);
+
 		int amountRowAfterSaving = productDao.getAll().size();
 
 		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
@@ -168,6 +181,8 @@ public class ProductServiceImplTest {
 	@Test
 	public void getAllProductsWithOneCategoryTest() {
 		List<Product> products = productServiceImpl.getAllProductsWithOneCategory(1L);
+
+		Assert.assertFalse(products.isEmpty());
 
 		for (Product product : products) {
 			Assert.assertEquals(product1.getCategory().getId(), product.getCategory().getId());

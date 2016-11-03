@@ -60,9 +60,18 @@ public class AdministratorServiceImplTest {
 	}
 
 	@Test
-	public void getAllTest() throws Exception {
-		Administrator administratorFromDb1 = administratorServiceImpl.get(id1);
-		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
+	public void getAllTest() {
+		List<Administrator> administrators = administratorServiceImpl.getAll();
+
+		Administrator administratorFromDb1 = null;
+		Administrator administratorFromDb2 = null;
+
+		for (Administrator administrator : administrators) {
+			if (administrator.getId().equals(id1))
+				administratorFromDb1 = administrator;
+			if (administrator.getId().equals(id2))
+				administratorFromDb2 = administrator;
+		}
 
 		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1.getFirstName());
 		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1.getLastName());
@@ -109,6 +118,10 @@ public class AdministratorServiceImplTest {
 
 		Long id1Resave = administrators.get(0).getId();
 		id2 = administrators.get(1).getId();
+
+		Assert.assertEquals(id1, id1Resave);
+		Assert.assertNotNull(id1Resave);
+		Assert.assertNotNull(id2);
 
 		int amountRowAfterSaving = administratorDao.getAll().size();
 

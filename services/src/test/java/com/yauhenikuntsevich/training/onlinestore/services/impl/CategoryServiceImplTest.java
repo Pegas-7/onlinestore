@@ -58,8 +58,17 @@ public class CategoryServiceImplTest {
 
 	@Test
 	public void getAllTest() throws Exception {
-		Category categoryFromDb1 = categoryServiceImpl.get(id1);
-		Category categoryFromDb2 = categoryServiceImpl.get(id2);
+		List<Category> сategories = categoryServiceImpl.getAll();
+
+		Category categoryFromDb1 = null;
+		Category categoryFromDb2 = null;
+
+		for (Category category : сategories) {
+			if (category.getId().equals(id1))
+				categoryFromDb1 = category;
+			if (category.getId().equals(id2))
+				categoryFromDb2 = category;
+		}
 
 		Assert.assertEquals(category1.getItem(), categoryFromDb1.getItem());
 		Assert.assertEquals(category2.getItem(), categoryFromDb2.getItem());
@@ -102,6 +111,10 @@ public class CategoryServiceImplTest {
 
 		Long id1Resave = categories2.get(0).getId();
 		id2 = categories2.get(1).getId();
+
+		Assert.assertEquals(id1, id1Resave);
+		Assert.assertNotNull(id1Resave);
+		Assert.assertNotNull(id2);
 
 		int amountRowAfterSaving = categoryDao.getAll().size();
 

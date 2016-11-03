@@ -76,7 +76,7 @@ public class TestGettingAllFromDB {
 		EntityDao<Administrator> administratorDao = (EntityDao<Administrator>) context.getBean("administratorDao");
 
 		List<Administrator> administrators = administratorDao.getAll();
-
+		
 		System.out.println("Test getting all items from BD, table 'administrator':");
 
 		for (Administrator administrator : administrators) {
