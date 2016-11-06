@@ -25,12 +25,25 @@
 			<ThresholdFilter level="INFO" onMatch="ACCEPT"
 				onMismatch="DENY" />
 		</RollingFile>
+
+		<RollingFile name="RollingFileDebug" fileName="logs/debug-log.log"
+			filePattern="logs/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}.log.gz">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS}{GMT+3} [%t] %-5level %logger{36} - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<ThresholdFilter level="DEBUG" onMatch="ACCEPT"
+				onMismatch="DENY" />
+		</RollingFile>
 	</Appenders>
 
 	<Loggers>
-		<Root level="info">
+		<Root level="debug">
 			<AppenderRef ref="RollingFileWarn" />
 			<AppenderRef ref="RollingFileInfo" />
+			<AppenderRef ref="RollingFileDebug" />
 		</Root>
 	</Loggers>
 </Configuration>

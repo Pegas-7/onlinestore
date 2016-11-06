@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.AdministratorCaching;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
@@ -26,7 +27,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			administrator2.setId(id);
 			administrators1.add(administrator2);
 		}
-		
+
 		return administrators1;
 	}
 
@@ -42,7 +43,16 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public Administrator get(Long id) {
-		return administratorDao.get(id);
+		Administrator administrator = null;
+
+		if (AdministratorCaching.getCache().get(id) != null) {
+			administrator = AdministratorCaching.getCache().get(id);
+		} else {
+			administrator = administratorDao.get(id);
+			AdministratorCaching.putEntityInCache(id, administrator);
+		}
+
+		return administrator;
 	}
 
 	@Override
