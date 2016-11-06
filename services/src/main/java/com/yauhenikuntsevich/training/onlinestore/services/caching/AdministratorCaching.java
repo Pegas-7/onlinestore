@@ -13,19 +13,28 @@ public class AdministratorCaching {
 	private static Long delayCacheCleanig = 1000L;
 	private static Date dateCleaningCache = setDateCleaningCache();
 
-	public static void putEntityInCache(Long id, Administrator administrator) {
+	public static void putAdministratorInCache(Long id, Administrator administrator) {
 		cleanCache();
 		cache.put(id, administrator);
 		MyLogger.LOGGER
 				.debug("Administrator with id = " + id + " was put in cache, size cache (map) = " + cache.size());
 	}
 
-	public static void updateEntityInCache(Map<Long, Administrator> cache, Long id, Administrator administrator) {
+	public static void updateAdministratorInCache(Long id, Administrator administrator) {
 		cleanCache();
 		cache.put(id, administrator);
 
 		MyLogger.LOGGER
-				.debug("Administrator with id =" + id + "was updated in cache, size cache (map) = " + cache.size());
+				.debug("Administrator with id = " + id + " was updated in cache, size cache (map) = " + cache.size());
+	}
+
+	public static void deleteAdministratorFromCache(Long id) {
+		cleanCache();
+		cache.remove(id);
+		cache.remove(1000);
+
+		MyLogger.LOGGER
+				.debug("Administrator with id = " + id + " was deleted from cache, size cache (map) = " + cache.size());
 	}
 
 	public static void cleanCache() {

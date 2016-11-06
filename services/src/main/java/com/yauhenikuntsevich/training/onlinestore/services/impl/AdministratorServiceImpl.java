@@ -37,6 +37,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return administratorDao.add(administrator);
 		} else {
 			administratorDao.update(administrator);
+			AdministratorCaching.updateAdministratorInCache(administrator.getId(), administrator);
 			return administrator.getId();
 		}
 	}
@@ -49,7 +50,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			administrator = AdministratorCaching.getCache().get(id);
 		} else {
 			administrator = administratorDao.get(id);
-			AdministratorCaching.putEntityInCache(id, administrator);
+			AdministratorCaching.putAdministratorInCache(id, administrator);
 		}
 
 		return administrator;
@@ -63,6 +64,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public boolean delete(Long id) {
 		administratorDao.delete(id);
+		AdministratorCaching.deleteAdministratorFromCache(id);
 		return true;
 	}
 }

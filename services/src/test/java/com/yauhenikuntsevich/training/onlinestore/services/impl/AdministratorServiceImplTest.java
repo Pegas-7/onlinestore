@@ -37,19 +37,11 @@ public class AdministratorServiceImplTest {
 		administrator1.setFirstName("FirstNameAdministrator1");
 		administrator1.setLastName("LastNameAdministrator1");
 
-		
-		
 		administrator2 = new Administrator();
 		administrator2.setFirstName("FirstNameAdministrator2");
 		administrator2.setLastName("LastNameAdministrator2");
 
 		id1 = administratorDao.add(administrator1);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		id2 = administratorDao.add(administrator2);
 	}
 
