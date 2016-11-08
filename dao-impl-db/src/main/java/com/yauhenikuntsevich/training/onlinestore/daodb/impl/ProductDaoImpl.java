@@ -41,7 +41,7 @@ public class ProductDaoImpl implements EntityDao<Product> {
 						new String[] { "product_id" });
 				ps.setLong(1, entity.getCategory().getId());
 				ps.setString(2, entity.getName());
-				ps.setInt(3, entity.getPrice());
+				ps.setDouble(3, entity.getPrice());
 				ps.setInt(4, entity.getQuantity());
 				return ps;
 			}

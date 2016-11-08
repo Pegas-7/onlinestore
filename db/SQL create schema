@@ -15,7 +15,7 @@ CREATE TABLE "product" (
 	"product_id" serial NOT NULL,
 	"category_id" bigint NOT NULL,
 	"name" character varying(256) NOT NULL,
-	"price" int NOT NULL,
+	"price" double precision NOT NULL,
 	"quantity" bigint NOT NULL,
 	CONSTRAINT product_pk PRIMARY KEY ("product_id")
 ) WITH (

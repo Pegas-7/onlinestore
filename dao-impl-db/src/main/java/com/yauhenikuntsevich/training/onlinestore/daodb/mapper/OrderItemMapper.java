@@ -50,7 +50,7 @@ public final class OrderItemMapper implements RowMapper<OrderItem> {
 		Long product_id = rs.getLong("product_id");
 		Long categoryId = rs.getLong("category_id");
 		String name = rs.getString("name");
-		Integer price = rs.getInt("price");
+		Double price = rs.getDouble("price");
 		Integer quantity = rs.getInt("quantity");
 		String item = rs.getString("item");
 

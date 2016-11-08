@@ -16,3 +16,4 @@ webapp/.project
 services/target/
 datamodel/target/
 test-module/logs/
+services/logs/

@@ -20,7 +20,7 @@ INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Victor_c
 INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Ura_client', 'Ontron', 63, false); --9
 
 --add products
-INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Canon EOS 6D Body', 65, 15); --1
+INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Canon EOS 6D Body', 65.7, 15); --1
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Nikon Coolpix L340', 88, 9); --2
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Sony Cyber-shot DSC-H300', 122, 2); --3
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (2, 'NAVITEL N500', 55, 12); --4

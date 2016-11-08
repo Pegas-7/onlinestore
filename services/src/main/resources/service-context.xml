@@ -19,7 +19,8 @@
 	<context:component-scan
 		base-package="com.yauhenikuntsevich.training.onlinestore.daodb.impl" />
 	<context:component-scan
-		base-package="com.yauhenikuntsevich.training.onlinestore.services.impl" />
+		base-package="com.yauhenikuntsevich.training.onlinestore.services" />
+
 
 	<context:property-placeholder
 		ignore-unresolvable="true" location="classpath:db.properties" />
@@ -39,16 +40,22 @@
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource" />
 	</bean>
-	
+
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="categoryDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.CategoryDaoImpl"></bean>
-	<bean id="administratorDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.AdministratorDaoImpl"></bean>
-	<bean id="clientDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ClientDaoImpl"></bean>
-	<bean id="productDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ProductDaoImpl"></bean>
-	<bean id="orderDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.OrderDaoImpl"></bean>
-	<bean id="orderItemDao" class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.OrderItemDaoImpl"></bean>
+	<bean id="categoryDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.CategoryDaoImpl"></bean>
+	<bean id="administratorDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.AdministratorDaoImpl"></bean>
+	<bean id="clientDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ClientDaoImpl"></bean>
+	<bean id="productDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ProductDaoImpl"></bean>
+	<bean id="orderDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.OrderDaoImpl"></bean>
+	<bean id="orderItemDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.OrderItemDaoImpl"></bean>
 </beans>

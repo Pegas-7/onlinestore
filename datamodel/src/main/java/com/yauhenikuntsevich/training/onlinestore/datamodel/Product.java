@@ -3,7 +3,7 @@ package com.yauhenikuntsevich.training.onlinestore.datamodel;
 public class Product extends AbstractModel {
 	private Category category;
 	private String name;
-	private Integer price;
+	private Double price;
 	private Integer quantity;
 
 	public Product() {
@@ -25,11 +25,11 @@ public class Product extends AbstractModel {
 		this.name = name;
 	}
 
-	public Integer getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

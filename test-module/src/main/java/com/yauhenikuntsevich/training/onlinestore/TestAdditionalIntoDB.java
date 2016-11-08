@@ -102,7 +102,7 @@ public class TestAdditionalIntoDB {
 		Product product = new Product();
 		product.setCategory(category1);
 		product.setName("NNamsung Duos 2");
-		product.setPrice(221);
+		product.setPrice(221.7);
 		product.setQuantity(19);
 
 		Long productId = productDao.add(product);
@@ -114,7 +114,7 @@ public class TestAdditionalIntoDB {
 		category1.setId(3L);
 		product.setCategory(category1);
 		product.setName("Samsung Duos 2");
-		product.setPrice(199);
+		product.setPrice(199.0);
 		product.setQuantity(13);
 
 		productDao.update(product);
