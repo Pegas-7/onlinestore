@@ -1,26 +1,36 @@
 package com.yauhenikuntsevich.training.onlinestore.services.caching;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.util.MyLogger;
 
-public class AdministratorCaching {
+@Component
+public class AdministratorCaching implements Externalizable {
 
-	private static Map<Long, Administrator> cache = new HashMap<>();
-	private static Long delayCacheCleanig = 1000L;
-	private static Date dateCleaningCache = setDateCleaningCache();
+	private Long delayCacheCleanig = 10000L;
+	private Map<Long, Administrator> cache = new HashMap<>();
+	private Date dateCleaningCache = settingDateCleaningCache();
 
-	public static void putAdministratorInCache(Long id, Administrator administrator) {
+	public AdministratorCaching() {
+	}
+
+	public void putAdministratorInCache(Long id, Administrator administrator) {
 		cleanCache();
 		cache.put(id, administrator);
 		MyLogger.LOGGER
 				.debug("Administrator with id = " + id + " was put in cache, size cache (map) = " + cache.size());
 	}
 
-	public static void updateAdministratorInCache(Long id, Administrator administrator) {
+	public void updateAdministratorInCache(Long id, Administrator administrator) {
 		cleanCache();
 		cache.put(id, administrator);
 
@@ -28,39 +38,71 @@ public class AdministratorCaching {
 				.debug("Administrator with id = " + id + " was updated in cache, size cache (map) = " + cache.size());
 	}
 
-	public static void deleteAdministratorFromCache(Long id) {
+	public void deleteAdministratorFromCache(Long id) {
 		cleanCache();
 		cache.remove(id);
-		cache.remove(1000);
 
 		MyLogger.LOGGER
 				.debug("Administrator with id = " + id + " was deleted from cache, size cache (map) = " + cache.size());
 	}
 
-	public static void cleanCache() {
+	public void cleanCache() {
 		Date date = new Date();
 
 		if (date.after(dateCleaningCache)) {
 			cache.clear();
-			setDateCleaningCache();
+			settingDateCleaningCache();
 
 			MyLogger.LOGGER.debug("Cache was cleaning, set date next cleaning = " + dateCleaningCache
 					+ ", size cache (map) = " + cache.size());
 		}
 	}
 
-	public static Date setDateCleaningCache() {
+	public Date settingDateCleaningCache() {
 		Date date = new Date();
 		date.setTime(date.getTime() + delayCacheCleanig);
 		dateCleaningCache = date;
 		return date;
 	}
 
-	public static void setDelayCacheCleanig(Long delayCacheCleanig) {
-		AdministratorCaching.delayCacheCleanig = delayCacheCleanig;
+	public void setDelayCacheCleanig(Long delayCacheCleanig) {
+		this.delayCacheCleanig = delayCacheCleanig;
 	}
 
-	public static Map<Long, Administrator> getCache() {
+	public Map<Long, Administrator> getCache() {
 		return cache;
+	}
+
+	public Date getDateCleaningCache() {
+		return dateCleaningCache;
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		dateCleaningCache = new Date(in.readLong());
+
+		Long idExternal = 0L;
+		Administrator administratorExternal = null;
+
+		while (in.available() > 0) {
+			idExternal = in.readLong();
+			administratorExternal = (Administrator) in.readObject();
+
+			this.cache.put(idExternal, administratorExternal);
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeLong(dateCleaningCache.getTime());
+
+		for (Map.Entry<Long, Administrator> pair : cache.entrySet()) {
+			out.writeLong(pair.getKey());
+			out.writeObject(pair.getValue());
+		}
+	}
+
+	public void setCache(Map<Long, Administrator> cache) {
+		this.cache = cache;
 	}
 }

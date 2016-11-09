@@ -1,8 +1,6 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
-import java.io.Serializable;
-
-public abstract class AbstractModel implements Serializable{
+public abstract class AbstractModel {
 	private Long id;
 
 	public Long getId() {

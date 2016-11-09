@@ -11,12 +11,20 @@ import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.AdministratorCaching;
+import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheAdministrator;
 
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
 
 	@Inject
 	private EntityDao<Administrator> administratorDao;
+
+	private AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
+			.createInstanceAdministratorCaching();
+
+	public AdministratorCaching getAdministratorCaching() {
+		return administratorCaching;
+	}
 
 	@Override
 	public List<Administrator> saveAll(List<Administrator> administrators) {
@@ -37,7 +45,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return administratorDao.add(administrator);
 		} else {
 			administratorDao.update(administrator);
-			AdministratorCaching.updateAdministratorInCache(administrator.getId(), administrator);
+			administratorCaching.updateAdministratorInCache(administrator.getId(), administrator);
 			return administrator.getId();
 		}
 	}
@@ -46,11 +54,11 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public Administrator get(Long id) {
 		Administrator administrator = null;
 
-		if (AdministratorCaching.getCache().get(id) != null) {
-			administrator = AdministratorCaching.getCache().get(id);
+		if (administratorCaching.getCache().get(id) != null) {
+			administrator = administratorCaching.getCache().get(id);
 		} else {
 			administrator = administratorDao.get(id);
-			AdministratorCaching.putAdministratorInCache(id, administrator);
+			administratorCaching.putAdministratorInCache(id, administrator);
 		}
 
 		return administrator;
@@ -64,7 +72,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public boolean delete(Long id) {
 		administratorDao.delete(id);
-		AdministratorCaching.deleteAdministratorFromCache(id);
+		administratorCaching.deleteAdministratorFromCache(id);
 		return true;
 	}
 }

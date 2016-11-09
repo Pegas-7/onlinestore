@@ -1,6 +1,11 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
-public class Administrator extends AbstractModel {
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class Administrator extends AbstractModel implements Externalizable {
 	private String firstName;
 	private String lastName;
 
@@ -21,5 +26,17 @@ public class Administrator extends AbstractModel {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		firstName = (String) in.readObject();
+		lastName = (String) in.readObject();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(firstName);
+		out.writeObject(lastName);
 	}
 }
