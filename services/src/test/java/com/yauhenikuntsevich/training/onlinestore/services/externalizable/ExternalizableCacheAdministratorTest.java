@@ -1,6 +1,5 @@
 package com.yauhenikuntsevich.training.onlinestore.services.externalizable;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
@@ -9,7 +8,6 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -53,38 +51,39 @@ public class ExternalizableCacheAdministratorTest {
 	}
 
 	@Test
-	@Ignore
-	public void writeInFileCacheAdministratorTest() {
+	public void writeInFileCacheAdministratorTest() throws FileNotFoundException {
 
 		administratorServiceImpl.get(id1);
 		administratorServiceImpl.get(id2);
 
-		new File("tempFile.tmp").delete();
-
 		ExternalizableCacheAdministrator.writeInFileCacheAdministrator(administratorCaching);
 
-		Assert.assertTrue(new File("tempFile.tmp").exists());
+		AdministratorCaching administratorCachingRecreate = ExternalizableCacheAdministrator
+				.readFromFileCacheAdministrator();
 
-		new File("tempFile.tmp").delete();
+		Assert.assertEquals(administratorCachingRecreate.getCache().get(id1).getFirstName(), administrator1.getFirstName());
+		Assert.assertEquals(administratorCachingRecreate.getCache().get(id2).getFirstName(), administrator2.getFirstName());
+
+		ExternalizableCacheAdministrator.deleteFile();
 	}
 
 	@Test
-	
 	public void readFromFileCacheAdministratorTest() throws FileNotFoundException {
 		AdministratorCaching administratorCaching1 = new AdministratorCaching();
-		
+
 		HashMap<Long, Administrator> hashMap = new HashMap<Long, Administrator>();
 		Administrator administrator3 = new Administrator();
 		administrator3.setFirstName("FirstNameAdministrator3");
 		hashMap.put(1314L, administrator3);
-		
+
 		administratorCaching1.setCache(hashMap);
 
-		//administrator3.ExternalizableCacheAdministrator.writeInFileCacheAdministrator(administratorCaching1);
+		ExternalizableCacheAdministrator.writeInFileCacheAdministrator(administratorCaching1);
 
 		AdministratorCaching newAdministratorCaching = ExternalizableCacheAdministrator
 				.readFromFileCacheAdministrator();
 
-		Assert.assertEquals(newAdministratorCaching.getCache().get(1314L).getFirstName(), administrator3.getFirstName());
+		Assert.assertEquals(newAdministratorCaching.getCache().get(1314L).getFirstName(),
+				administrator3.getFirstName());
 	}
 }

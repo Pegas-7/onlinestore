@@ -15,7 +15,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.util.MyLogger;
 
 @Service
 public class ExternalizableCacheAdministrator {
-	private final static String FILENAME = "tempFile.tmp";
+	private final static String FILENAME = "tempFileCacheAdministrator.tmp";
 
 	public static AdministratorCaching createInstanceAdministratorCaching() {
 		try {
@@ -33,7 +33,7 @@ public class ExternalizableCacheAdministrator {
 			out.flush();
 			out.close();
 
-			MyLogger.LOGGER.debug("Write in file cache of administrator is done!");
+			MyLogger.LOGGER.debug("Write in file AdministratorCaching is done!");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -48,8 +48,9 @@ public class ExternalizableCacheAdministrator {
 			administratorCaching = (AdministratorCaching) in.readObject();
 			fis.close();
 			in.close();
-			
-			new File(FILENAME).delete();
+			deleteFile();
+			MyLogger.LOGGER
+					.debug("Read from file AdministratorCaching is done, temporary file " + FILENAME + " was deleted!");
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		} catch (IOException e) {
@@ -59,5 +60,10 @@ public class ExternalizableCacheAdministrator {
 		}
 
 		return administratorCaching;
+	}
+
+	public static void deleteFile() {
+		File file = new File(FILENAME);
+		file.delete();
 	}
 }
