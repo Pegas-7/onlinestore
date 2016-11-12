@@ -18,6 +18,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.yauhenikuntsevich.training</groupId>
+			<artifactId>dao-impl-xml</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yauhenikuntsevich.training</groupId>
+			<artifactId>dao-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yauhenikuntsevich.training</groupId>
+			<artifactId>datamodel</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>

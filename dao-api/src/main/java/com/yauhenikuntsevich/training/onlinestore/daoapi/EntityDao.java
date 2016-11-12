@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.daodb;
+package com.yauhenikuntsevich.training.onlinestore.daoapi;
 
 import java.util.List;
 

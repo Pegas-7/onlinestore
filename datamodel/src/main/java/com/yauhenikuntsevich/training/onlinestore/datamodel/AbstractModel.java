@@ -1,7 +1,7 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
 public abstract class AbstractModel {
-	private Long id;
+	protected Long id;
 
 	public Long getId() {
 		return id;

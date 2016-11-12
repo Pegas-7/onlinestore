@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
@@ -39,7 +39,7 @@ public class ProductServiceImplTest {
 		product1 = new Product();
 		product1.setName("Product1");
 		product1.setCategory(category1);
-		product1.setPrice(100);
+		product1.setPrice(100.0);
 		product1.setQuantity(5);
 
 		Category category2 = new Category();
@@ -48,7 +48,7 @@ public class ProductServiceImplTest {
 		product2 = new Product();
 		product2.setName("Product2");
 		product2.setCategory(category2);
-		product2.setPrice(200);
+		product2.setPrice(200.0);
 		product2.setQuantity(12);
 
 		id1 = productDao.add(product1);

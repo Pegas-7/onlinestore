@@ -13,12 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ClientMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 
 @Repository
-public class ClientDaoImpl implements EntityDao<Client> {
+public class ClientDaoDbImpl implements EntityDao<Client> {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 

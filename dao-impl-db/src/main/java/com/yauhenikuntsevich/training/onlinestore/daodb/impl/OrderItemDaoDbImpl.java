@@ -13,13 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
-import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.AdministratorMapper;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.OrderItemMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 
 @Repository
-public class OrderItemDaoImpl implements EntityDao<OrderItem> {
+public class OrderItemDaoDbImpl implements EntityDao<OrderItem> {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;

@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
@@ -190,7 +190,7 @@ public class OrderServiceImplTest {
 	@Test
 	public void getAllOrdersOneAdministrator() {
 		List<Order> orders = orderServiceImpl.getAllOrdersOneAdministrator(1L);
-		
+
 		Assert.assertFalse(orders.isEmpty());
 
 		for (Order order : orders) {

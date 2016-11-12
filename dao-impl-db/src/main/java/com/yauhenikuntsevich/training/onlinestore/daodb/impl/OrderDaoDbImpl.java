@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,13 +14,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
-import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.AdministratorMapper;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.OrderMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 
 @Repository
-public class OrderDaoImpl implements EntityDao<Order> {
+public class OrderDaoDbImpl implements EntityDao<Order> {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;
