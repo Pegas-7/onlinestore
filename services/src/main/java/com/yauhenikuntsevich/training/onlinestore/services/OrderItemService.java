@@ -11,7 +11,8 @@ public interface OrderItemService {
 
 	@Transactional
 	List<OrderItem> saveAll(List<OrderItem> orderItems);
-
+	
+	@Transactional
 	Long save(OrderItem orderItem);
 
 	OrderItem get(Long id);

@@ -8,14 +8,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.services.caching.AdministratorCaching;
-import com.yauhenikuntsevich.training.onlinestore.services.util.MyLogger;
 
 @Service
 public class ExternalizableCacheAdministrator {
-	private final static String FILENAME = "tempFileCacheAdministrator.tmp";
+	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheAdministrator.class);
+	private static final String FILENAME = "tempFileCacheAdministrator.tmp";
 
 	public static AdministratorCaching createInstanceAdministratorCaching() {
 		try {
@@ -33,7 +35,7 @@ public class ExternalizableCacheAdministrator {
 			out.flush();
 			out.close();
 
-			MyLogger.LOGGER.debug("Write in file AdministratorCaching is done!");
+			LOGGER.debug("Write in file AdministratorCaching is done!");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -49,8 +51,7 @@ public class ExternalizableCacheAdministrator {
 			fis.close();
 			in.close();
 			deleteFile();
-			MyLogger.LOGGER
-					.debug("Read from file AdministratorCaching is done, temporary file " + FILENAME + " was deleted!");
+			LOGGER.debug("Read from file AdministratorCaching is done, temporary file " + FILENAME + " was deleted!");
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		} catch (IOException e) {

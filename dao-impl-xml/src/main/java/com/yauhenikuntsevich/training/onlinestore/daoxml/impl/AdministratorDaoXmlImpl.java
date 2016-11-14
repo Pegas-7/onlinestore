@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
+import com.yauhenikuntsevich.training.onlinestore.daoxml.exception.XmlFileNotFoundedException;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 
 @Repository
@@ -22,7 +23,7 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 	private void intialize() throws IOException {
 		xstream.alias(Administrator.class.getSimpleName(), Administrator.class);
 		file = new File(basePath + "/" + Administrator.class.getSimpleName() + "DataStorage.xml");
-		
+
 		if (!file.exists()) {
 			file.createNewFile();
 			xstream.toXML(new ArrayList<>(), new FileOutputStream(file));
@@ -65,14 +66,13 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 	public void delete(Long id) {
 		List<Administrator> allAdministrators = readCollection();
 
-		List<Administrator> newList = new ArrayList<>();
-		// TODO: don't iterate whole collection
-		for (Administrator administrator : allAdministrators) {
-			if (!administrator.getId().equals(id)) {
-				newList.add(administrator);
+		for (int i = 0; i < allAdministrators.size(); i++) {
+			if (allAdministrators.get(i).getId().equals(id)) {
+				allAdministrators.remove(i);
+				break;
 			}
 		}
-		writeCollection(newList);
+		writeCollection(allAdministrators);
 	}
 
 	public List<Administrator> getAll() {
@@ -87,7 +87,7 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 		try {
 			xstream.toXML(newList, new FileOutputStream(file));
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);// TODO custom exception
+			throw new XmlFileNotFoundedException();
 		}
 	}
 
