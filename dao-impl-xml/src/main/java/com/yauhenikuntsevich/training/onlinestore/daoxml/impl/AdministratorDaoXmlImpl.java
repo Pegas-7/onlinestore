@@ -9,10 +9,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import com.thoughtworks.xstream.XStream;
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
@@ -20,19 +18,11 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 @Repository
 public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<Administrator> {
 
-	protected XStream xstream;
-	protected File file;
-
-	@Value("${basePath}")
-	private String basePath;
-
 	@PostConstruct
 	private void intialize() throws IOException {
-		// TODO move to the parent class
-		// TODO refactoring: use classname instead of hardcoded filename
-		xstream = new XStream();
-
-		file = new File(basePath + "/" + AdministratorDaoXmlImpl.class.getSimpleName() + ".xml");
+		xstream.alias(Administrator.class.getSimpleName(), Administrator.class);
+		file = new File(basePath + "/" + Administrator.class.getSimpleName() + "DataStorage.xml");
+		
 		if (!file.exists()) {
 			file.createNewFile();
 			xstream.toXML(new ArrayList<>(), new FileOutputStream(file));
@@ -53,11 +43,8 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 	public Long add(Administrator administrator) {
 		List<Administrator> allAdministrators = readCollection();
 		Long id = getNextId(allAdministrators);
-
 		administrator.setId(id);
-
 		allAdministrators.add(administrator);
-
 		writeCollection(allAdministrators);
 		return id;
 	}
@@ -89,7 +76,7 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 	}
 
 	public List<Administrator> getAll() {
-		return readCollection();
+		return (List<Administrator>) readCollection();
 	}
 
 	private List<Administrator> readCollection() {

@@ -28,6 +28,7 @@ public class AdministratorServiceImplTest {
 
 	Administrator administrator1;
 	Administrator administrator2;
+	Administrator administrator3;
 	Long id1;
 	Long id2;
 
@@ -41,14 +42,18 @@ public class AdministratorServiceImplTest {
 		administrator2.setFirstName("FirstNameAdministrator2");
 		administrator2.setLastName("LastNameAdministrator2");
 
+		administrator3 = new Administrator();
+		administrator3.setFirstName("FirstNameAdministrator3");
+		administrator3.setLastName("LastNameAdministrator3");
+
 		id1 = administratorDao.add(administrator1);
 		id2 = administratorDao.add(administrator2);
 	}
 
 	@After
 	public void afterTest() {
-		administratorDao.delete(id1);
-		administratorDao.delete(id2);
+		administratorServiceImpl.delete(id1);
+		administratorServiceImpl.delete(id2);
 	}
 
 	@Test
@@ -81,62 +86,63 @@ public class AdministratorServiceImplTest {
 
 	@Test
 	public void saveTest() {
-		administrator1.setId(id1);
+		administrator3.setId(id1);
 
 		administratorDao.delete(id2);
 
-		Long id1Resave = administratorServiceImpl.save(administrator1);
+		Long id1Updated = administratorServiceImpl.save(administrator3);
 		id2 = administratorServiceImpl.save(administrator2);
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
-		Administrator administratorFromDb1Resave = administratorServiceImpl.get(id1Resave);
+		Administrator administratorFromDb1 = administratorServiceImpl.get(id1Updated);
 		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
 
-		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1Resave.getFirstName());
-		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1Resave.getLastName());
+		Assert.assertEquals(administrator3.getFirstName(), administratorFromDb1.getFirstName());
+		Assert.assertEquals(administrator3.getLastName(), administratorFromDb1.getLastName());
 		Assert.assertEquals(administrator2.getFirstName(), administratorFromDb2.getFirstName());
 		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
 	}
 
 	@Test
 	public void saveAllTest() {
-		administrator1.setId(id1);
+		administrator3.setId(id1);
 
 		List<Administrator> administrators1 = new LinkedList<>();
-		administrators1.add(administrator1);
+		administrators1.add(administrator3);
 		administrators1.add(administrator2);
 
 		// liberation variable
 		administratorDao.delete(id2);
+		administrator2.setId(null);
 
 		int amountRowBeforeSaving = administratorDao.getAll().size();
 
 		List<Administrator> administrators = administratorServiceImpl.saveAll(administrators1);
 
-		Long id1Resave = administrators.get(0).getId();
+		Long id1Updated = administrators.get(0).getId();
 		id2 = administrators.get(1).getId();
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
 		int amountRowAfterSaving = administratorDao.getAll().size();
 
 		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
 
-		Administrator administratorFromDb1 = administratorServiceImpl.get(id1Resave);
+		Administrator administratorFromDb1 = administratorServiceImpl.get(id1Updated);
 		Administrator administratorFromDb2 = administratorServiceImpl.get(id2);
 
-		Assert.assertEquals(administrator1.getFirstName(), administratorFromDb1.getFirstName());
-		Assert.assertEquals(administrator1.getLastName(), administratorFromDb1.getLastName());
+		Assert.assertEquals(administrator3.getFirstName(), administratorFromDb1.getFirstName());
+		Assert.assertEquals(administrator3.getLastName(), administratorFromDb1.getLastName());
 		Assert.assertEquals(administrator2.getFirstName(), administratorFromDb2.getFirstName());
 		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
 
 		// liberation variable
-		administratorDao.delete(id1Resave);
+		administratorDao.delete(id1Updated);
 	}
 
 	@Test

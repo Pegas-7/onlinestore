@@ -33,4 +33,17 @@
 
 	<context:property-placeholder
 		ignore-unresolvable="true" location="classpath:db.properties" />
+
+	<bean id="categoryDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.CategoryDaoDbImpl"></bean>
+	<bean id="administratorDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.AdministratorDaoDbImpl"></bean>
+	<bean id="clientDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ClientDaoDbImpl"></bean>
+	<bean id="productDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.ProductDaoDbImpl"></bean>
+	<bean id="orderDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.OrderDaoDbImpl"></bean>
+	<bean id="orderItemDao"
+		class="com.yauhenikuntsevich.training.onlinestore.daodb.impl.OrderItemDaoDbImpl"></bean>
 </beans>
