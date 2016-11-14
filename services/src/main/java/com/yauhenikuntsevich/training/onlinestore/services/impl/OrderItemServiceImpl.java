@@ -17,6 +17,8 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 	@Inject
 	private EntityDao<OrderItem> orderItemDao;
+	@Inject
+	private EntityDao<Product> productDao;
 
 	@Override
 	public List<OrderItem> saveAll(List<OrderItem> orderItems) {
@@ -33,6 +35,8 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 	@Override
 	public Long save(OrderItem orderItem) {
+		subtractionQuantity(orderItem);
+
 		if (orderItem.getId() == null) {
 			return orderItemDao.add(orderItem);
 		} else {
@@ -69,5 +73,17 @@ public class OrderItemServiceImpl implements OrderItemService {
 		}
 
 		return productsForReturn;
+	}
+	
+	public void subtractionQuantity(OrderItem orderItem) {
+		Long idProduct = orderItem.getProduct().getId();
+		Product product = productDao.get(idProduct);
+
+		Integer quantityContainsProduct = product.getQuantity();
+		Integer quantityContainsOrderItem = orderItem.getQuantity();
+
+		Integer diffQauntity = quantityContainsProduct - quantityContainsOrderItem;
+		product.setQuantity(diffQauntity);
+		productDao.update(product);
 	}
 }
