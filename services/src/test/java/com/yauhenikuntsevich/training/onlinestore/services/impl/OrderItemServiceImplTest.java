@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,6 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
+import com.yauhenikuntsevich.training.onlinestore.exception.NotEnoughQuantityProductException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/resources/service-context.xml" })
@@ -52,12 +52,12 @@ public class OrderItemServiceImplTest {
 		order2.setId(2L);
 
 		Product product2 = new Product();
-		product2.setId(2L);
+		product2.setId(8L);
 
 		orderItem2 = new OrderItem();
 		orderItem2.setOrder(order2);
 		orderItem2.setProduct(product2);
-		orderItem2.setQuantity(30);
+		orderItem2.setQuantity(2);
 
 		id1 = orderItemDao.add(orderItem1);
 		id2 = orderItemDao.add(orderItem2);
@@ -70,7 +70,6 @@ public class OrderItemServiceImplTest {
 	}
 
 	@Test
-	@Ignore
 	public void getTest() {
 		OrderItem orderItemFromDb1 = orderItemServiceImpl.get(id1);
 
@@ -80,7 +79,6 @@ public class OrderItemServiceImplTest {
 	}
 
 	@Test
-	@Ignore
 	public void getAllTest() {
 		List<OrderItem> orderItems = orderItemServiceImpl.getAll();
 
@@ -104,10 +102,11 @@ public class OrderItemServiceImplTest {
 	}
 
 	@Test
-	@Ignore
 	public void saveTest() {
 		orderItem1.setId(id1);
 
+		// get product for recovery bd
+		Product product3 = productDao.get(orderItem2.getProduct().getId());
 		orderItemDao.delete(id2);
 
 		Long id1Resave = orderItemServiceImpl.save(orderItem1);
@@ -127,16 +126,20 @@ public class OrderItemServiceImplTest {
 		Assert.assertEquals(orderItem2.getOrder().getId(), orderItemFromDb2.getOrder().getId());
 		Assert.assertEquals(orderItem2.getProduct().getId(), orderItemFromDb2.getProduct().getId());
 		Assert.assertEquals(orderItem2.getQuantity(), orderItemFromDb2.getQuantity());
+
+		productDao.update(product3);
 	}
 
 	@Test
-	@Ignore
 	public void saveAllTest() {
 		orderItem1.setId(id1);
 
 		List<OrderItem> orderItems1 = new LinkedList<>();
 		orderItems1.add(orderItem1);
 		orderItems1.add(orderItem2);
+
+		// get product for recovery bd
+		Product product3 = productDao.get(orderItem2.getProduct().getId());
 
 		// liberation variable
 		orderItemDao.delete(id2);
@@ -169,10 +172,10 @@ public class OrderItemServiceImplTest {
 
 		// liberation variable
 		orderItemDao.delete(id1Resave);
+		productDao.update(product3);
 	}
 
 	@Test
-	@Ignore
 	public void deleteTest() {
 		int amountRowBeforeSaving = orderItemDao.getAll().size();
 
@@ -185,7 +188,6 @@ public class OrderItemServiceImplTest {
 	}
 
 	@Test
-	@Ignore
 	public void getProductsOneOrderTest() {
 		List<Product> products = orderItemServiceImpl.getProductsOneOrder(1L);
 
@@ -202,13 +204,34 @@ public class OrderItemServiceImplTest {
 	public void subtractionQuantityTest() {
 		Product productBefore = productDao.get(orderItem1.getProduct().getId());
 		Integer quantityProductBefore = productBefore.getQuantity();
-		orderItemServiceImpl.subtractionQuantity(orderItem1);
+		orderItemServiceImpl.subtractionQuantityForAdd(orderItem1);
 		Product productAfter = productDao.get(orderItem1.getProduct().getId());
 		Integer quantityProductAfter = productAfter.getQuantity();
 
 		Assert.assertTrue(quantityProductBefore == quantityProductAfter + orderItem1.getQuantity());
-		
+
 		productAfter.setQuantity(quantityProductBefore);
 		productDao.update(productAfter);
+	}
+
+	@Test
+	public void substractionQuantityForUpdateTest() {
+		Product productBefore = productDao.get(orderItem1.getProduct().getId());
+		Integer quantityProductBefore = productBefore.getQuantity();
+		orderItem1.setId(7L);
+		orderItemServiceImpl.substractionQuantityForUpdate(orderItem1);
+		Product productAfter = productDao.get(orderItem1.getProduct().getId());
+		Integer quantityProductAfter = productAfter.getQuantity();
+
+		Assert.assertTrue(quantityProductBefore == quantityProductAfter
+				+ (orderItemServiceImpl.get(orderItem1.getId()).getQuantity() - orderItem1.getQuantity()));
+
+		productAfter.setQuantity(quantityProductBefore);
+		productDao.update(productAfter);
+	}
+
+	@Test(expected = NotEnoughQuantityProductException.class)
+	public void checkQuantityTest() {
+		orderItemServiceImpl.checkQuantity(5, 6);
 	}
 }

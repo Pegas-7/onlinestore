@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
+import com.yauhenikuntsevich.training.onlinestore.exception.NotEnoughQuantityProductException;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
 
 @Service
@@ -35,11 +36,13 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 	@Override
 	public Long save(OrderItem orderItem) {
-		subtractionQuantity(orderItem);
-
 		if (orderItem.getId() == null) {
+			subtractionQuantityForAdd(orderItem);
+
 			return orderItemDao.add(orderItem);
 		} else {
+			substractionQuantityForUpdate(orderItem);
+
 			orderItemDao.update(orderItem);
 			return orderItem.getId();
 		}
@@ -74,16 +77,43 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 		return productsForReturn;
 	}
-	
-	public void subtractionQuantity(OrderItem orderItem) {
+
+	protected void subtractionQuantityForAdd(OrderItem orderItem) {
+
 		Long idProduct = orderItem.getProduct().getId();
 		Product product = productDao.get(idProduct);
 
 		Integer quantityContainsProduct = product.getQuantity();
 		Integer quantityContainsOrderItem = orderItem.getQuantity();
 
+		checkQuantity(quantityContainsProduct, quantityContainsOrderItem);
+
 		Integer diffQauntity = quantityContainsProduct - quantityContainsOrderItem;
 		product.setQuantity(diffQauntity);
 		productDao.update(product);
+	}
+
+	protected void substractionQuantityForUpdate(OrderItem orderItem) {
+		Long idProduct = orderItem.getProduct().getId();
+		Product product = productDao.get(idProduct);
+
+		OrderItem orderItemFromDb = orderItemDao.get(orderItem.getId());
+
+		Integer quantityContainsOrderItemFromDb = orderItemFromDb.getQuantity();
+		Integer quantityContainsProduct = product.getQuantity();
+		Integer quantityContainsOrderItem = orderItem.getQuantity();
+
+		Integer addedProduct = quantityContainsOrderItem - quantityContainsOrderItemFromDb;
+		checkQuantity(quantityContainsProduct, addedProduct);
+		Integer updatedProductQuantity = quantityContainsProduct + addedProduct;
+
+		product.setQuantity(updatedProductQuantity);
+		productDao.update(product);
+	}
+
+	protected void checkQuantity(Integer quantityProduct, Integer quantityOrderItem) {
+		if (quantityProduct - quantityOrderItem < 0) {
+			throw new NotEnoughQuantityProductException();
+		}
 	}
 }
