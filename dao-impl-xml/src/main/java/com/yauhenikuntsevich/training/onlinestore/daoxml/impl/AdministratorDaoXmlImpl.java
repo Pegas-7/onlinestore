@@ -50,13 +50,14 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 		return id;
 	}
 
-	public void update(Administrator entity) {
+	public void update(Administrator administrator) {
 		List<Administrator> allAdministrators = readCollection();
 
 		for (Administrator administrator2 : allAdministrators) {
-			if (administrator2.getId().equals(entity.getId())) {
-				administrator2.setFirstName(entity.getFirstName());
-				administrator2.setLastName(entity.getLastName());
+			if (administrator2.getId().equals(administrator.getId())) {
+				administrator2.setFirstName(administrator.getFirstName());
+				administrator2.setLastName(administrator.getLastName());
+				break;
 			}
 		}
 

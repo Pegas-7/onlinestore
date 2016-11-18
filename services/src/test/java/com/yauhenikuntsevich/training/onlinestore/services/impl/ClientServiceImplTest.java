@@ -28,6 +28,7 @@ public class ClientServiceImplTest {
 
 	Client client1;
 	Client client2;
+	Client client3;
 	Long id1;
 	Long id2;
 
@@ -45,14 +46,20 @@ public class ClientServiceImplTest {
 		client2.setAge(76);
 		client2.setBlacklisted(false);
 
+		client3 = new Client();
+		client3.setFirstName("FirstNameClient3");
+		client3.setLastName("LastNameClient3");
+		client3.setAge(35);
+		client3.setBlacklisted(false);
+
 		id1 = clientDao.add(client1);
 		id2 = clientDao.add(client2);
 	}
 
 	@After
 	public void afterTest() {
-		clientDao.delete(id1);
-		clientDao.delete(id2);
+		clientServiceImpl.delete(id1);
+		clientServiceImpl.delete(id2);
 	}
 
 	@Test
@@ -92,24 +99,26 @@ public class ClientServiceImplTest {
 
 	@Test
 	public void saveTest() {
-		client1.setId(id1);
+		client3.setId(id1);
 
+		// liberation variable
 		clientDao.delete(id2);
+		client2.setId(null);
 
-		Long id1Resave = clientServiceImpl.save(client1);
+		Long id1Updated = clientServiceImpl.save(client3);
 		id2 = clientServiceImpl.save(client2);
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
-		Client clientFromDb1Resave = clientServiceImpl.get(id1Resave);
+		Client clientFromDb1 = clientServiceImpl.get(id1Updated);
 		Client clientFromDb2 = clientServiceImpl.get(id2);
 
-		Assert.assertEquals(client1.getFirstName(), clientFromDb1Resave.getFirstName());
-		Assert.assertEquals(client1.getLastName(), clientFromDb1Resave.getLastName());
-		Assert.assertEquals(client1.getAge(), clientFromDb1Resave.getAge());
-		Assert.assertEquals(client1.getBlacklisted(), clientFromDb1Resave.getBlacklisted());
+		Assert.assertEquals(client3.getFirstName(), clientFromDb1.getFirstName());
+		Assert.assertEquals(client3.getLastName(), clientFromDb1.getLastName());
+		Assert.assertEquals(client3.getAge(), clientFromDb1.getAge());
+		Assert.assertEquals(client3.getBlacklisted(), clientFromDb1.getBlacklisted());
 
 		Assert.assertEquals(client2.getFirstName(), clientFromDb2.getFirstName());
 		Assert.assertEquals(client2.getLastName(), clientFromDb2.getLastName());
@@ -119,33 +128,34 @@ public class ClientServiceImplTest {
 
 	@Test
 	public void saveAllTest() {
-		client1.setId(id1);
+		client3.setId(id1);
 
 		List<Client> clients1 = new LinkedList<>();
-		clients1.add(client1);
+		clients1.add(client3);
 		clients1.add(client2);
 
 		// liberation variable
 		clientDao.delete(id2);
+		client2.setId(null);
 
 		int amountRowBeforeSaving = clientDao.getAll().size();
 
 		List<Client> clients = clientServiceImpl.saveAll(clients1);
 
-		Long id1Resave = clients.get(0).getId();
+		Long id1Updated = clients.get(0).getId();
 		id2 = clients.get(1).getId();
 
 		int amountRowAfterSaving = clientDao.getAll().size();
 
 		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
 
-		Client clientFromDb1Resave = clientServiceImpl.get(id1Resave);
+		Client clientFromDb1 = clientServiceImpl.get(id1Updated);
 		Client clientFromDb2 = clientServiceImpl.get(id2);
 
-		Assert.assertEquals(client1.getFirstName(), clientFromDb1Resave.getFirstName());
-		Assert.assertEquals(client1.getLastName(), clientFromDb1Resave.getLastName());
-		Assert.assertEquals(client1.getAge(), clientFromDb1Resave.getAge());
-		Assert.assertEquals(client1.getBlacklisted(), clientFromDb1Resave.getBlacklisted());
+		Assert.assertEquals(client3.getFirstName(), clientFromDb1.getFirstName());
+		Assert.assertEquals(client3.getLastName(), clientFromDb1.getLastName());
+		Assert.assertEquals(client3.getAge(), clientFromDb1.getAge());
+		Assert.assertEquals(client3.getBlacklisted(), clientFromDb1.getBlacklisted());
 
 		Assert.assertEquals(client2.getFirstName(), clientFromDb2.getFirstName());
 		Assert.assertEquals(client2.getLastName(), clientFromDb2.getLastName());
@@ -153,7 +163,7 @@ public class ClientServiceImplTest {
 		Assert.assertEquals(client2.getBlacklisted(), clientFromDb2.getBlacklisted());
 
 		// liberation variable
-		clientDao.delete(id1Resave);
+		clientDao.delete(id1Updated);
 	}
 
 	@Test

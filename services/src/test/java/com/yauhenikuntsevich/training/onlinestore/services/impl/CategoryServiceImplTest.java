@@ -28,6 +28,7 @@ public class CategoryServiceImplTest {
 
 	Category category1;
 	Category category2;
+	Category category3;
 	Long id1;
 	Long id2;
 
@@ -38,6 +39,9 @@ public class CategoryServiceImplTest {
 
 		category2 = new Category();
 		category2.setItem("SecondItem");
+		
+		category3 = new Category();
+		category3.setItem("ThirdItem");
 
 		id1 = categoryDao.add(category1);
 		id2 = categoryDao.add(category2);
@@ -45,8 +49,8 @@ public class CategoryServiceImplTest {
 
 	@After
 	public void afterTest() {
-		categoryDao.delete(id1);
-		categoryDao.delete(id2);
+		categoryServiceImpl.delete(id1);
+		categoryServiceImpl.delete(id2);
 	}
 
 	@Test
@@ -76,58 +80,61 @@ public class CategoryServiceImplTest {
 
 	@Test
 	public void saveTest() {
-		category1.setId(id1);
+		category3.setId(id1);
 
+		// liberation variable
 		categoryDao.delete(id2);
+		category2.setId(null);
 
-		Long id1Resave = categoryServiceImpl.save(category1);
+		Long id1Updated = categoryServiceImpl.save(category3);
 		id2 = categoryServiceImpl.save(category2);
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
-		Category categoryFromDb1Resave = categoryServiceImpl.get(id1Resave);
+		Category categoryFromDb1 = categoryServiceImpl.get(id1Updated);
 		Category categoryFromDb2 = categoryServiceImpl.get(id2);
 
-		Assert.assertEquals(category1.getItem(), categoryFromDb1Resave.getItem());
+		Assert.assertEquals(category3.getItem(), categoryFromDb1.getItem());
 		Assert.assertEquals(category2.getItem(), categoryFromDb2.getItem());
 	}
 
 	@Test
 	public void saveAllTest() {
-		category1.setId(id1);
+		category3.setId(id1);
 
 		List<Category> categories1 = new LinkedList<>();
-		categories1.add(category1);
+		categories1.add(category3);
 		categories1.add(category2);
 
 		// liberation variable
 		categoryDao.delete(id2);
+		category2.setId(null);
 
 		int amountRowBeforeSaving = categoryDao.getAll().size();
 
-		List<Category> categories2 = categoryServiceImpl.saveAll(categories1);
+		List<Category> categories = categoryServiceImpl.saveAll(categories1);
 
-		Long id1Resave = categories2.get(0).getId();
-		id2 = categories2.get(1).getId();
+		Long id1Updated = categories.get(0).getId();
+		id2 = categories.get(1).getId();
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
 		int amountRowAfterSaving = categoryDao.getAll().size();
 
 		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
 
-		Category categoryFromDb1Resave = categoryServiceImpl.get(id1Resave);
+		Category categoryFromDb1 = categoryServiceImpl.get(id1Updated);
 		Category categoryFromDb2 = categoryServiceImpl.get(id2);
 
-		Assert.assertEquals(category1.getItem(), categoryFromDb1Resave.getItem());
+		Assert.assertEquals(category3.getItem(), categoryFromDb1.getItem());
 		Assert.assertEquals(category2.getItem(), categoryFromDb2.getItem());
 
 		// liberation variable
-		categoryDao.delete(id1Resave);
+		categoryDao.delete(id1Updated);
 	}
 
 	@Test

@@ -28,6 +28,7 @@ public class ProductServiceImplTest {
 
 	Product product1;
 	Product product2;
+	Product product3;
 	Long id1;
 	Long id2;
 
@@ -51,14 +52,23 @@ public class ProductServiceImplTest {
 		product2.setPrice(200.0);
 		product2.setQuantity(12);
 
+		Category category3 = new Category();
+		category3.setId(3L);
+
+		product3 = new Product();
+		product3.setName("Product3");
+		product3.setCategory(category3);
+		product3.setPrice(128.4);
+		product3.setQuantity(24);
+
 		id1 = productDao.add(product1);
 		id2 = productDao.add(product2);
 	}
 
 	@After
 	public void afterTest() {
-		productDao.delete(id1);
-		productDao.delete(id2);
+		productServiceImpl.delete(id1);
+		productServiceImpl.delete(id2);
 	}
 
 	@Test
@@ -98,24 +108,26 @@ public class ProductServiceImplTest {
 
 	@Test
 	public void saveTest() {
-		product1.setId(id1);
+		product3.setId(id1);
 
+		// liberation variable
 		productDao.delete(id2);
+		product2.setId(null);
 
-		Long id1Resave = productServiceImpl.save(product1);
+		Long id1Updated = productServiceImpl.save(product3);
 		id2 = productServiceImpl.save(product2);
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
-		Product productFromDb1Resave = productServiceImpl.get(id1Resave);
+		Product productFromDb1 = productServiceImpl.get(id1Updated);
 		Product productFromDb2 = productServiceImpl.get(id2);
 
-		Assert.assertEquals(product1.getName(), productFromDb1Resave.getName());
-		Assert.assertEquals(product1.getCategory().getId(), productFromDb1Resave.getCategory().getId());
-		Assert.assertEquals(product1.getPrice(), productFromDb1Resave.getPrice());
-		Assert.assertEquals(product1.getQuantity(), productFromDb1Resave.getQuantity());
+		Assert.assertEquals(product3.getName(), productFromDb1.getName());
+		Assert.assertEquals(product3.getCategory().getId(), productFromDb1.getCategory().getId());
+		Assert.assertEquals(product3.getPrice(), productFromDb1.getPrice());
+		Assert.assertEquals(product3.getQuantity(), productFromDb1.getQuantity());
 
 		Assert.assertEquals(product2.getName(), productFromDb2.getName());
 		Assert.assertEquals(product2.getCategory().getId(), productFromDb2.getCategory().getId());
@@ -125,37 +137,38 @@ public class ProductServiceImplTest {
 
 	@Test
 	public void saveAllTest() {
-		product1.setId(id1);
+		product3.setId(id1);
 
 		List<Product> products1 = new LinkedList<>();
-		products1.add(product1);
+		products1.add(product3);
 		products1.add(product2);
 
 		// liberation variable
 		productDao.delete(id2);
+		product2.setId(null);
 
 		int amountRowBeforeSaving = productDao.getAll().size();
 
 		List<Product> products = productServiceImpl.saveAll(products1);
 
-		Long id1Resave = products.get(0).getId();
+		Long id1Updated = products.get(0).getId();
 		id2 = products.get(1).getId();
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
 		int amountRowAfterSaving = productDao.getAll().size();
 
 		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
 
-		Product productFromDb1Resave = productServiceImpl.get(id1Resave);
+		Product productFromDb1 = productServiceImpl.get(id1Updated);
 		Product productFromDb2 = productServiceImpl.get(id2);
 
-		Assert.assertEquals(product1.getName(), productFromDb1Resave.getName());
-		Assert.assertEquals(product1.getCategory().getId(), productFromDb1Resave.getCategory().getId());
-		Assert.assertEquals(product1.getPrice(), productFromDb1Resave.getPrice());
-		Assert.assertEquals(product1.getQuantity(), productFromDb1Resave.getQuantity());
+		Assert.assertEquals(product3.getName(), productFromDb1.getName());
+		Assert.assertEquals(product3.getCategory().getId(), productFromDb1.getCategory().getId());
+		Assert.assertEquals(product3.getPrice(), productFromDb1.getPrice());
+		Assert.assertEquals(product3.getQuantity(), productFromDb1.getQuantity());
 
 		Assert.assertEquals(product2.getName(), productFromDb2.getName());
 		Assert.assertEquals(product2.getCategory().getId(), productFromDb2.getCategory().getId());
@@ -163,7 +176,7 @@ public class ProductServiceImplTest {
 		Assert.assertEquals(product2.getQuantity(), productFromDb2.getQuantity());
 
 		// liberation variable
-		productDao.delete(id1Resave);
+		productDao.delete(id1Updated);
 	}
 
 	@Test

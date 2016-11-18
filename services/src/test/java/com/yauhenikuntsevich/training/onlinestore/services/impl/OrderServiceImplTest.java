@@ -18,7 +18,6 @@ import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
-import com.yauhenikuntsevich.training.onlinestore.services.util.MyLogger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/resources/service-context.xml" })
@@ -217,7 +216,6 @@ public class OrderServiceImplTest {
 		Assert.assertFalse(orders.isEmpty());
 
 		for (Order order : orders) {
-			MyLogger.LOGGER.info("Date expected: " + order.getDateOrder() + "Date actual: " + order.getDateOrder());
 			Assert.assertEquals(order1.getDateOrder(), order.getDateOrder());
 		}
 	}

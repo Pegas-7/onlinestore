@@ -88,7 +88,9 @@ public class AdministratorServiceImplTest {
 	public void saveTest() {
 		administrator3.setId(id1);
 
+		// liberation variable
 		administratorDao.delete(id2);
+		administrator2.setId(null);
 
 		Long id1Updated = administratorServiceImpl.save(administrator3);
 		id2 = administratorServiceImpl.save(administrator2);

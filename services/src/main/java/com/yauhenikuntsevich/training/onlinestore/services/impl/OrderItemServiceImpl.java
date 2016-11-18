@@ -105,7 +105,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 		Integer addedProduct = quantityContainsOrderItem - quantityContainsOrderItemFromDb;
 		checkQuantity(quantityContainsProduct, addedProduct);
-		Integer updatedProductQuantity = quantityContainsProduct + addedProduct;
+		Integer updatedProductQuantity = quantityContainsProduct - addedProduct;
 
 		product.setQuantity(updatedProductQuantity);
 		productDao.update(product);
