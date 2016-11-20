@@ -30,6 +30,7 @@ public class OrderServiceImplTest {
 
 	Order order1;
 	Order order2;
+	Order order3;
 	Long id1;
 	Long id2;
 
@@ -39,25 +40,37 @@ public class OrderServiceImplTest {
 		administrator1.setId(1L);
 
 		Client client1 = new Client();
-		client1.setId(2L);
+		client1.setId(1L);
 
 		order1 = new Order();
 		order1.setAdministrator(administrator1);
 		order1.setClient(client1);
 		order1.setDateOrder(Date.valueOf("2016-11-01"));
-		order1.setPriceAllPurchases(500);
+		order1.setPriceAllPurchases(500.0);
 
 		Administrator administrator2 = new Administrator();
 		administrator2.setId(2L);
 
 		Client client2 = new Client();
-		client2.setId(5L);
+		client2.setId(2L);
 
 		order2 = new Order();
 		order2.setAdministrator(administrator2);
 		order2.setClient(client2);
 		order2.setDateOrder(Date.valueOf("2015-11-01"));
-		order2.setPriceAllPurchases(1000);
+		order2.setPriceAllPurchases(1000.0);
+
+		Administrator administrator3 = new Administrator();
+		administrator3.setId(2L);
+
+		Client client3 = new Client();
+		client3.setId(3L);
+
+		order3 = new Order();
+		order3.setAdministrator(administrator3);
+		order3.setClient(client3);
+		order3.setDateOrder(Date.valueOf("2013-12-17"));
+		order3.setPriceAllPurchases(768.0);
 
 		id1 = orderDao.add(order1);
 		id2 = orderDao.add(order2);
@@ -65,8 +78,8 @@ public class OrderServiceImplTest {
 
 	@After
 	public void afterTest() {
-		orderDao.delete(id1);
-		orderDao.delete(id2);
+		orderServiceImpl.delete(id1);
+		orderServiceImpl.delete(id2);
 	}
 
 	@Test
@@ -106,24 +119,26 @@ public class OrderServiceImplTest {
 
 	@Test
 	public void saveTest() {
-		order1.setId(id1);
+		order3.setId(id1);
 
+		// liberation variable
 		orderDao.delete(id2);
+		order2.setId(null);
 
-		Long id1Resave = orderServiceImpl.save(order1);
+		Long id1Updated = orderServiceImpl.save(order3);
 		id2 = orderServiceImpl.save(order2);
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
-		Order orderFromDb1Resave = orderServiceImpl.get(id1Resave);
+		Order orderFromDb1 = orderServiceImpl.get(id1Updated);
 		Order orderFromDb2 = orderServiceImpl.get(id2);
 
-		Assert.assertEquals(order1.getAdministrator().getId(), orderFromDb1Resave.getAdministrator().getId());
-		Assert.assertEquals(order1.getClient().getId(), orderFromDb1Resave.getClient().getId());
-		Assert.assertEquals(order1.getDateOrder(), orderFromDb1Resave.getDateOrder());
-		Assert.assertEquals(order1.getPriceAllPurchases(), orderFromDb1Resave.getPriceAllPurchases());
+		Assert.assertEquals(order3.getAdministrator().getId(), orderFromDb1.getAdministrator().getId());
+		Assert.assertEquals(order3.getClient().getId(), orderFromDb1.getClient().getId());
+		Assert.assertEquals(order3.getDateOrder(), orderFromDb1.getDateOrder());
+		Assert.assertEquals(order3.getPriceAllPurchases(), orderFromDb1.getPriceAllPurchases());
 
 		Assert.assertEquals(order2.getAdministrator().getId(), orderFromDb2.getAdministrator().getId());
 		Assert.assertEquals(order2.getClient().getId(), orderFromDb2.getClient().getId());
@@ -133,37 +148,38 @@ public class OrderServiceImplTest {
 
 	@Test
 	public void saveAllTest() {
-		order1.setId(id1);
+		order3.setId(id1);
 
 		List<Order> orders1 = new LinkedList<>();
-		orders1.add(order1);
+		orders1.add(order3);
 		orders1.add(order2);
 
 		// liberation variable
 		orderDao.delete(id2);
+		order2.setId(null);
 
 		int amountRowBeforeSaving = orderDao.getAll().size();
 
 		List<Order> orders = orderServiceImpl.saveAll(orders1);
 
-		Long id1Resave = orders.get(0).getId();
+		Long id1Updated = orders.get(0).getId();
 		id2 = orders.get(1).getId();
 
-		Assert.assertEquals(id1, id1Resave);
-		Assert.assertNotNull(id1Resave);
+		Assert.assertEquals(id1, id1Updated);
+		Assert.assertNotNull(id1Updated);
 		Assert.assertNotNull(id2);
 
 		int amountRowAfterSaving = orderDao.getAll().size();
 
 		Assert.assertEquals(amountRowBeforeSaving + 1, amountRowAfterSaving);
 
-		Order orderFromDb1Resave = orderServiceImpl.get(id1Resave);
+		Order orderFromDb1 = orderServiceImpl.get(id1Updated);
 		Order orderFromDb2 = orderServiceImpl.get(id2);
 
-		Assert.assertEquals(order1.getAdministrator().getId(), orderFromDb1Resave.getAdministrator().getId());
-		Assert.assertEquals(order1.getClient().getId(), orderFromDb1Resave.getClient().getId());
-		Assert.assertEquals(order1.getDateOrder(), orderFromDb1Resave.getDateOrder());
-		Assert.assertEquals(order1.getPriceAllPurchases(), orderFromDb1Resave.getPriceAllPurchases());
+		Assert.assertEquals(order3.getAdministrator().getId(), orderFromDb1.getAdministrator().getId());
+		Assert.assertEquals(order3.getClient().getId(), orderFromDb1.getClient().getId());
+		Assert.assertEquals(order3.getDateOrder(), orderFromDb1.getDateOrder());
+		Assert.assertEquals(order3.getPriceAllPurchases(), orderFromDb1.getPriceAllPurchases());
 
 		Assert.assertEquals(order2.getAdministrator().getId(), orderFromDb2.getAdministrator().getId());
 		Assert.assertEquals(order2.getClient().getId(), orderFromDb2.getClient().getId());
@@ -171,7 +187,7 @@ public class OrderServiceImplTest {
 		Assert.assertEquals(order2.getPriceAllPurchases(), orderFromDb2.getPriceAllPurchases());
 
 		// liberation variable
-		orderDao.delete(id1Resave);
+		orderDao.delete(id1Updated);
 	}
 
 	@Test
@@ -204,7 +220,7 @@ public class OrderServiceImplTest {
 		Assert.assertFalse(orders.isEmpty());
 
 		for (Order order : orders) {
-			Assert.assertEquals(order1.getClient().getId(), order.getClient().getId());
+			Assert.assertEquals(order2.getClient().getId(), order.getClient().getId());
 		}
 	}
 

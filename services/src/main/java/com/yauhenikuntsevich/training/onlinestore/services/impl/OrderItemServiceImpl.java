@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 import com.yauhenikuntsevich.training.onlinestore.exception.NotEnoughQuantityProductException;
@@ -20,6 +21,8 @@ public class OrderItemServiceImpl implements OrderItemService {
 	private EntityDao<OrderItem> orderItemDao;
 	@Inject
 	private EntityDao<Product> productDao;
+	@Inject
+	private EntityDao<Order> orderDao;
 
 	@Override
 	public List<OrderItem> saveAll(List<OrderItem> orderItems) {
@@ -37,11 +40,15 @@ public class OrderItemServiceImpl implements OrderItemService {
 	@Override
 	public Long save(OrderItem orderItem) {
 		if (orderItem.getId() == null) {
-			subtractionQuantityForAdd(orderItem);
+			subtractionQuantityFromProductAdding(orderItem);
+
+			addPriceProductsToPriceAllPurchaches(orderItem);
 
 			return orderItemDao.add(orderItem);
 		} else {
-			substractionQuantityForUpdate(orderItem);
+			substractionQuantityFromProductUpdating(orderItem);
+			
+			addPriceProductsToPriceAllPurchaches(orderItem);
 
 			orderItemDao.update(orderItem);
 			return orderItem.getId();
@@ -78,7 +85,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 		return productsForReturn;
 	}
 
-	protected void subtractionQuantityForAdd(OrderItem orderItem) {
+	protected void subtractionQuantityFromProductAdding(OrderItem orderItem) {
 
 		Long idProduct = orderItem.getProduct().getId();
 		Product product = productDao.get(idProduct);
@@ -88,12 +95,12 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 		checkQuantity(quantityContainsProduct, quantityContainsOrderItem);
 
-		Integer diffQauntity = quantityContainsProduct - quantityContainsOrderItem;
-		product.setQuantity(diffQauntity);
+		Integer diffQuantity = quantityContainsProduct - quantityContainsOrderItem;
+		product.setQuantity(diffQuantity);
 		productDao.update(product);
 	}
 
-	protected void substractionQuantityForUpdate(OrderItem orderItem) {
+	protected void substractionQuantityFromProductUpdating(OrderItem orderItem) {
 		Long idProduct = orderItem.getProduct().getId();
 		Product product = productDao.get(idProduct);
 
@@ -109,6 +116,19 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 		product.setQuantity(updatedProductQuantity);
 		productDao.update(product);
+	}
+	
+	protected void addPriceProductsToPriceAllPurchaches(OrderItem orderItem) {
+		Order order = orderDao.get(orderItem.getOrder().getId());
+		Double priceAllPurchaches = order.getPriceAllPurchases();
+		
+		Product product = orderItem.getProduct();
+		Double priceProducts = orderItem.getQuantity() * product.getPrice();
+		
+		Double priceAllPurchachesUpdated = priceAllPurchaches + priceProducts;
+		
+		order.setPriceAllPurchases(priceAllPurchachesUpdated);
+		orderDao.update(order);
 	}
 
 	protected void checkQuantity(Integer quantityProduct, Integer quantityOrderItem) {

@@ -17,7 +17,7 @@ public final class OrderMapper implements RowMapper<Order> {
 		Date dateOrder = rs.getDate("date_order");
 		Long clientId = rs.getLong("client_id");
 		Long administratorId = rs.getLong("administrator_id");
-		Integer priceAllPurchases = rs.getInt("price_all_purchases");
+		Double priceAllPurchases = rs.getDouble("price_all_purchases");
 		String firstNameClient = rs.getString("first_name_client");
 		String lastNameClient = rs.getString("last_name_client");
 		Integer age = rs.getInt("age");

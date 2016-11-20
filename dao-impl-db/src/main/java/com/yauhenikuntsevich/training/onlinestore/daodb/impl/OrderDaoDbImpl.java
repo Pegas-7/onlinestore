@@ -46,7 +46,7 @@ public class OrderDaoDbImpl implements EntityDao<Order> {
 				ps.setTimestamp(1, new Timestamp(entity.getDateOrder().getTime()));
 				ps.setLong(2, entity.getClient().getId());
 				ps.setLong(3, entity.getAdministrator().getId());
-				ps.setInt(4, entity.getPriceAllPurchases());
+				ps.setDouble(4, entity.getPriceAllPurchases());
 				return ps;
 			}
 

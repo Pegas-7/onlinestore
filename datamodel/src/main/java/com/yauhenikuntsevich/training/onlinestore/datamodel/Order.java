@@ -6,7 +6,7 @@ public class Order extends AbstractModel {
 	private Date dateOrder;
 	private Client client;
 	private Administrator administrator;
-	private Integer priceAllPurchases;
+	private Double priceAllPurchases;
 
 	public Order() {
 	}
@@ -35,11 +35,11 @@ public class Order extends AbstractModel {
 		this.administrator = administrator;
 	}
 
-	public Integer getPriceAllPurchases() {
+	public Double getPriceAllPurchases() {
 		return priceAllPurchases;
 	}
 
-	public void setPriceAllPurchases(Integer priceAllPurchases) {
+	public void setPriceAllPurchases(Double priceAllPurchases) {
 		this.priceAllPurchases = priceAllPurchases;
 	}
 }

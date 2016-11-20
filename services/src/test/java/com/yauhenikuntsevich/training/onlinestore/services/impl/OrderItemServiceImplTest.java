@@ -1,5 +1,6 @@
 package com.yauhenikuntsevich.training.onlinestore.services.impl;
 
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +15,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
@@ -27,7 +30,8 @@ public class OrderItemServiceImplTest {
 	private OrderItemServiceImpl orderItemServiceImpl;
 	@Inject
 	private EntityDao<Product> productDao;
-
+	@Inject
+	private EntityDao<Order> orderDao;
 	@Inject
 	private EntityDao<OrderItem> orderItemDao;
 
@@ -36,16 +40,31 @@ public class OrderItemServiceImplTest {
 	OrderItem orderItem3;
 	Product product1;
 	Product product2;
+	Product product3;
+	Order order1;
 	Long id1;
 	Long id2;
-	Long id1Product = 1L;
-	Long id2Product = 1L;
-	
+	Long id1Product;
+	Long id2Product;
+	Long id3Product;
+	Long id1Order;
+
 	@Before
 	public void beforeTest() {
-		Order order1 = new Order();
-		order1.setId(1L);
-		
+		Administrator administrator1 = new Administrator();
+		administrator1.setId(1L);
+
+		Client client1 = new Client();
+		client1.setId(1L);
+
+		order1 = new Order();
+		order1.setDateOrder(Date.valueOf("2015-10-09"));
+		order1.setAdministrator(administrator1);
+		order1.setClient(client1);
+		order1.setPriceAllPurchases(400.0);
+		id1Order = orderDao.add(order1);
+		order1.setId(id1Order);
+
 		Category category1 = new Category();
 		category1.setId(1L);
 
@@ -64,7 +83,7 @@ public class OrderItemServiceImplTest {
 
 		Order order2 = new Order();
 		order2.setId(2L);
-		
+
 		Category category2 = new Category();
 		category2.setId(2L);
 
@@ -80,12 +99,20 @@ public class OrderItemServiceImplTest {
 		orderItem2.setOrder(order2);
 		orderItem2.setProduct(product2);
 		orderItem2.setQuantity(2);
-		
+
 		Order order3 = new Order();
 		order3.setId(3L);
-
-		Product product3 = new Product();
-		product3.setId(2L);
+		
+		Category category3 = new Category();
+		category3.setId(3L);
+		
+		product3 = new Product();
+		product3.setQuantity(85);
+		product3.setCategory(category3);
+		product3.setName("TestNameProduct3");
+		product3.setPrice(56.7);
+		id3Product = productDao.add(product3);
+		product3.setId(id3Product);
 
 		orderItem3 = new OrderItem();
 		orderItem3.setOrder(order3);
@@ -102,6 +129,8 @@ public class OrderItemServiceImplTest {
 		orderItemServiceImpl.delete(id2);
 		productDao.delete(id1Product);
 		productDao.delete(id2Product);
+		productDao.delete(id3Product);
+		orderDao.delete(id1Order);
 	}
 
 	@Test
@@ -163,7 +192,7 @@ public class OrderItemServiceImplTest {
 		Assert.assertEquals(orderItem2.getProduct().getId(), orderItemFromDb2.getProduct().getId());
 		Assert.assertEquals(orderItem2.getQuantity(), orderItemFromDb2.getQuantity());
 
-		//recovery bd
+		// recovery bd
 		productDao.update(product3);
 	}
 
@@ -242,7 +271,7 @@ public class OrderItemServiceImplTest {
 	public void subtractionQuantityTest() {
 		Product productBefore = productDao.get(id1Product);
 		Integer quantityProductBefore = productBefore.getQuantity();
-		orderItemServiceImpl.subtractionQuantityForAdd(orderItem1);
+		orderItemServiceImpl.subtractionQuantityFromProductAdding(orderItem1);
 		Product productAfter = productDao.get(id1Product);
 		Integer quantityProductAfter = productAfter.getQuantity();
 
@@ -258,7 +287,7 @@ public class OrderItemServiceImplTest {
 		Integer quantityProductBefore = productBefore.getQuantity();
 		orderItem1.setId(id1);
 		orderItem1.setQuantity(5);
-		orderItemServiceImpl.substractionQuantityForUpdate(orderItem1);
+		orderItemServiceImpl.substractionQuantityFromProductUpdating(orderItem1);
 		Product productAfter = productDao.get(id1Product);
 		Integer quantityProductAfter = productAfter.getQuantity();
 
@@ -267,6 +296,21 @@ public class OrderItemServiceImplTest {
 
 		productAfter.setQuantity(quantityProductBefore);
 		productDao.update(productAfter);
+	}
+
+	@Test
+	public void addPriceProductsToPriceAllPurchachesTest() {
+		Order orderBefore = orderDao.get(id1Order);
+		Double priceAllPurchachesBefore = orderBefore.getPriceAllPurchases();
+
+		orderItemServiceImpl.addPriceProductsToPriceAllPurchaches(orderItem1);
+
+		Order orderAfter = orderDao.get(id1Order);
+		Double priceAllPurchachesAfter = orderAfter.getPriceAllPurchases();
+
+		Assert.assertEquals(
+				(Double) (priceAllPurchachesBefore + orderItem1.getQuantity() * orderItem1.getProduct().getPrice()),
+				priceAllPurchachesAfter);
 	}
 
 	@Test(expected = NotEnoughQuantityProductException.class)

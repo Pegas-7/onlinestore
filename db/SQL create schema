@@ -40,7 +40,7 @@ CREATE TABLE "order" (
 	"date_order" DATE NOT NULL,
 	"client_id" bigint NOT NULL,
 	"administrator_id" bigint NOT NULL,
-	"price_all_purchases" bigint NOT NULL,
+	"price_all_purchases" double precision NOT NULL,
 	CONSTRAINT order_pk PRIMARY KEY ("order_id")
 ) WITH (
   OIDS=FALSE
