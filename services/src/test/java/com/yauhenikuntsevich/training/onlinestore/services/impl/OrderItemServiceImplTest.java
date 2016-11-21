@@ -42,12 +42,14 @@ public class OrderItemServiceImplTest {
 	Product product2;
 	Product product3;
 	Order order1;
+	Order order3;
 	Long id1;
 	Long id2;
 	Long id1Product;
 	Long id2Product;
 	Long id3Product;
 	Long id1Order;
+	Long id3Order;
 
 	@Before
 	public void beforeTest() {
@@ -83,7 +85,7 @@ public class OrderItemServiceImplTest {
 
 		Order order2 = new Order();
 		order2.setId(2L);
-
+		
 		Category category2 = new Category();
 		category2.setId(2L);
 
@@ -99,9 +101,20 @@ public class OrderItemServiceImplTest {
 		orderItem2.setOrder(order2);
 		orderItem2.setProduct(product2);
 		orderItem2.setQuantity(2);
+		
+		Administrator administrator3 = new Administrator();
+		administrator3.setId(1L);
+
+		Client client3 = new Client();
+		client3.setId(1L);
 
 		Order order3 = new Order();
-		order3.setId(3L);
+		order3.setDateOrder(Date.valueOf("2015-05-12"));
+		order3.setAdministrator(administrator3);
+		order3.setClient(client3);
+		order3.setPriceAllPurchases(299.0);
+		id3Order = orderDao.add(order3);
+		order3.setId(id3Order);
 		
 		Category category3 = new Category();
 		category3.setId(3L);
@@ -131,6 +144,7 @@ public class OrderItemServiceImplTest {
 		productDao.delete(id2Product);
 		productDao.delete(id3Product);
 		orderDao.delete(id1Order);
+		orderDao.delete(id3Order);
 	}
 
 	@Test
