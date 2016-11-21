@@ -5,7 +5,7 @@ import java.sql.Date;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.yauhenikuntsevich.training.onlinestore.daodb.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
@@ -67,7 +67,7 @@ public class TestAdditionalIntoDB {
 		order.setDateOrder(Date.valueOf("1999-03-15"));
 		order.setClient(client1);
 		order.setAdministrator(administrator1);
-		order.setPriceAllPurchases(67943545);
+		order.setPriceAllPurchases(67943545.9);
 
 		Long orderId = orderDao.add(order);
 		order.setId(orderId);
@@ -82,7 +82,7 @@ public class TestAdditionalIntoDB {
 		order.setDateOrder(Date.valueOf("2016-03-15"));
 		order.setClient(client1);
 		order.setAdministrator(administrator1);
-		order.setPriceAllPurchases(256);
+		order.setPriceAllPurchases(256.0);
 
 		orderDao.update(order);
 
