@@ -27,7 +27,7 @@ public class ExternalizableCacheAdministrator {
 		}
 	}
 
-	public static void writeInFileCacheAdministrator(AdministratorCaching administratorCaching) {
+	public static void writeAdministratorCacheToFile(AdministratorCaching administratorCaching) {
 		try {
 			FileOutputStream fos = new FileOutputStream(FILENAME);
 			ObjectOutputStream out = new ObjectOutputStream(fos);

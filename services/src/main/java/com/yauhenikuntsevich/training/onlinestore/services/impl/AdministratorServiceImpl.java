@@ -3,6 +3,7 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -21,10 +22,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	private AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
 			.createInstanceAdministratorCaching();
-
-	public AdministratorCaching getAdministratorCaching() {
-		return administratorCaching;
-	}
 
 	@Override
 	public List<Administrator> saveAll(List<Administrator> administrators) {
@@ -45,7 +42,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return administratorDao.add(administrator);
 		} else {
 			administratorDao.update(administrator);
-			administratorCaching.updateAdministratorInCache(administrator.getId(), administrator);
+			administratorCaching.putAdministratorInCache(administrator.getId(), administrator);
 			return administrator.getId();
 		}
 	}
@@ -74,5 +71,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 		administratorDao.delete(id);
 		administratorCaching.deleteAdministratorFromCache(id);
 		return true;
+	}
+
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheAdministrator.writeAdministratorCacheToFile(administratorCaching);
 	}
 }

@@ -56,7 +56,7 @@ public class ExternalizableCacheAdministratorTest {
 		administratorServiceImpl.get(id1);
 		administratorServiceImpl.get(id2);
 
-		ExternalizableCacheAdministrator.writeInFileCacheAdministrator(administratorCaching);
+		ExternalizableCacheAdministrator.writeAdministratorCacheToFile(administratorCaching);
 
 		AdministratorCaching administratorCachingRecreate = ExternalizableCacheAdministrator
 				.readFromFileCacheAdministrator();
@@ -78,7 +78,7 @@ public class ExternalizableCacheAdministratorTest {
 
 		administratorCaching1.setCache(hashMap);
 
-		ExternalizableCacheAdministrator.writeInFileCacheAdministrator(administratorCaching1);
+		ExternalizableCacheAdministrator.writeAdministratorCacheToFile(administratorCaching1);
 
 		AdministratorCaching newAdministratorCaching = ExternalizableCacheAdministrator
 				.readFromFileCacheAdministrator();

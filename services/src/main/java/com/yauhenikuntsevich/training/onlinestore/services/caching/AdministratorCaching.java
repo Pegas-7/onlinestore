@@ -4,8 +4,8 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -18,9 +18,9 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 public class AdministratorCaching implements Externalizable {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(AdministratorCaching.class);
-	private Long delayCacheCleanig = 10000L;
-	private Map<Long, Administrator> cache = new HashMap<>();
-	private Date dateCleaningCache = settingDateCleaningCache();
+	private Long maxSizeCache = 200L;
+	private Long minSizeCache = 100L;
+	private Map<Long, Administrator> cache = new LinkedHashMap<>();
 
 	public AdministratorCaching() {
 	}
@@ -31,13 +31,6 @@ public class AdministratorCaching implements Externalizable {
 		LOGGER.debug("Administrator with id = " + id + " was put in cache, size cache (map) = " + cache.size());
 	}
 
-	public void updateAdministratorInCache(Long id, Administrator administrator) {
-		cleanCache();
-		cache.put(id, administrator);
-
-		LOGGER.debug("Administrator with id = " + id + " was updated in cache, size cache (map) = " + cache.size());
-	}
-
 	public void deleteAdministratorFromCache(Long id) {
 		cleanCache();
 		cache.remove(id);
@@ -46,31 +39,23 @@ public class AdministratorCaching implements Externalizable {
 	}
 
 	public void cleanCache() {
-		Date date = new Date();
-
-		if (date.after(dateCleaningCache)) {
-			cache.clear();
-			settingDateCleaningCache();
-
-			LOGGER.debug("Cache was cleaning, set date next cleaning = " + dateCleaningCache + ", size cache (map) = "
-					+ cache.size());
+		if (cache.size() >= maxSizeCache) {
+			Iterator<Map.Entry<Long, Administrator>> iter = cache.entrySet().iterator();
+			int i = 0;
+			while (iter.hasNext()) {
+				i++;
+				iter.next();
+				if (i > minSizeCache) {
+					iter.remove();
+				}
+			}
 		}
-	}
-
-	public Date settingDateCleaningCache() {
-		Date date = new Date();
-		date.setTime(date.getTime() + delayCacheCleanig);
-		dateCleaningCache = date;
-		return date;
-	}
-
-	public void setDelayCacheCleanig(Long delayCacheCleanig) {
-		this.delayCacheCleanig = delayCacheCleanig;
 	}
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		dateCleaningCache = new Date(in.readLong());
+		maxSizeCache = in.readLong();
+		minSizeCache = in.readLong();
 
 		Long idExternal = 0L;
 		Administrator administratorExternal = null;
@@ -85,7 +70,8 @@ public class AdministratorCaching implements Externalizable {
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(dateCleaningCache.getTime());
+		out.writeLong(maxSizeCache);
+		out.writeLong(minSizeCache);
 
 		for (Map.Entry<Long, Administrator> pair : cache.entrySet()) {
 			out.writeLong(pair.getKey());
@@ -99,5 +85,21 @@ public class AdministratorCaching implements Externalizable {
 
 	public void setCache(Map<Long, Administrator> cache) {
 		this.cache = cache;
+	}
+
+	public Long getMaxSizeCache() {
+		return maxSizeCache;
+	}
+
+	public void setMaxSizeCache(Long maxSizeCache) {
+		this.maxSizeCache = maxSizeCache;
+	}
+
+	public Long getMinSizeCache() {
+		return minSizeCache;
+	}
+
+	public void setMinSizeCache(Long minSizeCache) {
+		this.minSizeCache = minSizeCache;
 	}
 }
