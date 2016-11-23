@@ -39,7 +39,7 @@ public class CategoryServiceImplTest {
 
 		category2 = new Category();
 		category2.setItem("SecondItem");
-		
+
 		category3 = new Category();
 		category3.setItem("ThirdItem");
 
