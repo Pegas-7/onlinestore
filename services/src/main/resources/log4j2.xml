@@ -2,6 +2,11 @@
 <Configuration status="WARN">
 
 	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS}{GMT+3} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+
 		<RollingFile name="RollingFileWarn" fileName="logs/error-log.log"
 			filePattern="logs/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}.log.gz">
 			<PatternLayout
@@ -40,7 +45,8 @@
 	</Appenders>
 
 	<Loggers>
-		<Root level="debug">
+		<Root level="info">
+			<AppenderRef ref="Console" />
 			<AppenderRef ref="RollingFileWarn" />
 			<AppenderRef ref="RollingFileInfo" />
 			<AppenderRef ref="RollingFileDebug" />

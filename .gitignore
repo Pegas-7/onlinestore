@@ -18,3 +18,4 @@ datamodel/target/
 test-module/logs/
 services/logs/
 services/tempFileCacheAdministrator.tmp
+webapp/logs/
