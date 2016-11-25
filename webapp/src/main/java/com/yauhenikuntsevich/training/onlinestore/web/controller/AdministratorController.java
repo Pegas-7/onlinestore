@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,39 +21,42 @@ import com.yauhenikuntsevich.training.onlinestore.web.model.AdministratorModel;
 @RestController
 @RequestMapping("/administrators")
 public class AdministratorController {
+	@Inject
+	ConversionService conversionService;
 
 	@Inject
 	private AdministratorService administratorService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<AdministratorModel>> getAll() {
-		List<Administrator> all = administratorService.getAll();
+		List<Administrator> allAdministrators = administratorService.getAll();
 		List<AdministratorModel> converted = new ArrayList<>();
-		for (Administrator administrator : all) {
-			converted.add(administrator2model(administrator));
+		for (Administrator administrator : allAdministrators) {
+			converted.add(conversionService.convert(administrator, AdministratorModel.class));
 		}
 		return new ResponseEntity<List<AdministratorModel>>(converted, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{administratorId}", method = RequestMethod.GET)
 	public ResponseEntity<AdministratorModel> getById(@PathVariable Long administratorId) {
-		Administrator author = administratorService.get(administratorId);
-		return new ResponseEntity<AdministratorModel>(administrator2model(author), HttpStatus.OK);
+		Administrator administrator = administratorService.get(administratorId);
+		return new ResponseEntity<AdministratorModel>(
+				conversionService.convert(administrator, AdministratorModel.class), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewAuthor(@RequestBody AdministratorModel administratorModel) {
-		administratorService.save(model2administrator(administratorModel));
+	public ResponseEntity<Void> createNewAdministrator(@RequestBody AdministratorModel administratorModel) {
+		administratorService.save(conversionService.convert(administratorModel, Administrator.class));
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 
 	}
 
 	@RequestMapping(value = "/{administratorId}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateAuthor(@RequestBody AdministratorModel administratorModel,
+	public ResponseEntity<Void> updateAdministrator(@RequestBody AdministratorModel administratorModel,
 			@PathVariable Long administratorId) {
-		Administrator author = model2administrator(administratorModel);
-		author.setId(administratorId);
-		administratorService.save(author);
+		Administrator administrator = conversionService.convert(administratorModel, Administrator.class);
+		administrator.setId(administratorId);
+		administratorService.save(administrator);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 
 	}
@@ -61,21 +65,5 @@ public class AdministratorController {
 	public ResponseEntity<Void> delete(@PathVariable Long administratorId) {
 		administratorService.delete(administratorId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
-
-	private AdministratorModel administrator2model(Administrator administrator) {
-		AdministratorModel e = new AdministratorModel();
-		e.setFirstName(administrator.getFirstName());
-		e.setId(administrator.getId());
-		e.setLastName(administrator.getLastName());
-		return e;
-	}
-
-	private Administrator model2administrator(AdministratorModel administratorModel) {
-		Administrator e = new Administrator();
-		e.setFirstName(administratorModel.getFirstName());
-		e.setId(administratorModel.getId());
-		e.setLastName(administratorModel.getLastName());
-		return e;
 	}
 }

@@ -15,7 +15,21 @@
 	<import resource="classpath:service-context.xml" />
 
 	<mvc:annotation-driven />
-	
-	<context:component-scan base-package="com.yauhenikuntsevich.training.onlinestore.web.controller" />
+
+	<context:component-scan
+		base-package="com.yauhenikuntsevich.training.onlinestore.web.controller" />
+
+	<bean id="conversionService"
+		class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converters.ConvertAdministrator2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converters.ConvertModel2Administrator" />
+			</list>
+		</property>
+	</bean>
+
 
 </beans>
