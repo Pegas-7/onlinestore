@@ -17,11 +17,6 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * with jconsole).
  */
 public class StartJetty {
-	/**
-	 * Main function, starts the jetty server.
-	 *
-	 * @param args
-	 */
 	public static void main(String[] args) {
 
 		Server server = new Server();
@@ -50,6 +45,7 @@ public class StartJetty {
 		try {
 			server.start();
 			server.join();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(100);
