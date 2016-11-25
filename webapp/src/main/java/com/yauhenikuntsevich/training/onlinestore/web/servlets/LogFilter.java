@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.web.servlets;
+/*package com.yauhenikuntsevich.training.onlinestore.web.servlets;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -20,9 +20,9 @@ public class LogFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		/*
+		
 		 * Called before the Filter instance is removed from service by the web
 		 * container
-		 */
+		 
 	}
-}
+}*/

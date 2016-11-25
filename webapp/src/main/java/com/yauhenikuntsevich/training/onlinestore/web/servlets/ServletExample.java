@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.web.servlets;
+/*package com.yauhenikuntsevich.training.onlinestore.web.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,10 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ServletExample extends HttpServlet {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -27,4 +23,4 @@ public class ServletExample extends HttpServlet {
 
 	}
 
-}
+}*/
