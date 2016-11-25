@@ -8,13 +8,14 @@
 		<artifactId>onlinestore</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<groupId>com.yauhenikuntsevich.training.onlinestore</groupId>
+
+	<!-- <groupId>com.yauhenikuntsevich.training.onlinestore</groupId> <artifactId>TestModule</artifactId> 
+		<name>TestModule</name> <url>http://maven.apache.org</url> <properties> <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
+		</properties> -->
+
 	<artifactId>TestModule</artifactId>
-	<name>TestModule</name>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+	<packaging>jar</packaging>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -47,11 +48,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.yauhenikuntsevich.training</groupId>
-			<artifactId>webapp</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
@@ -75,7 +71,7 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
