@@ -23,7 +23,6 @@
 		<module>dao-impl-xml</module>
 		<module>services</module>
 		<module>webapp</module>
-		<module>TestModule</module>
 	</modules>
 
 	<dependencyManagement>
@@ -62,12 +61,6 @@
 			<dependency>
 				<groupId>com.yauhenikuntsevich.training</groupId>
 				<artifactId>webapp</artifactId>
-				<version>1.0.0</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.yauhenikuntsevich.training</groupId>
-				<artifactId>TestModule</artifactId>
 				<version>1.0.0</version>
 			</dependency>
 
