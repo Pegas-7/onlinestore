@@ -16,8 +16,8 @@
 
 	<context:annotation-config />
 
-	<!-- <import resource="classpath:db-dao-beans.xml" /> -->
-	<import resource="classpath:xml-dao-beans.xml" />
+	<import resource="classpath:db-dao-beans.xml" />
+	<!-- <import resource="classpath:xml-dao-beans.xml" /> -->
 
 	<context:component-scan
 		base-package="com.yauhenikuntsevich.training.onlinestore.services" />

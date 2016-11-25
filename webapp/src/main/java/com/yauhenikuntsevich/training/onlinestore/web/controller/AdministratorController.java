@@ -37,9 +37,9 @@ public class AdministratorController {
 		return new ResponseEntity<List<AdministratorModel>>(converted, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/{administratorId}", method = RequestMethod.GET)
-	public ResponseEntity<AdministratorModel> getById(@PathVariable Long administratorId) {
-		Administrator administrator = administratorService.get(administratorId);
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<AdministratorModel> getById(@PathVariable Long id) {
+		Administrator administrator = administratorService.get(id);
 		return new ResponseEntity<AdministratorModel>(
 				conversionService.convert(administrator, AdministratorModel.class), HttpStatus.OK);
 	}
@@ -51,19 +51,19 @@ public class AdministratorController {
 
 	}
 
-	@RequestMapping(value = "/{administratorId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	public ResponseEntity<Void> updateAdministrator(@RequestBody AdministratorModel administratorModel,
-			@PathVariable Long administratorId) {
+			@PathVariable Long id) {
 		Administrator administrator = conversionService.convert(administratorModel, Administrator.class);
-		administrator.setId(administratorId);
+		administrator.setId(id);
 		administratorService.save(administrator);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 
 	}
 
-	@RequestMapping(value = "/{administratorId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long administratorId) {
-		administratorService.delete(administratorId);
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		administratorService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

@@ -20,7 +20,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Inject
 	private EntityDao<Administrator> administratorDao;
 
-	private AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
+	public AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
 			.createInstanceAdministratorCaching();
 
 	@Override

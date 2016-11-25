@@ -31,7 +31,7 @@ public class ExternalizableCacheAdministratorTest {
 
 	@Before
 	public void beforeTest() {
-		administratorCaching = administratorServiceImpl.getAdministratorCaching();
+		administratorCaching = administratorServiceImpl.administratorCaching;
 		administrator1 = new Administrator();
 		administrator1.setFirstName("FirstNameAdministrator1");
 		administrator1.setLastName("LastNameAdministrator1");
@@ -61,8 +61,10 @@ public class ExternalizableCacheAdministratorTest {
 		AdministratorCaching administratorCachingRecreate = ExternalizableCacheAdministrator
 				.readFromFileCacheAdministrator();
 
-		Assert.assertEquals(administratorCachingRecreate.getCache().get(id1).getFirstName(), administrator1.getFirstName());
-		Assert.assertEquals(administratorCachingRecreate.getCache().get(id2).getFirstName(), administrator2.getFirstName());
+		Assert.assertEquals(administratorCachingRecreate.getCache().get(id1).getFirstName(),
+				administrator1.getFirstName());
+		Assert.assertEquals(administratorCachingRecreate.getCache().get(id2).getFirstName(),
+				administrator2.getFirstName());
 
 		ExternalizableCacheAdministrator.deleteFile();
 	}
