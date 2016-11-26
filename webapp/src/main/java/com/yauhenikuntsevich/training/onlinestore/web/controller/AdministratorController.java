@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
@@ -20,6 +21,7 @@ import com.yauhenikuntsevich.training.onlinestore.web.model.AdministratorModel;
 
 @RestController
 @RequestMapping("/administrators")
+
 public class AdministratorController {
 	@Inject
 	ConversionService conversionService;
@@ -34,6 +36,7 @@ public class AdministratorController {
 		for (Administrator administrator : allAdministrators) {
 			converted.add(conversionService.convert(administrator, AdministratorModel.class));
 		}
+		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
 		return new ResponseEntity<List<AdministratorModel>>(converted, HttpStatus.OK);
 	}
 
