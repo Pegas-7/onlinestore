@@ -15,6 +15,8 @@ public final class ClientMapper implements RowMapper<Client> {
 		String lastName = rs.getString("last_name");
 		Integer age = rs.getInt("age");
 		Boolean blacklisted = rs.getBoolean("blacklisted");
+		String password = rs.getString("password");
+		String role = rs.getString("role");
 		
 		Client entity = new Client();
 		
@@ -23,6 +25,8 @@ public final class ClientMapper implements RowMapper<Client> {
 		entity.setLastName(lastName);
 		entity.setAge(age);
 		entity.setBlacklisted(blacklisted);
+		entity.setPassword(password);
+		entity.setRole(role);
 		
 		return entity;
 	}

@@ -39,18 +39,24 @@ public class ClientServiceImplTest {
 		client1.setLastName("LastNameClient1");
 		client1.setAge(18);
 		client1.setBlacklisted(true);
+		client1.setPassword("password_user1");
+		client1.setRole("USER_ROLE");
 
 		client2 = new Client();
 		client2.setFirstName("FirstNameClient2");
 		client2.setLastName("LastNameClient2");
 		client2.setAge(76);
 		client2.setBlacklisted(false);
+		client2.setPassword("password_user2");
+		client2.setRole("USER_ROLE");
 
 		client3 = new Client();
 		client3.setFirstName("FirstNameClient3");
 		client3.setLastName("LastNameClient3");
 		client3.setAge(35);
 		client3.setBlacklisted(false);
+		client3.setPassword("password_user3");
+		client3.setRole("USER_ROLE");
 
 		id1 = clientDao.add(client1);
 		id2 = clientDao.add(client2);

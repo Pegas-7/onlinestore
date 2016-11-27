@@ -1,6 +1,6 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel;
 
-public abstract class PersonAbstractModel extends AbstractModel {
+public class PersonAbstractModel extends AbstractModel {
 	protected String firstName;
 	protected String lastName;
 	protected String password;

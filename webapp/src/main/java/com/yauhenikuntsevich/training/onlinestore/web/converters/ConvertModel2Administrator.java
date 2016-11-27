@@ -13,6 +13,8 @@ public class ConvertModel2Administrator implements Converter<AdministratorModel,
 		e.setId(administratorModel.getId());
 		e.setFirstName(administratorModel.getFirstName());
 		e.setLastName(administratorModel.getLastName());
+		e.setPassword(administratorModel.getPassword());
+		e.setRole(administratorModel.getRole());
 		return e;
 	}
 }

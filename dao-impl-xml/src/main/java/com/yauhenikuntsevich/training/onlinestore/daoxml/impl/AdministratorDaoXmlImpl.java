@@ -57,6 +57,8 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 			if (administrator2.getId().equals(administrator.getId())) {
 				administrator2.setFirstName(administrator.getFirstName());
 				administrator2.setLastName(administrator.getLastName());
+				administrator2.setPassword(administrator.getPassword());
+				administrator2.setRole(administrator.getRole());
 				break;
 			}
 		}

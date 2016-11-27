@@ -11,8 +11,8 @@ import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
-import com.yauhenikuntsevich.training.onlinestore.exception.NotEnoughQuantityProductException;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
+import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
@@ -47,7 +47,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 			return orderItemDao.add(orderItem);
 		} else {
 			substractionQuantityFromProductUpdating(orderItem);
-			
+
 			addPriceProductsToPriceAllPurchaches(orderItem);
 
 			orderItemDao.update(orderItem);
@@ -117,16 +117,16 @@ public class OrderItemServiceImpl implements OrderItemService {
 		product.setQuantity(updatedProductQuantity);
 		productDao.update(product);
 	}
-	
+
 	protected void addPriceProductsToPriceAllPurchaches(OrderItem orderItem) {
 		Order order = orderDao.get(orderItem.getOrder().getId());
 		Double priceAllPurchaches = order.getPriceAllPurchases();
-		
+
 		Product product = orderItem.getProduct();
 		Double priceProducts = orderItem.getQuantity() * product.getPrice();
-		
+
 		Double priceAllPurchachesUpdated = priceAllPurchaches + priceProducts;
-		
+
 		order.setPriceAllPurchases(priceAllPurchachesUpdated);
 		orderDao.update(order);
 	}

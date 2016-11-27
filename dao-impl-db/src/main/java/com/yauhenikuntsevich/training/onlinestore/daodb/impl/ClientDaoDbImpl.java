@@ -36,12 +36,14 @@ public class ClientDaoDbImpl implements EntityDao<Client> {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO \"client\" (first_name, last_name, age, blacklisted) VALUES (?, ?, ?, ?)",
+						"INSERT INTO \"client\" (first_name, last_name, age, blacklisted, password, role) VALUES (?, ?, ?, ?, ?, ?)",
 						new String[] { "client_id" });
 				ps.setString(1, entity.getFirstName());
 				ps.setString(2, entity.getLastName());
 				ps.setInt(3, entity.getAge());
 				ps.setBoolean(4, entity.getBlacklisted());
+				ps.setString(5, entity.getPassword());
+				ps.setString(6, entity.getRole());
 				return ps;
 			}
 
@@ -53,8 +55,9 @@ public class ClientDaoDbImpl implements EntityDao<Client> {
 	@Override
 	public void update(Client entity) {
 		jdbcTemplate.update(
-				"update client set first_name = ?, last_name = ? , age = ?, blacklisted = ? where client_id = ?",
-				entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getBlacklisted(), entity.getId());
+				"update client set first_name = ?, last_name = ? , age = ?, blacklisted = ?, password = ?, role = ? where client_id = ?",
+				entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getBlacklisted(),
+				entity.getPassword(), entity.getRole(), entity.getId());
 	}
 
 	@Override

@@ -37,14 +37,20 @@ public class AdministratorServiceImplTest {
 		administrator1 = new Administrator();
 		administrator1.setFirstName("FirstNameAdministrator1");
 		administrator1.setLastName("LastNameAdministrator1");
+		administrator1.setPassword("password_admin1");
+		administrator1.setRole("ADMIN_ROLE");
 
 		administrator2 = new Administrator();
 		administrator2.setFirstName("FirstNameAdministrator2");
 		administrator2.setLastName("LastNameAdministrator2");
+		administrator2.setPassword("password_admin2");
+		administrator2.setRole("ADMIN_ROLE");
 
 		administrator3 = new Administrator();
 		administrator3.setFirstName("FirstNameAdministrator3");
 		administrator3.setLastName("LastNameAdministrator3");
+		administrator3.setPassword("password_admin3");
+		administrator3.setRole("ADMIN_ROLE");
 
 		id1 = administratorDao.add(administrator1);
 		id2 = administratorDao.add(administrator2);

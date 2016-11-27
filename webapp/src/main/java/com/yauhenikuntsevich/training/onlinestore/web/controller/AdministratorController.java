@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 import com.yauhenikuntsevich.training.onlinestore.web.model.AdministratorModel;
 
 @RestController
-@RequestMapping("/administrators")
+@RequestMapping("/admin/administrators")
 
 public class AdministratorController {
 	@Inject
@@ -36,13 +36,19 @@ public class AdministratorController {
 		for (Administrator administrator : allAdministrators) {
 			converted.add(conversionService.convert(administrator, AdministratorModel.class));
 		}
-		
+
 		return new ResponseEntity<List<AdministratorModel>>(converted, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AdministratorModel> getById(@PathVariable Long id) {
-		Administrator administrator = administratorService.get(id);
+		Administrator administrator = null;
+		try {
+			administrator = administratorService.get(id);
+		} catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<AdministratorModel>(HttpStatus.NO_CONTENT);
+		}
+
 		return new ResponseEntity<AdministratorModel>(
 				conversionService.convert(administrator, AdministratorModel.class), HttpStatus.OK);
 	}

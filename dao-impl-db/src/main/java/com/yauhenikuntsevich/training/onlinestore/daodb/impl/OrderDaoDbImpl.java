@@ -28,8 +28,8 @@ public class OrderDaoDbImpl implements EntityDao<Order> {
 	public Order get(Long id) {
 		return jdbcTemplate.queryForObject(
 				"SELECT * FROM \"order\" o JOIN "
-						+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted FROM client) c "
-						+ "ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id WHERE o.order_id = ?",
+						+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM client) "
+						+ "c ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id WHERE o.order_id = ?",
 				new Object[] { id }, new OrderMapper());
 	}
 
@@ -72,7 +72,8 @@ public class OrderDaoDbImpl implements EntityDao<Order> {
 	@Override
 	public List<Order> getAll() {
 		return jdbcTemplate.query(
-				"SELECT * FROM \"order\" o JOIN (SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted FROM client) "
+				"SELECT * FROM \"order\" o JOIN "
+						+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM client) "
 						+ "c ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id",
 				new OrderMapper());
 	}

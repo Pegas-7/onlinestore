@@ -26,7 +26,7 @@ public class OrderItemDaoDbImpl implements EntityDao<OrderItem> {
 	@Override
 	public OrderItem get(Long id) {
 		return jdbcTemplate.queryForObject("SELECT * FROM \"order_item\" oi JOIN (SELECT * FROM \"order\" o "
-				+ "JOIN (SELECT client_id, first_name AS first_name_client, last_name AS last_name_client, age, blacklisted FROM \"client\") c "
+				+ "JOIN (SELECT client_id, first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM \"client\") c "
 				+ "ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id) oca ON oca.order_id = oi.order_id "
 				+ "JOIN(SELECT * FROM product p JOIN category c ON p.category_id = c.category_id) pc ON pc.product_id = oi.product_id "
 				+ "WHERE oi.order_item_id = ?", new Object[] { id }, new OrderItemMapper());
@@ -70,7 +70,7 @@ public class OrderItemDaoDbImpl implements EntityDao<OrderItem> {
 	public List<OrderItem> getAll() {
 		return jdbcTemplate.query(
 				"SELECT * FROM \"order_item\" oi JOIN (SELECT * FROM \"order\" o "
-						+ "JOIN (SELECT client_id, first_name AS first_name_client, last_name AS last_name_client, age, blacklisted FROM \"client\") c "
+						+ "JOIN (SELECT client_id, first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM \"client\") c "
 						+ "ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id) oca ON oca.order_id = oi.order_id "
 						+ "JOIN(SELECT * FROM product p JOIN category c ON p.category_id = c.category_id) pc ON pc.product_id = oi.product_id",
 				new OrderItemMapper());

@@ -62,6 +62,8 @@ public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<
 				client2.setLastName(client.getLastName());
 				client2.setAge(client.getAge());
 				client2.setBlacklisted(client.getBlacklisted());
+				client2.setPassword(client.getPassword());
+				client2.setRole(client.getRole());
 				break;
 			}
 		}

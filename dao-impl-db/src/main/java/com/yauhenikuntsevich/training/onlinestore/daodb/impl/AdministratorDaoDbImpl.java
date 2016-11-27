@@ -52,7 +52,8 @@ public class AdministratorDaoDbImpl implements EntityDao<Administrator> {
 
 	@Override
 	public void update(Administrator entity) {
-		jdbcTemplate.update("update administrator set first_name = ?, last_name = ?, ,  where administrator_id = ?",
+		jdbcTemplate.update(
+				"update administrator set first_name = ?, last_name = ?, password = ?, role = ? where administrator_id = ?",
 				entity.getFirstName(), entity.getLastName(), entity.getPassword(), entity.getRole(), entity.getId());
 	}
 

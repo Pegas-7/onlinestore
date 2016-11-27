@@ -34,16 +34,20 @@
    	</servlet-mapping>
    
  	<filter>
-	   <filter-name>BasicAuthFilter</filter-name>
-	   <filter-class>com.yauhenikuntsevich.training.onlinestore.web.servlets.BasicAuthFilter</filter-class>
+	   <filter-name>adminAuthFilter</filter-name>
+	   <filter-class>com.yauhenikuntsevich.training.onlinestore.web.servlets.AdminAuthFilter</filter-class>
 	</filter>
    
    	<filter-mapping>
-	   <filter-name>BasicAuthFilter</filter-name>
-	   <url-pattern>/*</url-pattern>
+	   <filter-name>adminAuthFilter</filter-name>
+	   <url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
    
-  	 <filter>
+ 	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+   
+   <!-- <filter>
 	<filter-name>springSecurityFilterChain</filter-name>
 	<filter-class>org.springframework.web.filter.DelegatingFilterProxy
                 </filter-class>
@@ -52,11 +56,7 @@
 	<filter-mapping>
 	<filter-name>springSecurityFilterChain</filter-name>
 	<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
- 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+	</filter-mapping> -->
    
    	<!-- <filter>
 	   <filter-name>LogFilter</filter-name>

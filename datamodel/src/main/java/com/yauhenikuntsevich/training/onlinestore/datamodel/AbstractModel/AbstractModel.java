@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.datamodel;
+package com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel;
 
 public abstract class AbstractModel {
 	protected Long id;

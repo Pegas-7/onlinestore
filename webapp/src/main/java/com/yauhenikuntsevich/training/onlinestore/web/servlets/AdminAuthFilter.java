@@ -15,7 +15,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.yauhenikuntsevich.training.onlinestore.services.AuthenticationService;
 
-public class BasicAuthFilter implements Filter {
+public class AdminAuthFilter implements Filter {
 	private AuthenticationService authService;
 
 	@Override
@@ -40,7 +40,7 @@ public class BasicAuthFilter implements Filter {
 
 		String username = credentials[0];
 		String password = credentials[1];
-		if (authService.validateUserPassword(username, password)) {
+		if (authService.validateUser(username, password, "ADMIN_ROLE")) {
 			chain.doFilter(request, response);
 		} else {
 			res.sendError(401);

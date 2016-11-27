@@ -21,7 +21,7 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
-import com.yauhenikuntsevich.training.onlinestore.exception.NotEnoughQuantityProductException;
+import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/main/resources/service-context.xml" })
@@ -85,7 +85,7 @@ public class OrderItemServiceImplTest {
 
 		Order order2 = new Order();
 		order2.setId(2L);
-		
+
 		Category category2 = new Category();
 		category2.setId(2L);
 
@@ -101,7 +101,7 @@ public class OrderItemServiceImplTest {
 		orderItem2.setOrder(order2);
 		orderItem2.setProduct(product2);
 		orderItem2.setQuantity(2);
-		
+
 		Administrator administrator3 = new Administrator();
 		administrator3.setId(1L);
 
@@ -115,10 +115,10 @@ public class OrderItemServiceImplTest {
 		order3.setPriceAllPurchases(299.0);
 		id3Order = orderDao.add(order3);
 		order3.setId(id3Order);
-		
+
 		Category category3 = new Category();
 		category3.setId(3L);
-		
+
 		product3 = new Product();
 		product3.setQuantity(85);
 		product3.setCategory(category3);
