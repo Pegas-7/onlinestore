@@ -1,46 +1,18 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
-public class Client extends AbstractModel {
-	private String firstName;
-	private String password;
-	private String role;
-	private String lastName;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+import com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel.PersonAbstractModel;
+
+public class Client extends PersonAbstractModel implements Externalizable {
 	private Integer age;
 	private Boolean blacklisted;
-	
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public Client() {
-	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public Integer getAge() {
@@ -57,5 +29,27 @@ public class Client extends AbstractModel {
 
 	public void setBlacklisted(Boolean blacklisted) {
 		this.blacklisted = blacklisted;
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		id = in.readLong();
+		firstName = (String) in.readObject();
+		lastName = (String) in.readObject();
+		password = (String) in.readObject();
+		role = (String) in.readObject();
+		age = (Integer) in.readObject();
+		blacklisted = (Boolean) in.readObject();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeLong(id);
+		out.writeObject(firstName);
+		out.writeObject(lastName);
+		out.writeObject(password);
+		out.writeObject(role);
+		out.writeInt(age);
+		out.writeBoolean(blacklisted);
 	}
 }

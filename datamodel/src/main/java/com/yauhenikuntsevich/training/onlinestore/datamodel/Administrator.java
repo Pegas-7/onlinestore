@@ -5,27 +5,11 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-public class Administrator extends AbstractModel implements Externalizable {
-	private String firstName;
-	private String lastName;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel.PersonAbstractModel;
+
+public class Administrator extends PersonAbstractModel implements Externalizable {
 
 	public Administrator() {
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	@Override
@@ -33,6 +17,8 @@ public class Administrator extends AbstractModel implements Externalizable {
 		id = in.readLong();
 		firstName = (String) in.readObject();
 		lastName = (String) in.readObject();
+		password = (String) in.readObject();
+		role = (String) in.readObject();
 	}
 
 	@Override
@@ -40,5 +26,7 @@ public class Administrator extends AbstractModel implements Externalizable {
 		out.writeLong(id);
 		out.writeObject(firstName);
 		out.writeObject(lastName);
+		out.writeObject(password);
+		out.writeObject(role);
 	}
 }

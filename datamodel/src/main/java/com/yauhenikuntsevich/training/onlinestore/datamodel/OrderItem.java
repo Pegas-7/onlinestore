@@ -1,5 +1,7 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
+import com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel.AbstractModel;
+
 public class OrderItem extends AbstractModel {
 	private Order order;
 	private Product product;

@@ -36,10 +36,12 @@ public class AdministratorDaoDbImpl implements EntityDao<Administrator> {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO \"administrator\" (first_name, last_name) VALUES (?, ?)",
+						"INSERT INTO \"administrator\" (first_name, last_name, password, role) VALUES (?, ?, ?, ?)",
 						new String[] { "administrator_id" });
 				ps.setString(1, entity.getFirstName());
 				ps.setString(2, entity.getLastName());
+				ps.setString(3, entity.getPassword());
+				ps.setString(4, entity.getRole());
 				return ps;
 			}
 
@@ -50,8 +52,8 @@ public class AdministratorDaoDbImpl implements EntityDao<Administrator> {
 
 	@Override
 	public void update(Administrator entity) {
-		jdbcTemplate.update("update administrator set first_name = ?, last_name = ? where administrator_id = ?",
-				entity.getFirstName(), entity.getLastName(), entity.getId());
+		jdbcTemplate.update("update administrator set first_name = ?, last_name = ?, ,  where administrator_id = ?",
+				entity.getFirstName(), entity.getLastName(), entity.getPassword(), entity.getRole(), entity.getId());
 	}
 
 	@Override

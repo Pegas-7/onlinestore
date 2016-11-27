@@ -13,11 +13,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
+import com.yauhenikuntsevich.training.onlinestore.services.EntityCaching;
 
 @Service
-public class AdministratorCaching implements Externalizable {
+public class AdministratorCaching implements Externalizable, EntityCaching<Administrator> {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(AdministratorCaching.class);
+
 	private Long maxSizeCache = 200L;
 	private Long minSizeCache = 100L;
 	private Map<Long, Administrator> cache = new LinkedHashMap<>();
@@ -25,19 +27,22 @@ public class AdministratorCaching implements Externalizable {
 	public AdministratorCaching() {
 	}
 
-	public void putAdministratorInCache(Long id, Administrator administrator) {
+	@Override
+	public void putInCache(Long id, Administrator administrator) {
 		cleanCache();
 		cache.put(id, administrator);
 		LOGGER.debug("Administrator with id = " + id + " was put in cache, size cache (map) = " + cache.size());
 	}
 
-	public void deleteAdministratorFromCache(Long id) {
+	@Override
+	public void deleteFromCache(Long id) {
 		cleanCache();
 		cache.remove(id);
 
 		LOGGER.debug("Administrator with id = " + id + " was deleted from cache, size cache (map) = " + cache.size());
 	}
 
+	@Override
 	public void cleanCache() {
 		if (cache.size() >= maxSizeCache) {
 			Iterator<Map.Entry<Long, Administrator>> iter = cache.entrySet().iterator();

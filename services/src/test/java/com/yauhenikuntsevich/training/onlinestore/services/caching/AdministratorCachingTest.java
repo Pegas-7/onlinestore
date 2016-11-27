@@ -45,8 +45,8 @@ public class AdministratorCachingTest {
 
 	@Test
 	public void putAdministratorInCacheTest() {
-		administratorCaching.putAdministratorInCache(id1, administrator1);
-		administratorCaching.putAdministratorInCache(id2, administrator2);
+		administratorCaching.putInCache(id1, administrator1);
+		administratorCaching.putInCache(id2, administrator2);
 
 		Assert.assertEquals(administratorCaching.getCache().get(id1), administrator1);
 		Assert.assertEquals(administratorCaching.getCache().get(id2), administrator2);
@@ -61,8 +61,8 @@ public class AdministratorCachingTest {
 
 		int mapSizeBefore = administratorCaching.getCache().size();
 
-		administratorCaching.deleteAdministratorFromCache(id1);
-		administratorCaching.deleteAdministratorFromCache(id2);
+		administratorCaching.deleteFromCache(id1);
+		administratorCaching.deleteFromCache(id2);
 
 		int mapSizeAfter = administratorCaching.getCache().size();
 

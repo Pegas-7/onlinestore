@@ -4,6 +4,8 @@ CREATE TABLE "client" (
 	"last_name" character varying(256) NOT NULL,
 	"age" int NOT NULL,
 	"blacklisted" BOOLEAN NOT NULL,
+	"password" character varying NOT NULL,
+	"role" character varying NOT NULL DEFAULT 'USER_ROLE',
 	CONSTRAINT client_pk PRIMARY KEY ("client_id")
 ) WITH (
   OIDS=FALSE
@@ -15,7 +17,7 @@ CREATE TABLE "product" (
 	"product_id" serial NOT NULL,
 	"category_id" bigint NOT NULL,
 	"name" character varying(256) NOT NULL,
-	"price" double precision NOT NULL,
+	"price" double NOT NULL,
 	"quantity" bigint NOT NULL,
 	CONSTRAINT product_pk PRIMARY KEY ("product_id")
 ) WITH (
@@ -28,6 +30,8 @@ CREATE TABLE "administrator" (
 	"administrator_id" serial NOT NULL,
 	"first_name" character varying(256) NOT NULL,
 	"last_name" character varying(256) NOT NULL,
+	"password" character varying NOT NULL,
+	"role" character varying NOT NULL DEFAULT 'ADMIN_ROLE',
 	CONSTRAINT administrator_pk PRIMARY KEY ("administrator_id")
 ) WITH (
   OIDS=FALSE
@@ -40,7 +44,7 @@ CREATE TABLE "order" (
 	"date_order" DATE NOT NULL,
 	"client_id" bigint NOT NULL,
 	"administrator_id" bigint NOT NULL,
-	"price_all_purchases" double precision NOT NULL,
+	"price_all_purchases" double NOT NULL,
 	CONSTRAINT order_pk PRIMARY KEY ("order_id")
 ) WITH (
   OIDS=FALSE

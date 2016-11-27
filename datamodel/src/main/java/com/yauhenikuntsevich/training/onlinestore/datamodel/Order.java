@@ -2,6 +2,8 @@ package com.yauhenikuntsevich.training.onlinestore.datamodel;
 
 import java.sql.Date;
 
+import com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel.AbstractModel;
+
 public class Order extends AbstractModel {
 	private Date dateOrder;
 	private Client client;

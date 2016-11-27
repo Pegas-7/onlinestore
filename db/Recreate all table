@@ -13,10 +13,14 @@ CREATE TABLE "client" (
 	"last_name" character varying(256) NOT NULL,
 	"age" int NOT NULL,
 	"blacklisted" BOOLEAN NOT NULL,
+	"password" character varying NOT NULL,
+	"role" character varying NOT NULL DEFAULT 'USER_ROLE',
 	CONSTRAINT client_pk PRIMARY KEY ("client_id")
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "product" (
 	"product_id" serial NOT NULL,
@@ -29,14 +33,20 @@ CREATE TABLE "product" (
   OIDS=FALSE
 );
 
+
+
 CREATE TABLE "administrator" (
 	"administrator_id" serial NOT NULL,
 	"first_name" character varying(256) NOT NULL,
 	"last_name" character varying(256) NOT NULL,
+	"password" character varying NOT NULL,
+	"role" character varying NOT NULL DEFAULT 'ADMIN_ROLE',
 	CONSTRAINT administrator_pk PRIMARY KEY ("administrator_id")
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "order" (
 	"order_id" serial NOT NULL,
@@ -48,6 +58,8 @@ CREATE TABLE "order" (
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "order_item" (
 	"order_item_id" serial NOT NULL,
@@ -69,6 +81,9 @@ CREATE TABLE "category" (
   OIDS=FALSE
 );
 
+
+
+
 ALTER TABLE "product" ADD CONSTRAINT "product_fk0" FOREIGN KEY ("category_id") REFERENCES "category"("category_id");
 
 
@@ -80,8 +95,8 @@ ALTER TABLE "order_item" ADD CONSTRAINT "order_item_fk1" FOREIGN KEY ("product_i
 
 --add data into tables
 --add administrators
-INSERT INTO "administrator" (first_name, last_name) VALUES ('Petr_admin', 'Doncov'); --1
-INSERT INTO "administrator" (first_name, last_name) VALUES ('Denis_admin', 'Trol'); --2
+INSERT INTO "administrator" (first_name, last_name, password, role) VALUES ('Petr_admin', 'Doncov', 'admin','ADMIN_ROLE'); --1
+INSERT INTO "administrator" (first_name, last_name, password, role) VALUES ('Denis_admin', 'Trol', 'admin','ADMIN_ROLE'); --2
 
 --add categories
 INSERT INTO "category" (item) VALUES ('Camera'); --1
@@ -90,15 +105,15 @@ INSERT INTO "category" (item) VALUES ('Cellphone'); --3
 INSERT INTO "category" (item) VALUES ('Tablet'); --4
 
 --add clients
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Max_client', 'Dertin', 35, false); --1
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Gena_client', 'Krot', 18, false); --2
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Anton_client', 'Plut', 24, false); --3
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Jenia_client', 'Drozd', 19, false); --4
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Andrey_client', 'Perec', 50, false); --5
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Kolia_client', 'Zlot', 45, false); --6
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Tolia_client', 'Dron', 22, false); --7
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Victor_client', 'Werty', 27, false); --8
-INSERT INTO "client" (first_name, last_name, age, blacklisted) VALUES ('Ura_client', 'Ontron', 63, false); --9
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Max_client', 'Dertin', 35, false, 'user','USER_ROLE'); --1
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Gena_client', 'Krot', 18, false, 'user','USER_ROLE'); --2
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Anton_client', 'Plut', 24, false, 'user','USER_ROLE'); --3
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Jenia_client', 'Drozd', 19, false, 'user','USER_ROLE'); --4
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Andrey_client', 'Perec', 50, false, 'user','USER_ROLE'); --5
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Kolia_client', 'Zlot', 45, false, 'user','USER_ROLE'); --6
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Tolia_client', 'Dron', 22, false, 'user','USER_ROLE'); --7
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Victor_client', 'Werty', 27, false, 'user','USER_ROLE'); --8
+INSERT INTO "client" (first_name, last_name, age, blacklisted, password, role) VALUES ('Ura_client', 'Ontron', 63, false, 'user','USER_ROLE'); --9
 
 --add products
 INSERT INTO "product" (category_id, name, price, quantity) VALUES (1, 'Canon EOS 6D Body', 65.7, 15); --1

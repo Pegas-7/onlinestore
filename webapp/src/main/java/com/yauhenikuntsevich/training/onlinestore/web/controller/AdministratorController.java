@@ -36,7 +36,7 @@ public class AdministratorController {
 		for (Administrator administrator : allAdministrators) {
 			converted.add(conversionService.convert(administrator, AdministratorModel.class));
 		}
-		System.out.println(RequestContextHolder.currentRequestAttributes().getSessionId());
+		
 		return new ResponseEntity<List<AdministratorModel>>(converted, HttpStatus.OK);
 	}
 
