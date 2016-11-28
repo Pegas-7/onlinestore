@@ -3,6 +3,7 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -10,12 +11,16 @@ import org.springframework.stereotype.Service;
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.ClientCaching;
+import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheClient;
 
 @Service
 public class ClientServiceImpl implements ClientService {
 
 	@Inject
 	private EntityDao<Client> clientDao;
+
+	public ClientCaching clientCaching = ExternalizableCacheClient.createInstanceClientCaching();
 
 	@Override
 	public List<Client> saveAll(List<Client> clients) {
@@ -36,13 +41,23 @@ public class ClientServiceImpl implements ClientService {
 			return clientDao.add(client);
 		} else {
 			clientDao.update(client);
+			clientCaching.putInCache(client.getId(), client);
 			return client.getId();
 		}
 	}
 
 	@Override
 	public Client get(Long id) {
-		return clientDao.get(id);
+		Client client = null;
+
+		if (clientCaching.getCache().get(id) != null) {
+			client = clientCaching.getCache().get(id);
+		} else {
+			client = clientDao.get(id);
+			clientCaching.putInCache(id, client);
+		}
+
+		return client;
 	}
 
 	@Override
@@ -53,6 +68,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public boolean delete(Long id) {
 		clientDao.delete(id);
+		clientCaching.deleteFromCache(id);
 		return true;
 	}
 
@@ -68,5 +84,10 @@ public class ClientServiceImpl implements ClientService {
 		}
 
 		return clientsForReturn;
+	}
+
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheClient.writeCacheInFile(clientCaching);
 	}
 }

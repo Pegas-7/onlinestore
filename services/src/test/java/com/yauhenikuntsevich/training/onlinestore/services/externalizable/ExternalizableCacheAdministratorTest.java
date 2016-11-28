@@ -56,10 +56,10 @@ public class ExternalizableCacheAdministratorTest {
 		administratorServiceImpl.get(id1);
 		administratorServiceImpl.get(id2);
 
-		ExternalizableCacheAdministrator.writeAdministratorCacheToFile(administratorCaching);
+		ExternalizableCacheAdministrator.writeCacheInFile(administratorCaching);
 
 		AdministratorCaching administratorCachingRecreate = ExternalizableCacheAdministrator
-				.readFromFileCacheAdministrator();
+				.readCacheFromFile();
 
 		Assert.assertEquals(administratorCachingRecreate.getCache().get(id1).getFirstName(),
 				administrator1.getFirstName());
@@ -80,10 +80,10 @@ public class ExternalizableCacheAdministratorTest {
 
 		administratorCaching1.setCache(hashMap);
 
-		ExternalizableCacheAdministrator.writeAdministratorCacheToFile(administratorCaching1);
+		ExternalizableCacheAdministrator.writeCacheInFile(administratorCaching1);
 
 		AdministratorCaching newAdministratorCaching = ExternalizableCacheAdministrator
-				.readFromFileCacheAdministrator();
+				.readCacheFromFile();
 
 		Assert.assertEquals(newAdministratorCaching.getCache().get(1314L).getFirstName(),
 				administrator3.getFirstName());

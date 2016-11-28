@@ -12,46 +12,46 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.services.caching.AdministratorCaching;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.CategoryCaching;
 
 @Service
-public class ExternalizableCacheAdministrator {
-	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheAdministrator.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-administrator.tmp";
+public class ExternalizableCacheCategory {
+	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheCategory.class);
+	private static final String FILENAME = "src//main//resources//cache//cache-category.tmp";
 
-	public static AdministratorCaching createInstanceAdministratorCaching() {
+	public static CategoryCaching createInstanceCategoryCaching() {
 		try {
 			return readCacheFromFile();
 		} catch (FileNotFoundException e) {
-			return new AdministratorCaching();
+			return new CategoryCaching();
 		}
 	}
 
-	public static void writeCacheInFile(AdministratorCaching administratorCaching) {
+	public static void writeCacheInFile(CategoryCaching сategoryCaching) {
 		try {
 			FileOutputStream fos = new FileOutputStream(FILENAME);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
-			out.writeObject(administratorCaching);
+			out.writeObject(сategoryCaching);
 			out.flush();
 			out.close();
 
-			LOGGER.debug("Write in file AdministratorCaching is done!");
+			LOGGER.debug("Write in file CategoryCaching is done!");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public static AdministratorCaching readCacheFromFile() throws FileNotFoundException {
-		AdministratorCaching administratorCaching = null;
+	public static CategoryCaching readCacheFromFile() throws FileNotFoundException {
+		CategoryCaching сategoryCaching = null;
 
 		try {
 			FileInputStream fis = new FileInputStream(FILENAME);
 			ObjectInputStream in = new ObjectInputStream(fis);
-			administratorCaching = (AdministratorCaching) in.readObject();
+			сategoryCaching = (CategoryCaching) in.readObject();
 			fis.close();
 			in.close();
 			deleteFile();
-			LOGGER.debug("Read from file AdministratorCaching is done, temporary file " + FILENAME + " was deleted!");
+			LOGGER.debug("Read from file CategoryCaching is done, temporary file " + FILENAME + " was deleted!");
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException();
 		} catch (IOException e) {
@@ -60,7 +60,7 @@ public class ExternalizableCacheAdministrator {
 			e.printStackTrace();
 		}
 
-		return administratorCaching;
+		return сategoryCaching;
 	}
 
 	public static void deleteFile() {

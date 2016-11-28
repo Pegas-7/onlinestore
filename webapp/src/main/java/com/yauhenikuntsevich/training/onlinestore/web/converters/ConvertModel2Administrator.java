@@ -10,7 +10,6 @@ public class ConvertModel2Administrator implements Converter<AdministratorModel,
 	@Override
 	public Administrator convert(AdministratorModel administratorModel) {
 		Administrator e = new Administrator();
-		e.setId(administratorModel.getId());
 		e.setFirstName(administratorModel.getFirstName());
 		e.setLastName(administratorModel.getLastName());
 		e.setPassword(administratorModel.getPassword());

@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.services.caching;
+package com.yauhenikuntsevich.training.onlinestore.services;
 
 public interface EntityCaching<T> {
 	void putInCache(Long id, T entity);

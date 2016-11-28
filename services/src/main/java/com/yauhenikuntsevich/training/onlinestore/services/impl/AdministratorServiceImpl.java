@@ -75,6 +75,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@PreDestroy
 	private void writeCacheToFile() {
-		ExternalizableCacheAdministrator.writeAdministratorCacheToFile(administratorCaching);
+		ExternalizableCacheAdministrator.writeCacheInFile(administratorCaching);
 	}
 }

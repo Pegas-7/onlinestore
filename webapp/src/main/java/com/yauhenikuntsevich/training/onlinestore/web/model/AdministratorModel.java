@@ -6,6 +6,14 @@ public class AdministratorModel {
 	private String lastName;
 	private String password;
 	private String role;
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPassword() {
+		return password;
+	}
 
 	public Long getId() {
 		return id;
@@ -29,14 +37,6 @@ public class AdministratorModel {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getRole() {
