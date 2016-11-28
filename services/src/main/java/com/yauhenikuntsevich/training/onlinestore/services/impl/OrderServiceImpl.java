@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Service;
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderCaching;
+import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheOrder;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
 	@Inject
 	private EntityDao<Order> orderDao;
+
+	public OrderCaching orderCaching = ExternalizableCacheOrder.createInstanceOrderCaching();
 
 	@Override
 	public List<Order> saveAll(List<Order> orders) {
@@ -37,13 +42,23 @@ public class OrderServiceImpl implements OrderService {
 			return orderDao.add(order);
 		} else {
 			orderDao.update(order);
+			orderCaching.putInCache(order.getId(), order);
 			return order.getId();
 		}
 	}
 
 	@Override
 	public Order get(Long id) {
-		return orderDao.get(id);
+		Order order = null;
+
+		if (orderCaching.getCache().get(id) != null) {
+			order = orderCaching.getCache().get(id);
+		} else {
+			order = orderDao.get(id);
+			orderCaching.putInCache(id, order);
+		}
+
+		return order;
 	}
 
 	@Override
@@ -54,6 +69,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public boolean delete(Long id) {
 		orderDao.delete(id);
+		orderCaching.deleteFromCache(id);
 		return true;
 	}
 
@@ -97,5 +113,10 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		return ordersForReturn;
+	}
+
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheOrder.writeCacheInFile(orderCaching);
 	}
 }

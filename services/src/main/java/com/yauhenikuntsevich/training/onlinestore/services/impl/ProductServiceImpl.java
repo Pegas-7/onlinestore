@@ -3,6 +3,7 @@ package com.yauhenikuntsevich.training.onlinestore.services.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -10,12 +11,16 @@ import org.springframework.stereotype.Service;
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 import com.yauhenikuntsevich.training.onlinestore.services.ProductService;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.ProductCaching;
+import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheProduct;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
 	@Inject
 	private EntityDao<Product> productDao;
+
+	public ProductCaching productCaching = ExternalizableCacheProduct.createInstanceProductCaching();
 
 	@Override
 	public List<Product> saveAll(List<Product> products) {
@@ -36,13 +41,23 @@ public class ProductServiceImpl implements ProductService {
 			return productDao.add(product);
 		} else {
 			productDao.update(product);
+			productCaching.putInCache(product.getId(), product);
 			return product.getId();
 		}
 	}
 
 	@Override
 	public Product get(Long id) {
-		return productDao.get(id);
+		Product product = null;
+
+		if (productCaching.getCache().get(id) != null) {
+			product = productCaching.getCache().get(id);
+		} else {
+			product = productDao.get(id);
+			productCaching.putInCache(id, product);
+		}
+
+		return product;
 	}
 
 	@Override
@@ -53,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public boolean delete(Long id) {
 		productDao.delete(id);
+		productCaching.deleteFromCache(id);
 		return true;
 	}
 
@@ -68,5 +84,10 @@ public class ProductServiceImpl implements ProductService {
 		}
 
 		return productsForReturn;
+	}
+
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheProduct.writeCacheInFile(productCaching);
 	}
 }

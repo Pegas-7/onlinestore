@@ -13,15 +13,15 @@ import javax.servlet.ServletResponse;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.yauhenikuntsevich.training.onlinestore.services.AuthenticationService;
+import com.yauhenikuntsevich.training.onlinestore.services.authentification.AuthenticationServiceAdministratorImpl;
 
 public class AdminAuthFilter implements Filter {
-	private AuthenticationService authService;
+	private AuthenticationServiceAdministratorImpl authService;
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		authService = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext())
-				.getBean(AuthenticationService.class);
+				.getBean(AuthenticationServiceAdministratorImpl.class);
 	}
 
 	@Override
@@ -63,5 +63,4 @@ public class AdminAuthFilter implements Filter {
 	@Override
 	public void destroy() {
 	}
-
 }

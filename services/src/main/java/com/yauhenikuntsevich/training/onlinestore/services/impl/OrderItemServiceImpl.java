@@ -12,7 +12,9 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderItemCaching;
 import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
+import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheOrderItem;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
@@ -23,6 +25,8 @@ public class OrderItemServiceImpl implements OrderItemService {
 	private EntityDao<Product> productDao;
 	@Inject
 	private EntityDao<Order> orderDao;
+
+	public OrderItemCaching orderItemCaching = ExternalizableCacheOrderItem.createInstanceOrderItemCaching();
 
 	@Override
 	public List<OrderItem> saveAll(List<OrderItem> orderItems) {
@@ -51,13 +55,23 @@ public class OrderItemServiceImpl implements OrderItemService {
 			addPriceProductsToPriceAllPurchaches(orderItem);
 
 			orderItemDao.update(orderItem);
+			orderItemCaching.putInCache(orderItem.getId(), orderItem);
 			return orderItem.getId();
 		}
 	}
 
 	@Override
 	public OrderItem get(Long id) {
-		return orderItemDao.get(id);
+		OrderItem orderItem = null;
+
+		if (orderItemCaching.getCache().get(id) != null) {
+			orderItem = orderItemCaching.getCache().get(id);
+		} else {
+			orderItem = orderItemDao.get(id);
+			orderItemCaching.putInCache(id, orderItem);
+		}
+
+		return orderItem;
 	}
 
 	@Override
@@ -68,6 +82,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	@Override
 	public boolean delete(Long id) {
 		orderItemDao.delete(id);
+		orderItemCaching.deleteFromCache(id);
 		return true;
 	}
 
