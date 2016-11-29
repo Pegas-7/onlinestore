@@ -2,24 +2,25 @@ package com.yauhenikuntsevich.training.onlinestore.services.authentification;
 
 import java.util.Map;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.AuthenticationDao;
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel.PersonAbstractModel;
 import com.yauhenikuntsevich.training.onlinestore.services.AuthenticationService;
-import com.yauhenikuntsevich.training.onlinestore.services.caching.AuthenticationServiceAdministratorCaching;
-import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheAdministratorAuthenticationService;
+import com.yauhenikuntsevich.training.onlinestore.services.caching.AuthenticationServiceClientCaching;
+import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheClientAuthenticationService;
 
 @Service
 public class AuthenticationServiceClientImpl implements AuthenticationService {
 	@Inject
-	private AuthenticationDao<Administrator> authenticationDao;
+	private AuthenticationDao<Client> authenticationDao;
 
-	public AuthenticationServiceAdministratorCaching authenticationServiceAdministratorCaching = ExternalizableCacheAdministratorAuthenticationService
-			.createInstanceAuthenticationServiceAdministratorCaching();
+	public AuthenticationServiceClientCaching authenticationServiceClientCaching = ExternalizableCacheClientAuthenticationService
+			.createInstanceAuthenticationServiceClientCaching();
 
 	@Override
 	public boolean validateUser(String username, String password, String role) {
@@ -33,15 +34,14 @@ public class AuthenticationServiceClientImpl implements AuthenticationService {
 				&& password.equals(personAbstractModel.getPassword()) && role.equals(personAbstractModel.getRole());
 
 		if (isAuthenticated) {
-			authenticationServiceAdministratorCaching.putInCache(personAbstractModel.getFirstName(),
-					personAbstractModel);
+			authenticationServiceClientCaching.putInCache(personAbstractModel.getFirstName(), personAbstractModel);
 		}
 
 		return isAuthenticated;
 	}
 
 	private boolean checkCache(String username, String password, String role) {
-		Map<String, PersonAbstractModel> cache = authenticationServiceAdministratorCaching.getCache();
+		Map<String, PersonAbstractModel> cache = authenticationServiceClientCaching.getCache();
 
 		if (cache.containsKey(username) && password.equals(cache.get(username).getPassword())
 				&& role.equals(cache.get(username).getRole())) {
@@ -50,4 +50,8 @@ public class AuthenticationServiceClientImpl implements AuthenticationService {
 		return false;
 	}
 
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheClientAuthenticationService.writeCacheInFile(authenticationServiceClientCaching);
+	}
 }

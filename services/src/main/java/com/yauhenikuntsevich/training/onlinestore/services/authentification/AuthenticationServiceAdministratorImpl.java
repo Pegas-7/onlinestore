@@ -2,6 +2,7 @@ package com.yauhenikuntsevich.training.onlinestore.services.authentification;
 
 import java.util.Map;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -50,4 +51,9 @@ public class AuthenticationServiceAdministratorImpl implements AuthenticationSer
 		return false;
 	}
 
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheAdministratorAuthenticationService
+				.writeCacheInFile(authenticationServiceAdministratorCaching);
+	}
 }

@@ -16,23 +16,23 @@ import org.springframework.stereotype.Service;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel.PersonAbstractModel;
 
 @Service
-public class AuthenticationServiceAdministratorCaching implements Externalizable {
+public class AuthenticationServiceClientCaching implements Externalizable {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceAdministratorCaching.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceClientCaching.class);
 
 	private Long maxSizeCache = 200L;
 	private Long minSizeCache = 100L;
-	private Map<String, PersonAbstractModel> cache = new LinkedHashMap<>();
 	private Long delayCacheCleanig = 10000L;
+	private Map<String, PersonAbstractModel> cache = new LinkedHashMap<>();
 	private Date dateCleaningCache = settingDateCleaningCache();
-	
-	public AuthenticationServiceAdministratorCaching() {
+
+	public AuthenticationServiceClientCaching() {
 	}
 
 	public void putInCache(String firstName, PersonAbstractModel personAbstractModel) {
 		cleanCache();
 		cache.put(firstName, personAbstractModel);
-		LOGGER.debug("PersonAbstractModel(Administrator) with firstName = " + firstName
+		LOGGER.debug("PersonAbstractModel(CLient) with firstName = " + firstName
 				+ " was put in cache, size cache (map) = " + cache.size());
 	}
 
@@ -53,8 +53,8 @@ public class AuthenticationServiceAdministratorCaching implements Externalizable
 				}
 			}
 		}
-		LOGGER.debug("Cache AuthenticationServiceAdministratorCaching was cleaning by volume , size cache (map) = "
-				+ cache.size());
+		LOGGER.debug(
+				"Cache AuthenticationServiceCLientCaching was cleaning by volume , size cache (map) = " + cache.size());
 	}
 
 	public void cleanCacheByTime() {
@@ -64,15 +64,15 @@ public class AuthenticationServiceAdministratorCaching implements Externalizable
 			cache.clear();
 			settingDateCleaningCache();
 
-			LOGGER.debug(
-					"Cache AuthenticationServiceAdministratorCaching was cleaning by time, set date next cleaning = "
-							+ dateCleaningCache + ", size cache (map) = " + cache.size());
+			LOGGER.debug("Cache AuthenticationServiceCLientCaching was cleaning by time, set date next cleaning = "
+					+ dateCleaningCache + ", size cache (map) = " + cache.size());
 		}
 	}
 
 	public Date settingDateCleaningCache() {
 		Date date = new Date();
-		date.setTime(date.getTime() + delayCacheCleanig);
+		Long date1 = date.getTime() + delayCacheCleanig;
+		date.setTime(date1);
 		dateCleaningCache = date;
 		return date;
 	}

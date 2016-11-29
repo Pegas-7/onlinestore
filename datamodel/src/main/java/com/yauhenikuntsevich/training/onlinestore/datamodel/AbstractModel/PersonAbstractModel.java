@@ -1,10 +1,19 @@
 package com.yauhenikuntsevich.training.onlinestore.datamodel.AbstractModel;
 
-public class PersonAbstractModel extends AbstractModel {
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class PersonAbstractModel extends AbstractModel implements Externalizable {
 	protected String firstName;
 	protected String lastName;
 	protected String password;
 	protected String role;
+
+	public PersonAbstractModel() {
+
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -36,5 +45,23 @@ public class PersonAbstractModel extends AbstractModel {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		id = in.readLong();
+		firstName = (String) in.readObject();
+		lastName = (String) in.readObject();
+		password = (String) in.readObject();
+		role = (String) in.readObject();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeLong(id);
+		out.writeObject(firstName);
+		out.writeObject(lastName);
+		out.writeObject(password);
+		out.writeObject(role);
 	}
 }
