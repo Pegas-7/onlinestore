@@ -24,9 +24,29 @@
 		<property name="converters">
 			<list>
 				<bean
-					class="com.yauhenikuntsevich.training.onlinestore.web.converters.ConvertAdministrator2Model" />
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertAdministrator2Model" />
 				<bean
-					class="com.yauhenikuntsevich.training.onlinestore.web.converters.ConvertModel2Administrator" />
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertClient2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertCategory2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertProduct2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertOrder2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertOrderItem2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertModel2Administrator" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertModel2Client" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertModel2Category" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertModel2Product" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertModel2Order" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertModel2OrderItem" />
 			</list>
 		</property>
 	</bean>

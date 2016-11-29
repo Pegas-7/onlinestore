@@ -12,7 +12,6 @@ public class Client extends PersonAbstractModel implements Externalizable {
 	private Boolean blacklisted;
 
 	public Client() {
-
 	}
 
 	public Integer getAge() {

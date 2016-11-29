@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.web.servlets;
+package com.yauhenikuntsevich.training.onlinestore.web.filter;
 
 import java.nio.charset.Charset;
 import java.util.Base64;
@@ -45,7 +45,6 @@ public class AdminAuthFilter implements Filter {
 		} else {
 			res.sendError(401);
 		}
-
 	}
 
 	private String[] resolveCredentials(org.eclipse.jetty.server.Request req) {

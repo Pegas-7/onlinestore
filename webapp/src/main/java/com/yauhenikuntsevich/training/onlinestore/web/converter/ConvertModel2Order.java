@@ -1,11 +1,11 @@
-package com.yauhenikuntsevich.training.onlinestore.web.converters;
+package com.yauhenikuntsevich.training.onlinestore.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.web.model.AdministratorModel;
 
-public class ConvertModel2Administrator implements Converter<AdministratorModel, Administrator> {
+public class ConvertModel2Order implements Converter<AdministratorModel, Administrator> {
 
 	@Override
 	public Administrator convert(AdministratorModel administratorModel) {
