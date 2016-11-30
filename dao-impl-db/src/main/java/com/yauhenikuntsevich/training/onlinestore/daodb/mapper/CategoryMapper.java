@@ -11,10 +11,12 @@ public final class CategoryMapper implements RowMapper<Category> {
 	@Override
 	public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long category_id = rs.getLong("category_id");
-		String item = rs.getString("item");
+		String itemEn = rs.getString("item_en");
+		String itemRu = rs.getString("item_ru");
 		Category entity = new Category();
 		entity.setId(category_id);
-		entity.setItem(item);
+		entity.setItemEn(itemEn);
+		entity.setItemRu(itemRu);
 		return entity;
 	}
 }

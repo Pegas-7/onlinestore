@@ -28,7 +28,9 @@
 				<bean
 					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertClient2Model" />
 				<bean
-					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertCategory2Model" />
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertCategoryEn2Model" />
+				<bean
+					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertCategoryRu2Model" />
 				<bean
 					class="com.yauhenikuntsevich.training.onlinestore.web.converter.ConvertProduct2Model" />
 				<bean

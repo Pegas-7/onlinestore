@@ -2,18 +2,16 @@ package com.yauhenikuntsevich.training.onlinestore.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
-import com.yauhenikuntsevich.training.onlinestore.web.model.AdministratorModel;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
+import com.yauhenikuntsevich.training.onlinestore.web.model.CategoryModel;
 
-public class ConvertModel2Category implements Converter<AdministratorModel, Administrator> {
+public class ConvertModel2Category implements Converter<CategoryModel, Category> {
 
 	@Override
-	public Administrator convert(AdministratorModel administratorModel) {
-		Administrator e = new Administrator();
-		e.setFirstName(administratorModel.getFirstName());
-		e.setLastName(administratorModel.getLastName());
-		e.setPassword(administratorModel.getPassword());
-		e.setRole(administratorModel.getRole());
+	public Category convert(CategoryModel categoryModel) {
+		Category e = new Category();
+		e.setItemEn(categoryModel.getItemEn());
+		e.setItemRu(categoryModel.getItemRu());
 		return e;
 	}
 }

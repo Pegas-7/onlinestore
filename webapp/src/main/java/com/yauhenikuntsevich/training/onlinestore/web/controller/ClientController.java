@@ -53,7 +53,7 @@ public class ClientController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewAdministrator(@RequestBody ClientModel clientModel) {
+	public ResponseEntity<Void> createNewClient(@RequestBody ClientModel clientModel) {
 		clientService.save(conversionService.convert(clientModel, Client.class));
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 

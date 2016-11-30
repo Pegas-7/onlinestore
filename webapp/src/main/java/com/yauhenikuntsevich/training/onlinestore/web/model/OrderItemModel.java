@@ -4,16 +4,16 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
 public class OrderItemModel {
-	private String id;
+	private Long id;
 	private Order order;
 	private Product product;
 	private Integer quantity;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

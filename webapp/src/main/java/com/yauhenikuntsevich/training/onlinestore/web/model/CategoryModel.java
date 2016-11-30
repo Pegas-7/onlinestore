@@ -5,6 +5,14 @@ public class CategoryModel {
 	private String itemEn;
 	private String itemRu;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getItemEn() {
 		return itemEn;
 	}
@@ -19,13 +27,5 @@ public class CategoryModel {
 
 	public void setItemRu(String itemRu) {
 		this.itemRu = itemRu;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 }

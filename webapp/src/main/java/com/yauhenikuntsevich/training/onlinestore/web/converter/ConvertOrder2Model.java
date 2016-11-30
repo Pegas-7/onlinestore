@@ -2,18 +2,19 @@ package com.yauhenikuntsevich.training.onlinestore.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
-import com.yauhenikuntsevich.training.onlinestore.web.model.AdministratorModel;
+import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
+import com.yauhenikuntsevich.training.onlinestore.web.model.OrderModel;
 
-public class ConvertOrder2Model implements Converter<Administrator, AdministratorModel> {
+public class ConvertOrder2Model implements Converter<Order, OrderModel> {
 
 	@Override
-	public AdministratorModel convert(Administrator administrator) {
-		AdministratorModel e = new AdministratorModel();
-		e.setId(administrator.getId());
-		e.setFirstName(administrator.getFirstName());
-		e.setLastName(administrator.getLastName());
-		e.setRole(administrator.getRole());
+	public OrderModel convert(Order order) {
+		OrderModel e = new OrderModel();
+		e.setId(order.getId());
+		e.setDateOrder(order.getDateOrder());
+		e.setClient(order.getClient());
+		e.setAdministrator(order.getAdministrator());
+		e.setPriceAllPurchases(order.getPriceAllPurchases());
 		return e;
 	}
 }

@@ -37,9 +37,9 @@ public class CategoryDaoDbImpl implements EntityDao<Category> {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO \"category\" (item) VALUES (?)",
-						new String[] { "category_id" });
-				ps.setString(1, entity.getItem());
+						"INSERT INTO \"category\" (item_en, item_ru) VALUES (?, ?)", new String[] { "category_id" });
+				ps.setString(1, entity.getItemEn());
+				ps.setString(2, entity.getItemRu());
 				return ps;
 			}
 
@@ -51,8 +51,8 @@ public class CategoryDaoDbImpl implements EntityDao<Category> {
 
 	@Override
 	public void update(Category entity) {
-		jdbcTemplate.update("update category set item = ? where category_id = ?",
-				entity.getItem(), entity.getId());
+		jdbcTemplate.update("update category set item_en = ?, item_ru = ? where category_id = ?", entity.getItemEn(),
+				entity.getItemRu(), entity.getId());
 	}
 
 	@Override
