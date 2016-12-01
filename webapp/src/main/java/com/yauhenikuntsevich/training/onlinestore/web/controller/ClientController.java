@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
@@ -30,12 +31,11 @@ public class ClientController {
 	private ClientService clientService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ClientModel>> getAll() {
-		List<Client> allClients = clientService.getAll();
+	public ResponseEntity<List<ClientModel>> getAll(
+			@RequestParam(value = "blacklisted", defaultValue = "") String blacklisted) {
 		List<ClientModel> converted = new ArrayList<>();
-		for (Client client : allClients) {
-			converted.add(conversionService.convert(client, ClientModel.class));
-		}
+
+		checkBlacklisted(blacklisted, converted);
 
 		return new ResponseEntity<List<ClientModel>>(converted, HttpStatus.OK);
 	}
@@ -72,5 +72,28 @@ public class ClientController {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		clientService.delete(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	private void checkBlacklisted(String blacklisted, List<ClientModel> converted) {
+		if (blacklisted.equals("true")) {
+			List<Client> allClients = clientService.getAllClientBlacklisted(true);
+			for (Client client : allClients) {
+				converted.add(conversionService.convert(client, ClientModel.class));
+			}
+		} else {
+			if (blacklisted.equals("false")) {
+				List<Client> allClients = clientService.getAllClientBlacklisted(false);
+
+				for (Client client : allClients) {
+					converted.add(conversionService.convert(client, ClientModel.class));
+				}
+			} else {
+				List<Client> allClients = clientService.getAll();
+
+				for (Client client : allClients) {
+					converted.add(conversionService.convert(client, ClientModel.class));
+				}
+			}
+		}
 	}
 }
