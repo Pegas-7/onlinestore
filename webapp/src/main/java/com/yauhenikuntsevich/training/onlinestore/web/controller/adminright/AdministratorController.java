@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.web.controller;
+package com.yauhenikuntsevich.training.onlinestore.web.controller.adminright;
 
 import java.util.ArrayList;
 import java.util.List;

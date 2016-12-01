@@ -19,6 +19,8 @@ public interface OrderService {
 	List<Order> getAll();
 
 	boolean delete(Long id);
+	
+	List<Order> getOwnOrders(String firstName);
 
 	List<Order> getAllOrdersOneAdministrator(Long administratorId);
 

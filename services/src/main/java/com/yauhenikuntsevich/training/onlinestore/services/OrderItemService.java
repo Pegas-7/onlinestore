@@ -11,7 +11,7 @@ public interface OrderItemService {
 
 	@Transactional
 	List<OrderItem> saveAll(List<OrderItem> orderItems);
-	
+
 	@Transactional
 	Long save(OrderItem orderItem);
 
@@ -20,6 +20,8 @@ public interface OrderItemService {
 	List<OrderItem> getAll();
 
 	boolean delete(Long id);
+
+	List<OrderItem> get(String firstName);
 
 	List<Product> getProductsOneOrder(Long orderId);
 }

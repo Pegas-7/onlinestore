@@ -1,4 +1,4 @@
-package com.yauhenikuntsevich.training.onlinestore.web.controller;
+package com.yauhenikuntsevich.training.onlinestore.web.controller.adminright;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,8 @@ import com.yauhenikuntsevich.training.onlinestore.web.model.ClientModel;
 @RestController
 @RequestMapping("/admin/clients")
 
-public class ClientController {
+public class ClientControllerAdminRight {
+
 	@Inject
 	ConversionService conversionService;
 

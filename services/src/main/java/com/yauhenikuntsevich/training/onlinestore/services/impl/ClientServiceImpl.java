@@ -90,4 +90,30 @@ public class ClientServiceImpl implements ClientService {
 	private void writeCacheToFile() {
 		ExternalizableCacheClient.writeCacheInFile(clientCaching);
 	}
+
+	@Override
+	public Client getOwnData(String firstName) {
+		List<Client> clients = clientDao.getAll();
+
+		for (Client client : clients) {
+			if (client.getFirstName().equals(firstName)) {
+				return client;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public Long getIdByFirstName(String firstName) {
+		List<Client> clients = clientDao.getAll();
+
+		for (Client client : clients) {
+			if (client.getFirstName().equals(firstName)) {
+				return client.getId();
+			}
+		}
+
+		return null;
+	}
 }

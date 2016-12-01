@@ -19,5 +19,9 @@ public interface ClientService {
 
 	boolean delete(Long id);
 
+	Client getOwnData(String firstName);
+	
+	Long getIdByFirstName(String firstName);
+
 	List<Client> getAllClientBlacklisted(Boolean blacklisted);
 }

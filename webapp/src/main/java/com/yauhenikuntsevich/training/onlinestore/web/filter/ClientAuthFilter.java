@@ -43,10 +43,10 @@ public class ClientAuthFilter implements Filter {
 			return;
 		}
 
-		String username = credentials[0];
+		String firstName = credentials[0];
 		String password = credentials[1];
-		if (authServiceClient.validateUser(username, password, "USER_ROLE")
-				|| authServiceAdministrator.validateUser(username, password, "ADMIN_ROLE")) {
+		if (authServiceClient.validateUser(firstName, password, "USER_ROLE")
+				|| authServiceAdministrator.validateUser(firstName, password, "ADMIN_ROLE")) {
 			chain.doFilter(request, response);
 		} else {
 			res.sendError(401);

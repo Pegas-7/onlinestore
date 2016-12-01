@@ -38,9 +38,9 @@ public class AdminAuthFilter implements Filter {
 			return;
 		}
 
-		String username = credentials[0];
+		String firstName = credentials[0];
 		String password = credentials[1];
-		if (authService.validateUser(username, password, "ADMIN_ROLE")) {
+		if (authService.validateUser(firstName, password, "ADMIN_ROLE")) {
 			chain.doFilter(request, response);
 		} else {
 			res.sendError(401);
