@@ -60,11 +60,13 @@ public final class OrderItemMapper implements RowMapper<OrderItem> {
 		String name = rs.getString("name");
 		Double price = rs.getDouble("price");
 		Integer quantity = rs.getInt("quantity");
-		String item = rs.getString("item");
+		String itemEn = rs.getString("item_en");
+		String itemRu = rs.getString("item_ru");
 
 		Category category = new Category();
 		category.setId(categoryId);
-		category.setItem(item);
+		category.setItemEn(itemEn);
+		category.setItemRu(itemRu);
 
 		Product product = new Product();
 		product.setId(product_id);
