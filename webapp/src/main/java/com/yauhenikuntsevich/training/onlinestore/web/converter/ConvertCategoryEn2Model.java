@@ -11,7 +11,7 @@ public class ConvertCategoryEn2Model implements Converter<Category, CategoryMode
 	public CategoryModelEn convert(Category category) {
 		CategoryModelEn e = new CategoryModelEn();
 		e.setId(category.getId());
-		e.setItemEn(category.getItemEn());
+		e.setItem(category.getItemEn());
 		return e;
 	}
 }

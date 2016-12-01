@@ -11,7 +11,7 @@ public class ConvertCategoryRu2Model implements Converter<Category, CategoryMode
 	public CategoryModelRu convert(Category category) {
 		CategoryModelRu e = new CategoryModelRu();
 		e.setId(category.getId());
-		e.setItemRu(category.getItemRu());
+		e.setItem(category.getItemRu());
 		return e;
 	}
 }
