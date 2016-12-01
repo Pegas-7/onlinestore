@@ -100,9 +100,9 @@ INSERT INTO "administrator" (first_name, last_name, password, role) VALUES ('Pet
 INSERT INTO "administrator" (first_name, last_name, password, role) VALUES ('Denis_admin', 'Trol', 'admin','ADMIN_ROLE'); --2
 
 --add categories
-INSERT INTO "category" (item_en, item_ru) VALUES ('Camera', 'Камера'); --1
+INSERT INTO "category" (item_en, item_ru) VALUES ('Printer', 'Принтер'); --1
 INSERT INTO "category" (item_en, item_ru) VALUES ('Navigator', 'Навигатор'); --2
-INSERT INTO "category" (item_en, item_ru) VALUES ('Cellphone', 'Мобильный телефон'); --3
+INSERT INTO "category" (item_en, item_ru) VALUES ('Mobile phone', 'Мобильный телефон'); --3
 INSERT INTO "category" (item_en, item_ru) VALUES ('Tablet', 'Планшет'); --4
 
 --add clients

@@ -1,0 +1,7 @@
+ADMIN:
+Authorization: Basic UGV0cl9hZG1pbjphZG1pbg==
+Content-Type: application/json
+
+USER:
+Authorization: Basic TWF4X2NsaWVudDp1c2Vy
+Content-Type: application/json
