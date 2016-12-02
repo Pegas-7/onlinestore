@@ -25,11 +25,11 @@ public final class OrderItemMapper implements RowMapper<OrderItem> {
 		String lastNameClient = rs.getString("last_name_client");
 		Integer age = rs.getInt("age");
 		Boolean blacklisted = rs.getBoolean("blacklisted");
-		String passwordClient = rs.getString("password_client");
+		//String passwordClient = rs.getString("password_client");
 		String roleClient = rs.getString("role_client");
 		String firstNameAdministrator = rs.getString("first_name");
 		String lastNameAdministrator = rs.getString("last_name");
-		String passwordAdministrator = rs.getString("password");
+		//String passwordAdministrator = rs.getString("password");
 		String roleAdministrator = rs.getString("role");
 
 		Client client = new Client();
@@ -38,14 +38,14 @@ public final class OrderItemMapper implements RowMapper<OrderItem> {
 		client.setLastName(lastNameClient);
 		client.setAge(age);
 		client.setBlacklisted(blacklisted);
-		client.setPassword(passwordClient);
+		//client.setPassword(passwordClient);
 		client.setRole(roleClient);
 
 		Administrator administrator = new Administrator();
 		administrator.setId(administratorId);
 		administrator.setFirstName(firstNameAdministrator);
 		administrator.setLastName(lastNameAdministrator);
-		administrator.setPassword(passwordAdministrator);
+		//administrator.setPassword(passwordAdministrator);
 		administrator.setRole(roleAdministrator);
 
 		Order order = new Order();

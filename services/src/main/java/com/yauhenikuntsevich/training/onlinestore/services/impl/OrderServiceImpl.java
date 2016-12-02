@@ -21,6 +21,9 @@ public class OrderServiceImpl implements OrderService {
 	@Inject
 	private EntityDao<Order> orderDao;
 
+	@Inject
+	private ClientServiceImpl clientServiceImpl;
+
 	public OrderCaching orderCaching = ExternalizableCacheOrder.createInstanceOrderCaching();
 
 	@Override
@@ -118,5 +121,21 @@ public class OrderServiceImpl implements OrderService {
 	@PreDestroy
 	private void writeCacheToFile() {
 		ExternalizableCacheOrder.writeCacheInFile(orderCaching);
+	}
+
+	@Override
+	public List<Order> getOwnOrders(String firstName) {
+		List<Order> orders = orderDao.getAll();
+		List<Order> ordersForReturn = new LinkedList<>();
+
+		Long clientId = clientServiceImpl.getIdByFirstName(firstName);
+
+		for (Order order : orders) {
+			if (order.getClient().getId() == clientId) {
+				ordersForReturn.add(order);
+			}
+		}
+
+		return ordersForReturn;
 	}
 }
