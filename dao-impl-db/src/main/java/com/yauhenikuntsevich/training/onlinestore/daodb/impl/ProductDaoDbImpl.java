@@ -37,12 +37,12 @@ public class ProductDaoDbImpl implements EntityDao<Product> {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO \"product\" (category_id, name, price, quantity) VALUES (?, ?, ?, ?)",
+						"INSERT INTO \"product\" (category_id, name, price, quantity_store) VALUES (?, ?, ?, ?)",
 						new String[] { "product_id" });
 				ps.setLong(1, entity.getCategory().getId());
 				ps.setString(2, entity.getName());
 				ps.setDouble(3, entity.getPrice());
-				ps.setInt(4, entity.getQuantity());
+				ps.setInt(4, entity.getQuantityStore());
 				return ps;
 			}
 
@@ -55,8 +55,8 @@ public class ProductDaoDbImpl implements EntityDao<Product> {
 	@Override
 	public void update(Product entity) {
 		jdbcTemplate.update(
-				"update product set category_id = ?, name = ?, price = ?, quantity = ? where product_id = ?",
-				entity.getCategory().getId(), entity.getName(), entity.getPrice(), entity.getQuantity(),
+				"update product set category_id = ?, name = ?, price = ?, quantity_store = ? where product_id = ?",
+				entity.getCategory().getId(), entity.getName(), entity.getPrice(), entity.getQuantityStore(),
 				entity.getId());
 
 	}

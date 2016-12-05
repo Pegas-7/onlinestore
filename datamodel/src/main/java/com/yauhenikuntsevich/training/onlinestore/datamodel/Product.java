@@ -11,7 +11,7 @@ public class Product extends AbstractModel implements Externalizable {
 	private Category category;
 	private String name;
 	private Double price;
-	private Integer quantity;
+	private Integer quantityStore;
 
 	public Product() {
 	}
@@ -40,12 +40,12 @@ public class Product extends AbstractModel implements Externalizable {
 		this.price = price;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getQuantityStore() {
+		return quantityStore;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setQuantityStore(Integer quantityStore) {
+		this.quantityStore = quantityStore;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class Product extends AbstractModel implements Externalizable {
 		category = (Category) in.readObject();
 		name = (String) in.readObject();
 		price = (Double) in.readObject();
-		quantity = (Integer) in.readObject();
+		quantityStore = (Integer) in.readObject();
 	}
 
 	@Override
@@ -63,6 +63,6 @@ public class Product extends AbstractModel implements Externalizable {
 		out.writeObject(category);
 		out.writeObject(name);
 		out.writeDouble(price);
-		out.writeInt(quantity);
+		out.writeInt(quantityStore);
 	}
 }

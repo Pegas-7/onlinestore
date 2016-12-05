@@ -15,12 +15,12 @@ public final class ProductMapper implements RowMapper<Product> {
 		Long categoryId = rs.getLong("category_id");
 		String name = rs.getString("name");
 		Double price = rs.getDouble("price");
-		Integer quantity = rs.getInt("quantity");
+		Integer quantityStore = rs.getInt("quantity_store");
 		String itemEn = rs.getString("item_en");
 		String itemRu = rs.getString("item_ru");
 
 		Product entity = new Product();
-		
+
 		Category category = new Category();
 		category.setId(categoryId);
 		category.setItemEn(itemEn);
@@ -30,7 +30,7 @@ public final class ProductMapper implements RowMapper<Product> {
 		entity.setCategory(category);
 		entity.setName(name);
 		entity.setPrice(price);
-		entity.setQuantity(quantity);
+		entity.setQuantityStore(quantityStore);
 
 		return entity;
 	}
