@@ -52,7 +52,7 @@ public class OrderControllerAdminRight {
 		try {
 			order = orderService.get(id);
 		} catch (EmptyResultDataAccessException e) {
-			return new ResponseEntity<OrderModel>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<OrderModel>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<OrderModel>(conversionService.convert(order, OrderModel.class), HttpStatus.OK);

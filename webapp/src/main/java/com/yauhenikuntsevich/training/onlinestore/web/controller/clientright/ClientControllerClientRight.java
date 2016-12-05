@@ -36,7 +36,7 @@ public class ClientControllerClientRight {
 		try {
 			client = clientService.get(clientService.getIdByFirstName(firstName));
 		} catch (EmptyResultDataAccessException e) {
-			return new ResponseEntity<ClientModel>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<ClientModel>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<ClientModel>(conversionService.convert(client, ClientModel.class), HttpStatus.OK);
 	}

@@ -46,7 +46,7 @@ public class AdministratorController {
 		try {
 			administrator = administratorService.get(id);
 		} catch (EmptyResultDataAccessException e) {
-			return new ResponseEntity<AdministratorModel>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<AdministratorModel>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<AdministratorModel>(

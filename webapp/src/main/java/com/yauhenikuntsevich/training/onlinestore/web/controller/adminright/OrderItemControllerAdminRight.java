@@ -47,7 +47,7 @@ public class OrderItemControllerAdminRight {
 		try {
 			orderItem = orderItemService.get(id);
 		} catch (EmptyResultDataAccessException e) {
-			return new ResponseEntity<OrderItemModel>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<OrderItemModel>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<OrderItemModel>(conversionService.convert(orderItem, OrderItemModel.class),
