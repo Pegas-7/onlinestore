@@ -21,7 +21,7 @@ public interface OrderItemService {
 
 	boolean delete(Long id);
 
-	List<OrderItem> get(String firstName);
-
 	List<Product> getProductsOneOrder(Long orderId);
+
+	List<OrderItem> getOwnOrderItems(String firstName);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
+import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderCaching;
 import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheOrder;
@@ -22,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
 	private EntityDao<Order> orderDao;
 
 	@Inject
-	private ClientServiceImpl clientServiceImpl;
+	private ClientService clientService;
 
 	public OrderCaching orderCaching = ExternalizableCacheOrder.createInstanceOrderCaching();
 
@@ -128,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
 		List<Order> orders = orderDao.getAll();
 		List<Order> ordersForReturn = new LinkedList<>();
 
-		Long clientId = clientServiceImpl.getIdByFirstName(firstName);
+		Long clientId = clientService.getIdByFirstName(firstName);
 
 		for (Order order : orders) {
 			if (order.getClient().getId() == clientId) {

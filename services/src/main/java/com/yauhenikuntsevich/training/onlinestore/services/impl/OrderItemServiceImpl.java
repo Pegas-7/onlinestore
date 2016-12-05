@@ -11,6 +11,7 @@ import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
+import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderItemCaching;
 import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
@@ -25,6 +26,8 @@ public class OrderItemServiceImpl implements OrderItemService {
 	private EntityDao<Product> productDao;
 	@Inject
 	private EntityDao<Order> orderDao;
+	@Inject
+	private ClientService clientService;
 
 	public OrderItemCaching orderItemCaching = ExternalizableCacheOrderItem.createInstanceOrderItemCaching();
 
@@ -169,8 +172,18 @@ public class OrderItemServiceImpl implements OrderItemService {
 	}
 
 	@Override
-	public List<OrderItem> get(String firstName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OrderItem> getOwnOrderItems(String firstName) {
+		List<OrderItem> orderItems = orderItemDao.getAll();
+		List<OrderItem> orderItemForReturn = new LinkedList<>();
+		
+		Long clientId = clientService.getIdByFirstName(firstName);
+
+		for (OrderItem orderItem : orderItems) {
+			if (orderItem.getOrder().getClient().getId() == clientId) {
+				orderItemForReturn.add(orderItem);
+			}
+		}
+
+		return orderItemForReturn;
 	}
 }
