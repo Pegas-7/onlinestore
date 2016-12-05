@@ -317,7 +317,7 @@ public class OrderItemServiceImplTest {
 		Order orderBefore = orderDao.get(id1Order);
 		Double priceAllPurchachesBefore = orderBefore.getPriceAllPurchases();
 
-		orderItemServiceImpl.addPriceProductsToPriceAllPurchaches(orderItem1);
+		orderItemServiceImpl.addPriceProductsToPriceAllPurchachesAdding(orderItem1);
 
 		Order orderAfter = orderDao.get(id1Order);
 		Double priceAllPurchachesAfter = orderAfter.getPriceAllPurchases();

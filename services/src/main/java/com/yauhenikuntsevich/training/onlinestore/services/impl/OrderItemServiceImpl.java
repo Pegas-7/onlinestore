@@ -46,13 +46,13 @@ public class OrderItemServiceImpl implements OrderItemService {
 		if (orderItem.getId() == null) {
 			subtractionQuantityFromProductAdding(orderItem);
 
-			addPriceProductsToPriceAllPurchaches(orderItem);
+			addPriceProductsToPriceAllPurchachesAdding(orderItem);
 
 			return orderItemDao.add(orderItem);
 		} else {
 			substractionQuantityFromProductUpdating(orderItem);
 
-			addPriceProductsToPriceAllPurchaches(orderItem);
+			addPriceProductsToPriceAllPurchachesUpdating(orderItem);
 
 			orderItemDao.update(orderItem);
 			orderItemCaching.putInCache(orderItem.getId(), orderItem);
@@ -105,13 +105,13 @@ public class OrderItemServiceImpl implements OrderItemService {
 		Long idProduct = orderItem.getProduct().getId();
 		Product product = productDao.get(idProduct);
 
-		Integer quantityContainsProduct = product.getQuantity();
+		Integer quantityContainsProduct = product.getQuantityStore();
 		Integer quantityContainsOrderItem = orderItem.getQuantity();
 
 		checkQuantity(quantityContainsProduct, quantityContainsOrderItem);
 
 		Integer diffQuantity = quantityContainsProduct - quantityContainsOrderItem;
-		product.setQuantity(diffQuantity);
+		product.setQuantityStore(diffQuantity);
 		productDao.update(product);
 	}
 
@@ -122,23 +122,39 @@ public class OrderItemServiceImpl implements OrderItemService {
 		OrderItem orderItemFromDb = orderItemDao.get(orderItem.getId());
 
 		Integer quantityContainsOrderItemFromDb = orderItemFromDb.getQuantity();
-		Integer quantityContainsProduct = product.getQuantity();
+		Integer quantityContainsProduct = product.getQuantityStore();
 		Integer quantityContainsOrderItem = orderItem.getQuantity();
 
 		Integer addedProduct = quantityContainsOrderItem - quantityContainsOrderItemFromDb;
 		checkQuantity(quantityContainsProduct, addedProduct);
 		Integer updatedProductQuantity = quantityContainsProduct - addedProduct;
 
-		product.setQuantity(updatedProductQuantity);
+		product.setQuantityStore(updatedProductQuantity);
 		productDao.update(product);
 	}
 
-	protected void addPriceProductsToPriceAllPurchaches(OrderItem orderItem) {
+	protected void addPriceProductsToPriceAllPurchachesAdding(OrderItem orderItem) {
 		Order order = orderDao.get(orderItem.getOrder().getId());
 		Double priceAllPurchaches = order.getPriceAllPurchases();
 
-		Product product = orderItem.getProduct();
+		Product product = productDao.get(orderItem.getProduct().getId());
 		Double priceProducts = orderItem.getQuantity() * product.getPrice();
+
+		Double priceAllPurchachesUpdated = priceAllPurchaches + priceProducts;
+
+		order.setPriceAllPurchases(priceAllPurchachesUpdated);
+		orderDao.update(order);
+	}
+
+	protected void addPriceProductsToPriceAllPurchachesUpdating(OrderItem orderItem) {
+		Order order = orderDao.get(orderItem.getOrder().getId());
+		Double priceAllPurchaches = order.getPriceAllPurchases();
+
+		Product product = productDao.get(orderItem.getProduct().getId());
+
+		Integer quantityInOrderItemFromDB = orderItemDao.get(orderItem.getId()).getQuantity();
+
+		Double priceProducts = (orderItem.getQuantity() - quantityInOrderItemFromDB) * product.getPrice();
 
 		Double priceAllPurchachesUpdated = priceAllPurchaches + priceProducts;
 
@@ -150,5 +166,11 @@ public class OrderItemServiceImpl implements OrderItemService {
 		if (quantityProduct - quantityOrderItem < 0) {
 			throw new NotEnoughQuantityProductException();
 		}
+	}
+
+	@Override
+	public List<OrderItem> get(String firstName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
