@@ -55,15 +55,15 @@ public class OrderItemDaoDbImpl implements EntityDao<OrderItem> {
 	}
 
 	@Override
-	public void update(OrderItem entity) {
-		jdbcTemplate.update("update order_item set order_id = ?, product_id = ?, quantity = ? where order_item_id = ?",
+	public Integer update(OrderItem entity) {
+		return jdbcTemplate.update("update order_item set order_id = ?, product_id = ?, quantity = ? where order_item_id = ?",
 				entity.getOrder().getId(), entity.getProduct().getId(), entity.getQuantity(), entity.getId());
 
 	}
 
 	@Override
-	public void delete(Long id) {
-		jdbcTemplate.update("delete from \"order_item\" where order_item_id = ?", id);
+	public Integer delete(Long id) {
+		return jdbcTemplate.update("delete from \"order_item\" where order_item_id = ?", id);
 	}
 
 	@Override

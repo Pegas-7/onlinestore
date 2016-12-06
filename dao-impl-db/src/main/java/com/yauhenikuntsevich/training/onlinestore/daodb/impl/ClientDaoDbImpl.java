@@ -53,16 +53,16 @@ public class ClientDaoDbImpl implements EntityDao<Client> {
 	}
 
 	@Override
-	public void update(Client entity) {
-		jdbcTemplate.update(
+	public Integer update(Client entity) {
+		return jdbcTemplate.update(
 				"update client set first_name = ?, last_name = ? , age = ?, blacklisted = ?, password = ?, role = ? where client_id = ?",
 				entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getBlacklisted(),
 				entity.getPassword(), entity.getRole(), entity.getId());
 	}
 
 	@Override
-	public void delete(Long id) {
-		jdbcTemplate.update("delete from client where client_id = ?", id);
+	public Integer delete(Long id) {
+		return jdbcTemplate.update("delete from client where client_id = ?", id);
 	}
 
 	@Override

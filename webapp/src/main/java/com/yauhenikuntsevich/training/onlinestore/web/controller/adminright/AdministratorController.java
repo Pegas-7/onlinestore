@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,25 +55,49 @@ public class AdministratorController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewAdministrator(@RequestBody AdministratorModel administratorModel) {
-		administratorService.save(conversionService.convert(administratorModel, Administrator.class));
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<String> createNewAdministrator(@RequestBody AdministratorModel administratorModel) {
+		Long id;
+		try {
+			id = administratorService.save(conversionService.convert(administratorModel, Administrator.class));
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 
+		return new ResponseEntity<String>("Administrator was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateAdministrator(@RequestBody AdministratorModel administratorModel,
+	public ResponseEntity<String> updateAdministrator(@RequestBody AdministratorModel administratorModel,
 			@PathVariable Long id) {
 		Administrator administrator = conversionService.convert(administratorModel, Administrator.class);
 		administrator.setId(id);
-		administratorService.save(administrator);
-		return new ResponseEntity<Void>(HttpStatus.OK);
 
+		try {
+			Long id1 = administratorService.save(administrator);
+			if (id1 != -1L) {
+				return new ResponseEntity<String>("Administrator was updated in database", HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>("Administrator with id = " + id + " not found in database",
+						HttpStatus.NOT_FOUND);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		administratorService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		Boolean deleted = administratorService.delete(id);
+		if (deleted) {
+			return new ResponseEntity<String>("Administrator with id = " + id + " was deleted from database", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Administrator with id = " + id + " not found in database",
+				HttpStatus.NOT_FOUND);
 	}
 }

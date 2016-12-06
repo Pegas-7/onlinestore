@@ -40,9 +40,12 @@ public class ProductServiceImpl implements ProductService {
 		if (product.getId() == null) {
 			return productDao.add(product);
 		} else {
-			productDao.update(product);
-			productCaching.putInCache(product.getId(), product);
-			return product.getId();
+			Integer rows = productDao.update(product);
+			if (rows > 0) {
+				productCaching.putInCache(product.getId(), product);
+				return product.getId();
+			}
+			return -1L;
 		}
 	}
 
@@ -67,9 +70,12 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public boolean delete(Long id) {
-		productDao.delete(id);
-		productCaching.deleteFromCache(id);
-		return true;
+		Integer rows = productDao.delete(id);
+		if (rows > 0) {
+			productCaching.deleteFromCache(id);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -45,9 +45,12 @@ public class OrderServiceImpl implements OrderService {
 		if (order.getId() == null) {
 			return orderDao.add(order);
 		} else {
-			orderDao.update(order);
-			orderCaching.putInCache(order.getId(), order);
-			return order.getId();
+			Integer rows = orderDao.update(order);
+			if (rows > 0) {
+				orderCaching.putInCache(order.getId(), order);
+				return order.getId();
+			}
+			return -1L;
 		}
 	}
 
@@ -72,9 +75,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public boolean delete(Long id) {
-		orderDao.delete(id);
-		orderCaching.deleteFromCache(id);
-		return true;
+		Integer rows = orderDao.delete(id);
+		if (rows > 0) {
+			orderCaching.deleteFromCache(id);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -56,16 +56,16 @@ public class OrderDaoDbImpl implements EntityDao<Order> {
 	}
 
 	@Override
-	public void update(Order entity) {
-		jdbcTemplate.update(
+	public Integer update(Order entity) {
+		return jdbcTemplate.update(
 				"update \"order\" set date_order = ?, client_id = ?, administrator_id = ?, price_all_purchases = ? where order_id = ?",
 				entity.getDateOrder(), entity.getClient().getId(), entity.getAdministrator().getId(),
 				entity.getPriceAllPurchases(), entity.getId());
 	}
 
 	@Override
-	public void delete(Long id) {
-		jdbcTemplate.update("delete from \"order\" where order_id = ?", id);
+	public Integer delete(Long id) {
+		return jdbcTemplate.update("delete from \"order\" where order_id = ?", id);
 
 	}
 

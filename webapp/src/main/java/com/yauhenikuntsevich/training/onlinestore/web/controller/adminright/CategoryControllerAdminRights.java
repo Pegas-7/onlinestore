@@ -3,6 +3,7 @@ package com.yauhenikuntsevich.training.onlinestore.web.controller.adminright;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,22 +26,47 @@ public class CategoryControllerAdminRights {
 	private CategoryService сategoryService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewCategory(@RequestBody CategoryModel categoryModel) {
-		сategoryService.save(conversionService.convert(categoryModel, Category.class));
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<String> createNewCategory(@RequestBody CategoryModel categoryModel) {
+		Long id;
+		try {
+			id = сategoryService.save(conversionService.convert(categoryModel, Category.class));
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+		return new ResponseEntity<String>("Category was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateCategory(@RequestBody CategoryModel categoryModel, @PathVariable Long id) {
+	public ResponseEntity<String> updateCategory(@RequestBody CategoryModel categoryModel, @PathVariable Long id) {
 		Category category = conversionService.convert(categoryModel, Category.class);
 		category.setId(id);
-		сategoryService.save(category);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+
+		try {
+			Long id1 = сategoryService.save(category);
+			if (id1 != -1L) {
+				return new ResponseEntity<String>("Category was updated in database", HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>("Category with id = " + id + " not found in database",
+						HttpStatus.NOT_FOUND);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		сategoryService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		Boolean deleted = сategoryService.delete(id);
+		if (deleted) {
+			return new ResponseEntity<String>("Category with id = " + id + " was deleted from database", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Category with id = " + id + " not found in database", HttpStatus.NOT_FOUND);
 	}
 }

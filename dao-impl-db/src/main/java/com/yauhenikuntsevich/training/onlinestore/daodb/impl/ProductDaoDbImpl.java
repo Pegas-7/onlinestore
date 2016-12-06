@@ -49,21 +49,19 @@ public class ProductDaoDbImpl implements EntityDao<Product> {
 		}, keyHolder);
 
 		return keyHolder.getKey().longValue();
-
 	}
 
 	@Override
-	public void update(Product entity) {
-		jdbcTemplate.update(
+	public Integer update(Product entity) {
+		return jdbcTemplate.update(
 				"update product set category_id = ?, name = ?, price = ?, quantity_store = ? where product_id = ?",
 				entity.getCategory().getId(), entity.getName(), entity.getPrice(), entity.getQuantityStore(),
 				entity.getId());
-
 	}
 
 	@Override
-	public void delete(Long id) {
-		jdbcTemplate.update("delete from product where product_id = ?", id);
+	public Integer delete(Long id) {
+		return jdbcTemplate.update("delete from product where product_id = ?", id);
 	}
 
 	@Override

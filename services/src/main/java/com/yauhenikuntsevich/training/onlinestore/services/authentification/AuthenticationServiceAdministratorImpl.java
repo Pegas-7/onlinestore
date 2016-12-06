@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.AuthenticationDao;
@@ -28,7 +29,15 @@ public class AuthenticationServiceAdministratorImpl implements AuthenticationSer
 			return true;
 		}
 
-		PersonAbstractModel personAbstractModel = authenticationDao.get(username);
+		PersonAbstractModel personAbstractModel = null;
+
+		try {
+			personAbstractModel = authenticationDao.get(username);
+		} catch (EmptyResultDataAccessException e) {
+			return false;
+		}
+
+		authenticationDao.get(username);
 
 		Boolean isAuthenticated = username.equals(personAbstractModel.getFirstName())
 				&& password.equals(personAbstractModel.getPassword()) && role.equals(personAbstractModel.getRole());

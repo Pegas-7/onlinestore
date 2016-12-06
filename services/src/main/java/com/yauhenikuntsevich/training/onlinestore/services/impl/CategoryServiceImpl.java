@@ -39,9 +39,12 @@ public class CategoryServiceImpl implements CategoryService {
 		if (category.getId() == null) {
 			return categoryDao.add(category);
 		} else {
-			categoryDao.update(category);
-			categoryCaching.putInCache(category.getId(), category);
-			return category.getId();
+			Integer rows = categoryDao.update(category);
+			if (rows > 0) {
+				categoryCaching.putInCache(category.getId(), category);
+				return category.getId();
+			}
+			return -1L;
 		}
 	}
 
@@ -66,9 +69,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public boolean delete(Long id) {
-		categoryDao.delete(id);
-		categoryCaching.deleteFromCache(id);
-		return true;
+		Integer rows = categoryDao.delete(id);
+		if (rows > 0) {
+			categoryCaching.deleteFromCache(id);
+			return true;
+		}
+		return false;
 	}
 
 	@PreDestroy

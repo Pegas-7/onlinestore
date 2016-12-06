@@ -50,14 +50,14 @@ public class CategoryDaoDbImpl implements EntityDao<Category> {
 	}
 
 	@Override
-	public void update(Category entity) {
-		jdbcTemplate.update("update category set item_en = ?, item_ru = ? where category_id = ?", entity.getItemEn(),
-				entity.getItemRu(), entity.getId());
+	public Integer update(Category entity) {
+		return jdbcTemplate.update("update category set item_en = ?, item_ru = ? where category_id = ?",
+				entity.getItemEn(), entity.getItemRu(), entity.getId());
 	}
 
 	@Override
-	public void delete(Long id) {
-		jdbcTemplate.update("delete from category where category_id = ?", id);
+	public Integer delete(Long id) {
+		return jdbcTemplate.update("delete from category where category_id = ?", id);
 
 	}
 

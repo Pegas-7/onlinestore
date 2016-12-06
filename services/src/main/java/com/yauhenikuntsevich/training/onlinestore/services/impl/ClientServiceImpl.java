@@ -40,9 +40,12 @@ public class ClientServiceImpl implements ClientService {
 		if (client.getId() == null) {
 			return clientDao.add(client);
 		} else {
-			clientDao.update(client);
-			clientCaching.putInCache(client.getId(), client);
-			return client.getId();
+			Integer rows = clientDao.update(client);
+			if (rows > 0) {
+				clientCaching.putInCache(client.getId(), client);
+				return client.getId();
+			}
+			return -1L;
 		}
 	}
 
@@ -67,9 +70,12 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public boolean delete(Long id) {
-		clientDao.delete(id);
-		clientCaching.deleteFromCache(id);
-		return true;
+		Integer rows = clientDao.delete(id);
+		if (rows > 0) {
+			clientCaching.deleteFromCache(id);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

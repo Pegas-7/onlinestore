@@ -57,9 +57,12 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 			addPriceProductsToPriceAllPurchachesUpdating(orderItem);
 
-			orderItemDao.update(orderItem);
-			orderItemCaching.putInCache(orderItem.getId(), orderItem);
-			return orderItem.getId();
+			Integer rows = orderItemDao.update(orderItem);
+			if (rows > 0) {
+				orderItemCaching.putInCache(orderItem.getId(), orderItem);
+				return orderItem.getId();
+			}
+			return -1L;
 		}
 	}
 
@@ -84,9 +87,12 @@ public class OrderItemServiceImpl implements OrderItemService {
 
 	@Override
 	public boolean delete(Long id) {
-		orderItemDao.delete(id);
-		orderItemCaching.deleteFromCache(id);
-		return true;
+		Integer rows = orderItemDao.delete(id);
+		if (rows > 0) {
+			orderItemCaching.deleteFromCache(id);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -175,7 +181,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	public List<OrderItem> getOwnOrderItems(String firstName) {
 		List<OrderItem> orderItems = orderItemDao.getAll();
 		List<OrderItem> orderItemForReturn = new LinkedList<>();
-		
+
 		Long clientId = clientService.getIdByFirstName(firstName);
 
 		for (OrderItem orderItem : orderItems) {

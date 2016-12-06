@@ -35,13 +35,16 @@ public class CategoryServiceImplTest {
 	@Before
 	public void beforeTest() {
 		category1 = new Category();
-		category1.setItem("FirstItem");
+		category1.setItemEn("FirstItem");
+		category1.setItemRu("Первое наименование");
 
 		category2 = new Category();
-		category2.setItem("SecondItem");
+		category2.setItemEn("SecondItem");
+		category2.setItemRu("Второе наименование");
 
 		category3 = new Category();
-		category3.setItem("ThirdItem");
+		category3.setItemEn("ThirdItem");
+		category3.setItemRu("Третье наименование");
 
 		id1 = categoryDao.add(category1);
 		id2 = categoryDao.add(category2);
@@ -57,7 +60,8 @@ public class CategoryServiceImplTest {
 	public void getTest() {
 		Category categoryFromDb1 = categoryServiceImpl.get(id1);
 
-		Assert.assertEquals(category1.getItem(), categoryFromDb1.getItem());
+		Assert.assertEquals(category1.getItemEn(), categoryFromDb1.getItemEn());
+		Assert.assertEquals(category1.getItemRu(), categoryFromDb1.getItemRu());
 	}
 
 	@Test
@@ -74,8 +78,11 @@ public class CategoryServiceImplTest {
 				categoryFromDb2 = category;
 		}
 
-		Assert.assertEquals(category1.getItem(), categoryFromDb1.getItem());
-		Assert.assertEquals(category2.getItem(), categoryFromDb2.getItem());
+		Assert.assertEquals(category1.getItemEn(), categoryFromDb1.getItemEn());
+		Assert.assertEquals(category2.getItemEn(), categoryFromDb2.getItemEn());
+		
+		Assert.assertEquals(category1.getItemRu(), categoryFromDb1.getItemRu());
+		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 	}
 
 	@Test
@@ -96,8 +103,11 @@ public class CategoryServiceImplTest {
 		Category categoryFromDb1 = categoryServiceImpl.get(id1Updated);
 		Category categoryFromDb2 = categoryServiceImpl.get(id2);
 
-		Assert.assertEquals(category3.getItem(), categoryFromDb1.getItem());
-		Assert.assertEquals(category2.getItem(), categoryFromDb2.getItem());
+		Assert.assertEquals(category3.getItemEn(), categoryFromDb1.getItemEn());
+		Assert.assertEquals(category2.getItemEn(), categoryFromDb2.getItemEn());
+		
+		Assert.assertEquals(category3.getItemRu(), categoryFromDb1.getItemRu());
+		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 	}
 
 	@Test
@@ -130,8 +140,11 @@ public class CategoryServiceImplTest {
 		Category categoryFromDb1 = categoryServiceImpl.get(id1Updated);
 		Category categoryFromDb2 = categoryServiceImpl.get(id2);
 
-		Assert.assertEquals(category3.getItem(), categoryFromDb1.getItem());
-		Assert.assertEquals(category2.getItem(), categoryFromDb2.getItem());
+		Assert.assertEquals(category3.getItemEn(), categoryFromDb1.getItemEn());
+		Assert.assertEquals(category2.getItemEn(), categoryFromDb2.getItemEn());
+		
+		Assert.assertEquals(category3.getItemRu(), categoryFromDb1.getItemRu());
+		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 
 		// liberation variable
 		categoryDao.delete(id1Updated);

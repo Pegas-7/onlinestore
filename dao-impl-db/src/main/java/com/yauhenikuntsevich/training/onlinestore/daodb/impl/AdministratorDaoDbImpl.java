@@ -51,15 +51,15 @@ public class AdministratorDaoDbImpl implements EntityDao<Administrator> {
 	}
 
 	@Override
-	public void update(Administrator entity) {
-		jdbcTemplate.update(
+	public Integer update(Administrator entity) {
+		return jdbcTemplate.update(
 				"update administrator set first_name = ?, last_name = ?, password = ?, role = ? where administrator_id = ?",
 				entity.getFirstName(), entity.getLastName(), entity.getPassword(), entity.getRole(), entity.getId());
 	}
 
 	@Override
-	public void delete(Long id) {
-		jdbcTemplate.update("delete from administrator where administrator_id = ?", id);
+	public Integer delete(Long id) {
+		return jdbcTemplate.update("delete from administrator where administrator_id = ?", id);
 	}
 
 	@Override
