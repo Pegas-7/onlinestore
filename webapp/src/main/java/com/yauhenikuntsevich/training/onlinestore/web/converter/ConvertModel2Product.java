@@ -10,10 +10,11 @@ public class ConvertModel2Product implements Converter<ProductModel, Product> {
 	@Override
 	public Product convert(ProductModel productModel) {
 		Product e = new Product();
+		e.setId(productModel.getId());
 		e.setCategory(productModel.getCategory());
 		e.setName(productModel.getName());
 		e.setPrice(productModel.getPrice());
-		e.setQuantity(productModel.getQuantity());
+		e.setQuantityStore(productModel.getQuantityStore());
 		return e;
 	}
 }

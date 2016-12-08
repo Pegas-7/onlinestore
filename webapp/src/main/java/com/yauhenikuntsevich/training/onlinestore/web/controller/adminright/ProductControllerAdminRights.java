@@ -3,6 +3,7 @@ package com.yauhenikuntsevich.training.onlinestore.web.controller.adminright;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,22 +26,54 @@ public class ProductControllerAdminRights {
 	private ProductService productService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewProduct(@RequestBody ProductModel productModel) {
-		productService.save(conversionService.convert(productModel, Product.class));
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<String> createNewProduct(@RequestBody ProductModel productModel) {
+		Long id;
+		try {
+			if (productModel.getQuantityStore() == null) {
+				productModel.setQuantityStore(0);
+			}
+			id = productService.save(conversionService.convert(productModel, Product.class));
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+		return new ResponseEntity<String>("Product was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateProduct(@RequestBody ProductModel productModel, @PathVariable Long id) {
+	public ResponseEntity<String> updateProduct(@RequestBody ProductModel productModel, @PathVariable Long id) {
+		if (productModel.getQuantityStore() == null) {
+			productModel.setQuantityStore(0);
+		}
+
 		Product product = conversionService.convert(productModel, Product.class);
 		product.setId(id);
-		productService.save(product);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+
+		try {
+			Long id1 = productService.save(product);
+			if (id1 != -1L) {
+				return new ResponseEntity<String>("Product was updated in database", HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>("Product with id = " + id + " not found in database",
+						HttpStatus.NOT_FOUND);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		productService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		Boolean deleted = productService.delete(id);
+		if (deleted) {
+			return new ResponseEntity<String>("Product with id = " + id + " was deleted from database", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Product with id = " + id + " not found in database", HttpStatus.NOT_FOUND);
 	}
 }

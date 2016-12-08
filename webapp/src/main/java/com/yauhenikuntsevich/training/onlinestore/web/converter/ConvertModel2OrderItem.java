@@ -10,6 +10,7 @@ public class ConvertModel2OrderItem implements Converter<OrderItemModel, OrderIt
 	@Override
 	public OrderItem convert(OrderItemModel orderItemModel) {
 		OrderItem e = new OrderItem();
+		e.setId(orderItemModel.getId());
 		e.setOrder(orderItemModel.getOrder());
 		e.setProduct(orderItemModel.getProduct());
 		e.setQuantity(orderItemModel.getQuantity());

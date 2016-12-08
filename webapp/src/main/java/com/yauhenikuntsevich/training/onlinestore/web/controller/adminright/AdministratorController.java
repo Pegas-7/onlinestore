@@ -95,7 +95,8 @@ public class AdministratorController {
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		Boolean deleted = administratorService.delete(id);
 		if (deleted) {
-			return new ResponseEntity<String>("Administrator with id = " + id + " was deleted from database", HttpStatus.OK);
+			return new ResponseEntity<String>("Administrator with id = " + id + " was deleted from database",
+					HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Administrator with id = " + id + " not found in database",
 				HttpStatus.NOT_FOUND);

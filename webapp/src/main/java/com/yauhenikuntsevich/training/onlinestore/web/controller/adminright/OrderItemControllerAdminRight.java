@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,22 +56,51 @@ public class OrderItemControllerAdminRight {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewOrder(@RequestBody OrderItemModel orderItemModel) {
-		orderItemService.save(conversionService.convert(orderItemModel, OrderItem.class));
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<String> createNewOrder(@RequestBody OrderItemModel orderItemModel) {
+		Long id;
+		try {
+			if (orderItemModel.getQuantity() == null) {
+				throw new DataIntegrityViolationException(null);
+			}
+			id = orderItemService.save(conversionService.convert(orderItemModel, OrderItem.class));
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+		return new ResponseEntity<String>("OrderItem was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateOrder(@RequestBody OrderItemModel orderItemModel, @PathVariable Long id) {
+	public ResponseEntity<String> updateOrder(@RequestBody OrderItemModel orderItemModel, @PathVariable Long id) {
 		OrderItem orderItem = conversionService.convert(orderItemModel, OrderItem.class);
 		orderItem.setId(id);
-		orderItemService.save(orderItem);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+
+		try {
+			Long id1 = orderItemService.save(orderItem);
+			if (id1 != -1L) {
+				return new ResponseEntity<String>("OrderItem was updated in database", HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>("OrderItem with id = " + id + " not found in database",
+						HttpStatus.NOT_FOUND);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		orderItemService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		Boolean deleted = orderItemService.delete(id);
+		if (deleted) {
+			return new ResponseEntity<String>("OrderItem with id = " + id + " was deleted from database",
+					HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("OrderItem with id = " + id + " not found in database", HttpStatus.NOT_FOUND);
 	}
 }

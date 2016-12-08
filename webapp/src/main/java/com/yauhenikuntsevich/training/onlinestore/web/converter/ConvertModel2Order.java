@@ -10,6 +10,7 @@ public class ConvertModel2Order implements Converter<OrderModel, Order> {
 	@Override
 	public Order convert(OrderModel orderModel) {
 		Order e = new Order();
+		e.setId(orderModel.getId());
 		e.setDateOrder(orderModel.getDateOrder());
 		e.setClient(orderModel.getClient());
 		e.setAdministrator(orderModel.getAdministrator());

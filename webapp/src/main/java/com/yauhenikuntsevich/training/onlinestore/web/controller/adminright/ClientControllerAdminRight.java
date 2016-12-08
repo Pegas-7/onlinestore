@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,25 +55,48 @@ public class ClientControllerAdminRight {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewClient(@RequestBody ClientModel clientModel) {
-		clientService.save(conversionService.convert(clientModel, Client.class));
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+	public ResponseEntity<String> createNewClient(@RequestBody ClientModel clientModel) {
+		Long id;
+		try {
+			id = clientService.save(conversionService.convert(clientModel, Client.class));
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 
+		return new ResponseEntity<String>("Client was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateClient(@RequestBody ClientModel clientModel, @PathVariable Long id) {
+	public ResponseEntity<String> updateClient(@RequestBody ClientModel clientModel, @PathVariable Long id) {
 		Client client = conversionService.convert(clientModel, Client.class);
 		client.setId(id);
-		clientService.save(client);
-		return new ResponseEntity<Void>(HttpStatus.OK);
 
+		try {
+			Long id1 = clientService.save(client);
+			if (id1 != -1L) {
+				return new ResponseEntity<String>("Client was updated in database", HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>("Client with id = " + id + " not found in database",
+						HttpStatus.NOT_FOUND);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		clientService.delete(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+	public ResponseEntity<String> delete(@PathVariable Long id) {
+		Boolean deleted = clientService.delete(id);
+		if (deleted) {
+			return new ResponseEntity<String>("Client with id = " + id + " was deleted from database", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Client with id = " + id + " not found in database", HttpStatus.NOT_FOUND);
 	}
 
 	private void checkBlacklisted(String blacklisted, List<ClientModel> converted) {

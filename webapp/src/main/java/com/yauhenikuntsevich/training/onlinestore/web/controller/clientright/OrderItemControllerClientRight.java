@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
+import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
+import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
 import com.yauhenikuntsevich.training.onlinestore.web.model.OrderItemModel;
 
 @RestController
@@ -32,6 +35,9 @@ public class OrderItemControllerClientRight {
 
 	@Inject
 	private OrderItemService orderItemService;
+
+	@Inject
+	private OrderService orderService;
 
 	@Inject
 	private ClientService clientService;
@@ -52,48 +58,88 @@ public class OrderItemControllerClientRight {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewOrderItem(@RequestHeader(value = "Authorization") String authorization,
+	public ResponseEntity<String> createNewOrderItem(@RequestHeader(value = "Authorization") String authorization,
 			@RequestBody OrderItemModel orderItemModel) {
+		if (orderItemModel.getQuantity() == null) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
 		Order order = orderItemModel.getOrder();
-		Long idClientFromOrderItemModel = clientService.get(order.getId()).getId();
+		Long idClientFromOrderItemModel = orderService.get(order.getId()).getClient().getId();
 		Long idClientFromDb = clientService.getIdByFirstName(getFirstNameFromHeader(authorization));
 
+		Long id = 0L;
 		if (idClientFromOrderItemModel == idClientFromDb) {
-			orderItemService.save(conversionService.convert(orderItemModel, OrderItem.class));
-		} else
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			try {
+				id = orderItemService.save(conversionService.convert(orderItemModel, OrderItem.class));
+			} catch (NotEnoughQuantityProductException e) {
+				return new ResponseEntity<String>("Not enough quantity product in the stock", HttpStatus.OK);
+			}
 
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} else
+			return new ResponseEntity<String>("Attempt to create order item using no own order",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<String>("OrderItem was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Void> updateOwnOrderItem(@RequestHeader(value = "Authorization") String authorization,
+	public ResponseEntity<String> updateOwnOrderItem(@RequestHeader(value = "Authorization") String authorization,
 			@RequestBody OrderItemModel orderItemModel, @PathVariable Long id) {
+		if (orderItemModel.getQuantity() == null) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
 		Order order = orderItemModel.getOrder();
-		Long idClientFromOrderItemModel = clientService.get(order.getId()).getId();
+		Long idClientFromOrderItemModel = orderService.get(order.getId()).getClient().getId();
 		Long idClientFromDb = clientService.getIdByFirstName(getFirstNameFromHeader(authorization));
 
+		Long id1 = 0L;
 		if (idClientFromOrderItemModel == idClientFromDb) {
 			OrderItem orderItem = conversionService.convert(orderItemModel, OrderItem.class);
 			orderItem.setId(id);
-			orderItemService.save(orderItem);
-		} else
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
-		return new ResponseEntity<Void>(HttpStatus.OK);
+			try {
+				id1 = orderItemService.save(orderItem);
+				if (id1 != -1L) {
+					return new ResponseEntity<String>("OrderItem was updated in database", HttpStatus.OK);
+				}
+			} catch (NotEnoughQuantityProductException e) {
+				return new ResponseEntity<String>("Not enough quantity product in the stock", HttpStatus.OK);
+			}
+		} else
+			return new ResponseEntity<String>("Attempt to update order item using no own order",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deleteOwnOrderItem(@RequestHeader(value = "Authorization") String authorization, @PathVariable Long id) {
-		Long idClientFromOrderItemModel = orderItemService.get(id).getOrder().getClient().getId();
+	public ResponseEntity<String> deleteOwnOrderItem(@RequestHeader(value = "Authorization") String authorization,
+			@PathVariable Long id) {
+
+		Long idClientFromOrderItemModel = null;
+		try {
+			idClientFromOrderItemModel = orderItemService.get(id).getOrder().getClient().getId();
+		} catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>("OrderItem with id = " + id + " not found in database",
+					HttpStatus.NOT_FOUND);
+		}
+
 		Long idClientFromDb = clientService.getIdByFirstName(getFirstNameFromHeader(authorization));
 
 		if (idClientFromOrderItemModel == idClientFromDb) {
-			orderItemService.delete(id);
+			if (orderItemService.delete(id)) {
+				return new ResponseEntity<String>("OrderItem with id = " + id + " was deleted from database",
+						HttpStatus.OK);
+			}
 		} else
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-
-		return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<String>("Attempt to delete no own order item", HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 	private String getFirstNameFromHeader(String authorization) {

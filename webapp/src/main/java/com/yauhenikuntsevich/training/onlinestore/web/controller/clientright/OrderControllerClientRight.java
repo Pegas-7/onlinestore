@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ public class OrderControllerClientRight {
 
 	@Inject
 	private OrderService orderService;
-	
+
 	@Inject
 	private ClientService clientService;
 
@@ -50,12 +51,24 @@ public class OrderControllerClientRight {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> createNewOrder(@RequestHeader(value = "Authorization") String authorization, @RequestBody OrderModel orderModel) {
+	public ResponseEntity<String> createNewOrder(@RequestHeader(value = "Authorization") String authorization,
+			@RequestBody OrderModel orderModel) {
 		Client client = new Client();
 		client.setId(clientService.getIdByFirstName(getFirstNameFromHeader(authorization)));
 		orderModel.setClient(client);
-		orderService.save(conversionService.convert(orderModel, Order.class));
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+		Long id;
+		try {
+			id = orderService.save(conversionService.convert(orderModel, Order.class));
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+
+		return new ResponseEntity<String>("Order was created in database with id = " + String.valueOf(id),
+				HttpStatus.CREATED);
 	}
 
 	private String getFirstNameFromHeader(String authorization) {

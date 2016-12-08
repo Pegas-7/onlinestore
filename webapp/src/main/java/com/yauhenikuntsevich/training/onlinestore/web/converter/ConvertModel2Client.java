@@ -10,6 +10,7 @@ public class ConvertModel2Client implements Converter<ClientModel, Client> {
 	@Override
 	public Client convert(ClientModel clientModel) {
 		Client e = new Client();
+		e.setId(clientModel.getId());
 		e.setFirstName(clientModel.getFirstName());
 		e.setLastName(clientModel.getLastName());
 		e.setAge(clientModel.getAge());

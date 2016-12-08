@@ -6,6 +6,7 @@ import java.util.Base64;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,14 +43,27 @@ public class ClientControllerClientRight {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> updateOwnData(@RequestBody ClientModel clientModel,
+	public ResponseEntity<String> updateOwnData(@RequestBody ClientModel clientModel,
 			@RequestHeader(value = "Authorization") String authorization) {
 		String firstName = getFirstNameFromHeader(authorization);
 		Client client = conversionService.convert(clientModel, Client.class);
 		client.setId(clientService.getIdByFirstName(firstName));
 		client.setFirstName(firstName);
-		clientService.save(client);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+
+		try {
+			Long id1 = clientService.save(client);
+			if (id1 != -1L) {
+				return new ResponseEntity<String>("Client was updated in database", HttpStatus.OK);
+			} else
+				return new ResponseEntity<String>(
+						"Client with id = " + clientService.getIdByFirstName(firstName) + " not found in database",
+						HttpStatus.NOT_FOUND);
+		} catch (DataIntegrityViolationException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}
 	}
 
 	private String getFirstNameFromHeader(String authorization) {

@@ -14,7 +14,7 @@ public class ConvertProduct2Model implements Converter<Product, ProductModel> {
 		e.setCategory(product.getCategory());
 		e.setName(product.getName());
 		e.setPrice(product.getPrice());
-		e.setQuantity(product.getQuantity());
+		e.setQuantityStore(product.getQuantityStore());
 		return e;
 	}
 }

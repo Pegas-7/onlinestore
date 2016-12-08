@@ -7,7 +7,7 @@ public class ProductModel {
 	private Category category;
 	private String name;
 	private Double price;
-	private Integer quantity;
+	private Integer quantityStore;
 
 	public Long getId() {
 		return id;
@@ -41,11 +41,11 @@ public class ProductModel {
 		this.price = price;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getQuantityStore() {
+		return quantityStore;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setQuantityStore(Integer quantityStore) {
+		this.quantityStore = quantityStore;
 	}
 }
