@@ -4,12 +4,12 @@
 	<Appenders>
 		<JDBC name="databaseAppender" tableName="application_log">
 			<ConnectionFactory
-				class="com.yauhenikuntsevich.training.onlinestore.services.utils.ConnectionFactory"
-				method="getDatabaseConnection" />
-			<Column name="DATED" isEventTimestamp="true" />
-			<Column name="LEVEL" pattern="%level" />
-			<Column name="LOGGER" pattern="%logger" />
-			<Column name="MESSAGE" pattern="%msg%n" />
+				class="com.yauhenikuntsevich.training.onlinestore.services.utils.ConnectionToDB"
+				method="connectionBD" />
+			<Column name="DATE" isEventTimestamp="true" isUnicode="false" />
+			<Column name="LEVEL" pattern="%level" isUnicode="false" />
+			<Column name="LOGGER" pattern="%logger" isUnicode="false" />
+			<Column name="MESSAGE" pattern="%msg%n" isUnicode="false" />
 		</JDBC>
 
 		<!-- <SMTP name="SMTPAppender" smtpProtocol="smtps" smtpPort="465" subject="Error 
@@ -62,10 +62,11 @@
 
 	<Loggers>
 		<Root level="info">
-			<!-- <AppenderRef ref="Console" /> -->
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFileWarn" />
+			<AppenderRef ref="RollingFileInfo" />
+			<AppenderRef ref="RollingFileDebug" />
 			<AppenderRef ref="databaseAppender" />
-			<!-- <AppenderRef ref="RollingFileWarn" /> <AppenderRef ref="RollingFileInfo" 
-				/> <AppenderRef ref="RollingFileDebug" /> -->
 		</Root>
 	</Loggers>
 </Configuration>
