@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderCaching;
 @Service
 public class ExternalizableCacheOrder {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheOrder.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-order.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-order.tmp";
 
 	public static OrderCaching createInstanceOrderCaching() {
 		try {

@@ -1,0 +1,8 @@
+CREATE TABLE "application_log" (
+	"date" TIMESTAMP NOT NULL,
+	"level" character varying NOT NULL,
+	"logger" character varying NOT NULL,
+	"message" character varying NOT NULL
+) WITH (
+  OIDS=FALSE
+);

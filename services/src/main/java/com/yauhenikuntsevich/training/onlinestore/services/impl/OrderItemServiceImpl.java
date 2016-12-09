@@ -95,20 +95,6 @@ public class OrderItemServiceImpl implements OrderItemService {
 		return false;
 	}
 
-	@Override
-	public List<Product> getProductsOneOrder(Long orderId) {
-		List<OrderItem> orderItems = orderItemDao.getAll();
-		List<Product> productsForReturn = new LinkedList<>();
-
-		for (OrderItem orderItem : orderItems) {
-			if (orderItem.getOrder().getId() == orderId) {
-				productsForReturn.add(orderItem.getProduct());
-			}
-		}
-
-		return productsForReturn;
-	}
-
 	protected void subtractionQuantityFromProductAdding(OrderItem orderItem) {
 
 		Long idProduct = orderItem.getProduct().getId();

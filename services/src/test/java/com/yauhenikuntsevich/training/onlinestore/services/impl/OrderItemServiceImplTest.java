@@ -71,7 +71,7 @@ public class OrderItemServiceImplTest {
 		category1.setId(1L);
 
 		product1 = new Product();
-		product1.setQuantity(25);
+		product1.setQuantityStore(25);
 		product1.setCategory(category1);
 		product1.setName("TestNameProduct1");
 		product1.setPrice(138.8);
@@ -90,7 +90,7 @@ public class OrderItemServiceImplTest {
 		category2.setId(2L);
 
 		product2 = new Product();
-		product2.setQuantity(13);
+		product2.setQuantityStore(13);
 		product2.setCategory(category2);
 		product2.setName("TestNameProduct2");
 		product2.setPrice(99.3);
@@ -120,7 +120,7 @@ public class OrderItemServiceImplTest {
 		category3.setId(3L);
 
 		product3 = new Product();
-		product3.setQuantity(85);
+		product3.setQuantityStore(85);
 		product3.setCategory(category3);
 		product3.setName("TestNameProduct3");
 		product3.setPrice(56.7);
@@ -269,46 +269,33 @@ public class OrderItemServiceImplTest {
 	}
 
 	@Test
-	public void getProductsOneOrderTest() {
-		List<Product> products = orderItemServiceImpl.getProductsOneOrder(1L);
-
-		Assert.assertFalse(products.isEmpty());
-
-		for (Product product : products) {
-			if (orderItem1.getProduct().getId().equals(product.getId())) {
-				Assert.assertTrue(true);
-			}
-		}
-	}
-
-	@Test
 	public void subtractionQuantityTest() {
 		Product productBefore = productDao.get(id1Product);
-		Integer quantityProductBefore = productBefore.getQuantity();
+		Integer quantityProductBefore = productBefore.getQuantityStore();
 		orderItemServiceImpl.subtractionQuantityFromProductAdding(orderItem1);
 		Product productAfter = productDao.get(id1Product);
-		Integer quantityProductAfter = productAfter.getQuantity();
+		Integer quantityProductAfter = productAfter.getQuantityStore();
 
 		Assert.assertTrue(quantityProductBefore == quantityProductAfter + orderItem1.getQuantity());
 
-		productAfter.setQuantity(quantityProductBefore);
+		productAfter.setQuantityStore(quantityProductBefore);
 		productDao.update(productAfter);
 	}
 
 	@Test
 	public void substractionQuantityForUpdateTest() {
 		Product productBefore = productDao.get(id1Product);
-		Integer quantityProductBefore = productBefore.getQuantity();
+		Integer quantityProductBefore = productBefore.getQuantityStore();
 		orderItem1.setId(id1);
 		orderItem1.setQuantity(5);
 		orderItemServiceImpl.substractionQuantityFromProductUpdating(orderItem1);
 		Product productAfter = productDao.get(id1Product);
-		Integer quantityProductAfter = productAfter.getQuantity();
+		Integer quantityProductAfter = productAfter.getQuantityStore();
 
 		Assert.assertTrue(quantityProductBefore == quantityProductAfter
 				+ (orderItem1.getQuantity() - orderItemServiceImpl.get(orderItem1.getId()).getQuantity()));
 
-		productAfter.setQuantity(quantityProductBefore);
+		productAfter.setQuantityStore(quantityProductBefore);
 		productDao.update(productAfter);
 	}
 

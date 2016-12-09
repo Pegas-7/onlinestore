@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
-import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
 public interface OrderItemService {
 
@@ -20,8 +19,6 @@ public interface OrderItemService {
 	List<OrderItem> getAll();
 
 	boolean delete(Long id);
-
-	List<Product> getProductsOneOrder(Long orderId);
 
 	List<OrderItem> getOwnOrderItems(String firstName);
 }

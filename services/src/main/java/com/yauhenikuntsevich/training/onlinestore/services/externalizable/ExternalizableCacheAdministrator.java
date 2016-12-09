@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.Administrator
 @Service
 public class ExternalizableCacheAdministrator {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheAdministrator.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-administrator.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-administrator.tmp";
 
 	public static AdministratorCaching createInstanceAdministratorCaching() {
 		try {

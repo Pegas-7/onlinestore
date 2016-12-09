@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.ProductCachin
 @Service
 public class ExternalizableCacheProduct {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheProduct.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-product.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-product.tmp";
 
 	public static ProductCaching createInstanceProductCaching() {
 		try {

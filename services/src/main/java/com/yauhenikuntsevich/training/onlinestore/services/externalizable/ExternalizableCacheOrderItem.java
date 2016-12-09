@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderItemCach
 @Service
 public class ExternalizableCacheOrderItem {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheOrderItem.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-orderitem.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-orderitem.tmp";
 
 	public static OrderItemCaching createInstanceOrderItemCaching() {
 		try {

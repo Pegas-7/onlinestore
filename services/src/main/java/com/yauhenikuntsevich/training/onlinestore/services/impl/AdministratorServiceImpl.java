@@ -20,7 +20,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Inject
 	private EntityDao<Administrator> administratorDao;
 
-	public AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
+	public static AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
 			.createInstanceAdministratorCaching();
 
 	@Override
@@ -80,7 +80,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@PreDestroy
-	private void writeCacheToFile() {
+	public static void writeCacheToFile() {
 		ExternalizableCacheAdministrator.writeCacheInFile(administratorCaching);
 	}
 }

@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.ClientCaching
 @Service
 public class ExternalizableCacheClient {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheClient.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-client.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-client.tmp";
 
 	public static ClientCaching createInstanceClientCaching() {
 		try {

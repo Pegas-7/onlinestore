@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.CategoryCachi
 @Service
 public class ExternalizableCacheCategory {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheCategory.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-category.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-category.tmp";
 
 	public static CategoryCaching createInstanceCategoryCaching() {
 		try {

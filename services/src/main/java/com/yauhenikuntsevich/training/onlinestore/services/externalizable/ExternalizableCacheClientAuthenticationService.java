@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.caching.Authenticatio
 @Service
 public class ExternalizableCacheClientAuthenticationService {
 	public static final Logger LOGGER = LoggerFactory.getLogger(ExternalizableCacheClientAuthenticationService.class);
-	private static final String FILENAME = "src//main//resources//cache//cache-client-authentication-service.tmp";
+	private static final String FILENAME = "D:\\cache\\cache-client-authentication-service.tmp";
 
 	public static AuthenticationServiceClientCaching createInstanceAuthenticationServiceClientCaching() {
 		try {
