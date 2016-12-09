@@ -2,6 +2,22 @@
 <Configuration status="WARN">
 
 	<Appenders>
+		<JDBC name="databaseAppender" tableName="application_log">
+			<ConnectionFactory
+				class="com.yauhenikuntsevich.training.onlinestore.services.utils.ConnectionFactory"
+				method="getDatabaseConnection" />
+			<Column name="DATED" isEventTimestamp="true" />
+			<Column name="LEVEL" pattern="%level" />
+			<Column name="LOGGER" pattern="%logger" />
+			<Column name="MESSAGE" pattern="%msg%n" />
+		</JDBC>
+
+		<!-- <SMTP name="SMTPAppender" smtpProtocol="smtps" smtpPort="465" subject="Error 
+			Log" to="ifk88@lobyrin.ru" from="java@lobyrin.ru" smtpHost="smtp.yandex.ru" 
+			smtpUsername="java@lobyrin.ru" smtpPassword="Qq123456" bufferSize="512"> 
+			<PatternLayout> <pattern>%d{dd/MMM/yyyy HH:mm:ss,SSS}{GMT+3} [%-5p] [%t] 
+			- %c{1}: %m%n</pattern> </PatternLayout> </SMTP> -->
+
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout
 				pattern="%d{HH:mm:ss.SSS}{GMT+3} [%t] %-5level %logger{36} - %msg%n" />
@@ -46,10 +62,10 @@
 
 	<Loggers>
 		<Root level="info">
-			<AppenderRef ref="Console" />
-			<AppenderRef ref="RollingFileWarn" />
-			<AppenderRef ref="RollingFileInfo" />
-			<AppenderRef ref="RollingFileDebug" />
+			<!-- <AppenderRef ref="Console" /> -->
+			<AppenderRef ref="databaseAppender" />
+			<!-- <AppenderRef ref="RollingFileWarn" /> <AppenderRef ref="RollingFileInfo" 
+				/> <AppenderRef ref="RollingFileDebug" /> -->
 		</Root>
 	</Loggers>
 </Configuration>
