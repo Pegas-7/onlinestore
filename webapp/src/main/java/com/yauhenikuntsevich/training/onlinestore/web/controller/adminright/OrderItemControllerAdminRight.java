@@ -68,7 +68,12 @@ public class OrderItemControllerAdminRight {
 					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
 							+ "sended entity with null fields",
 					HttpStatus.UNPROCESSABLE_ENTITY);
-		}
+		} catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations relation table's field",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		} 
+		
 
 		return new ResponseEntity<String>("OrderItem was created in database with id = " + String.valueOf(id),
 				HttpStatus.CREATED);
