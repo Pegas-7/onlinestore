@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
@@ -20,7 +20,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.externalizable.Extern
 public class OrderServiceImpl implements OrderService {
 
 	@Inject
-	private EntityDao<Order> orderDao;
+	private OrderDao orderDao;
 
 	@Inject
 	private ClientService clientService;

@@ -13,12 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.CategoryDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.CategoryMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 
 @Repository
-public class CategoryDaoDbImpl implements EntityDao<Category> {
+public class CategoryDaoDbImpl implements CategoryDao {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;

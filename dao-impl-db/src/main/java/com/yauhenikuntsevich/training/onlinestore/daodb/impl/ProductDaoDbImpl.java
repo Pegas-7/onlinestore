@@ -13,12 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ProductDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ProductMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
 @Repository
-public class ProductDaoDbImpl implements EntityDao<Product> {
+public class ProductDaoDbImpl implements ProductDao {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
@@ -68,5 +68,12 @@ public class ProductDaoDbImpl implements EntityDao<Product> {
 	public List<Product> getAll() {
 		return jdbcTemplate.query("SELECT * FROM product p JOIN category c ON p.category_id = c.category_id",
 				new ProductMapper());
+	}
+
+	@Override
+	public List<Product> getAllProductsWithOneCategory(Long categoryId) {
+		return jdbcTemplate.query(
+				"SELECT * FROM product p JOIN category c ON p.category_id = c.category_id WHERE c.category_id = ?",
+				new Object[] { categoryId }, new ProductMapper());
 	}
 }

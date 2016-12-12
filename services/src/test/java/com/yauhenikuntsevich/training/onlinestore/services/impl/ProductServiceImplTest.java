@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ProductDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 
@@ -24,7 +24,7 @@ public class ProductServiceImplTest {
 	private ProductServiceImpl productServiceImpl;
 
 	@Inject
-	private EntityDao<Product> productDao;
+	private ProductDao productDao;
 
 	Product product1;
 	Product product2;
@@ -41,7 +41,7 @@ public class ProductServiceImplTest {
 		product1.setName("Product1");
 		product1.setCategory(category1);
 		product1.setPrice(100.0);
-		product1.setQuantity(5);
+		product1.setQuantityStore(5);
 
 		Category category2 = new Category();
 		category2.setId(2L);
@@ -50,7 +50,7 @@ public class ProductServiceImplTest {
 		product2.setName("Product2");
 		product2.setCategory(category2);
 		product2.setPrice(200.0);
-		product2.setQuantity(12);
+		product2.setQuantityStore(12);
 
 		Category category3 = new Category();
 		category3.setId(3L);
@@ -59,7 +59,7 @@ public class ProductServiceImplTest {
 		product3.setName("Product3");
 		product3.setCategory(category3);
 		product3.setPrice(128.4);
-		product3.setQuantity(24);
+		product3.setQuantityStore(24);
 
 		id1 = productDao.add(product1);
 		id2 = productDao.add(product2);
@@ -78,7 +78,7 @@ public class ProductServiceImplTest {
 		Assert.assertEquals(product1.getName(), productFromDb1.getName());
 		Assert.assertEquals(product1.getCategory().getId(), productFromDb1.getCategory().getId());
 		Assert.assertEquals(product1.getPrice(), productFromDb1.getPrice());
-		Assert.assertEquals(product1.getQuantity(), productFromDb1.getQuantity());
+		Assert.assertEquals(product1.getQuantityStore(), productFromDb1.getQuantityStore());
 	}
 
 	@Test
@@ -98,12 +98,12 @@ public class ProductServiceImplTest {
 		Assert.assertEquals(product1.getName(), productFromDb1.getName());
 		Assert.assertEquals(product1.getCategory().getId(), productFromDb1.getCategory().getId());
 		Assert.assertEquals(product1.getPrice(), productFromDb1.getPrice());
-		Assert.assertEquals(product1.getQuantity(), productFromDb1.getQuantity());
+		Assert.assertEquals(product1.getQuantityStore(), productFromDb1.getQuantityStore());
 
 		Assert.assertEquals(product2.getName(), productFromDb2.getName());
 		Assert.assertEquals(product2.getCategory().getId(), productFromDb2.getCategory().getId());
 		Assert.assertEquals(product2.getPrice(), productFromDb2.getPrice());
-		Assert.assertEquals(product2.getQuantity(), productFromDb2.getQuantity());
+		Assert.assertEquals(product2.getQuantityStore(), productFromDb2.getQuantityStore());
 	}
 
 	@Test
@@ -127,12 +127,12 @@ public class ProductServiceImplTest {
 		Assert.assertEquals(product3.getName(), productFromDb1.getName());
 		Assert.assertEquals(product3.getCategory().getId(), productFromDb1.getCategory().getId());
 		Assert.assertEquals(product3.getPrice(), productFromDb1.getPrice());
-		Assert.assertEquals(product3.getQuantity(), productFromDb1.getQuantity());
+		Assert.assertEquals(product3.getQuantityStore(), productFromDb1.getQuantityStore());
 
 		Assert.assertEquals(product2.getName(), productFromDb2.getName());
 		Assert.assertEquals(product2.getCategory().getId(), productFromDb2.getCategory().getId());
 		Assert.assertEquals(product2.getPrice(), productFromDb2.getPrice());
-		Assert.assertEquals(product2.getQuantity(), productFromDb2.getQuantity());
+		Assert.assertEquals(product2.getQuantityStore(), productFromDb2.getQuantityStore());
 	}
 
 	@Test
@@ -168,12 +168,12 @@ public class ProductServiceImplTest {
 		Assert.assertEquals(product3.getName(), productFromDb1.getName());
 		Assert.assertEquals(product3.getCategory().getId(), productFromDb1.getCategory().getId());
 		Assert.assertEquals(product3.getPrice(), productFromDb1.getPrice());
-		Assert.assertEquals(product3.getQuantity(), productFromDb1.getQuantity());
+		Assert.assertEquals(product3.getQuantityStore(), productFromDb1.getQuantityStore());
 
 		Assert.assertEquals(product2.getName(), productFromDb2.getName());
 		Assert.assertEquals(product2.getCategory().getId(), productFromDb2.getCategory().getId());
 		Assert.assertEquals(product2.getPrice(), productFromDb2.getPrice());
-		Assert.assertEquals(product2.getQuantity(), productFromDb2.getQuantity());
+		Assert.assertEquals(product2.getQuantityStore(), productFromDb2.getQuantityStore());
 
 		// liberation variable
 		productDao.delete(id1Updated);

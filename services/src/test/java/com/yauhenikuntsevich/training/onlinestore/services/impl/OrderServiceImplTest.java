@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
@@ -26,7 +26,7 @@ public class OrderServiceImplTest {
 	private OrderServiceImpl orderServiceImpl;
 
 	@Inject
-	private EntityDao<Order> orderDao;
+	private OrderDao orderDao;
 
 	Order order1;
 	Order order2;

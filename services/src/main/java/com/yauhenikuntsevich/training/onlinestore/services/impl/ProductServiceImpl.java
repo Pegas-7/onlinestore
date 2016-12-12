@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ProductDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
 import com.yauhenikuntsevich.training.onlinestore.services.ProductService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.ProductCaching;
@@ -18,7 +18,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.externalizable.Extern
 public class ProductServiceImpl implements ProductService {
 
 	@Inject
-	private EntityDao<Product> productDao;
+	private ProductDao productDao;
 
 	public ProductCaching productCaching = ExternalizableCacheProduct.createInstanceProductCaching();
 
@@ -80,16 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<Product> getAllProductsWithOneCategory(Long categoryId) {
-		List<Product> products = productDao.getAll();
-		List<Product> productsForReturn = new LinkedList<>();
-
-		for (Product product : products) {
-			if (product.getCategory().getId() == categoryId) {
-				productsForReturn.add(product);
-			}
-		}
-
-		return productsForReturn;
+		return productDao.getAllProductsWithOneCategory(categoryId);
 	}
 
 	@PreDestroy

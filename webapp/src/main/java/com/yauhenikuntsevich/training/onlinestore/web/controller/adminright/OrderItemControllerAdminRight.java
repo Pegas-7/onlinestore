@@ -70,7 +70,7 @@ public class OrderItemControllerAdminRight {
 					HttpStatus.UNPROCESSABLE_ENTITY);
 		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<String>(
-					"Incorrect data into request body. Perhaps have violations relation table's field",
+					"Incorrect data into request body. Perhaps have violations relations table's fields",
 					HttpStatus.UNPROCESSABLE_ENTITY);
 		} 
 		
@@ -95,6 +95,10 @@ public class OrderItemControllerAdminRight {
 			return new ResponseEntity<String>(
 					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
 							+ "sended entity with null fields",
+					HttpStatus.UNPROCESSABLE_ENTITY);
+		}catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<String>(
+					"Incorrect data into request body. Perhaps have violations relations table's fields",
 					HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}

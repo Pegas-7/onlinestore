@@ -13,12 +13,13 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ClientDao;
+import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ClientIdMapper;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.ClientMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 
 @Repository
-public class ClientDaoDbImpl implements EntityDao<Client> {
+public class ClientDaoDbImpl implements ClientDao {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 
@@ -68,5 +69,23 @@ public class ClientDaoDbImpl implements EntityDao<Client> {
 	@Override
 	public List<Client> getAll() {
 		return jdbcTemplate.query("select * from client", new ClientMapper());
+	}
+
+	@Override
+	public Client getOwnData(String firstName) {
+		return jdbcTemplate.queryForObject("SELECT * FROM client WHERE first_name = ?", new Object[] { firstName },
+				new ClientMapper());
+	}
+
+	@Override
+	public Long getIdByFirstName(String firstName) {
+		return jdbcTemplate.queryForObject("SELECT client_id FROM client WHERE first_name = ?",
+				new Object[] { firstName }, new ClientIdMapper());
+	}
+
+	@Override
+	public List<Client> getAllClientBlacklisted(Boolean blacklisted) {
+		return jdbcTemplate.query("SELECT * FROM client WHERE blacklisted = ?", new Object[] { blacklisted },
+				new ClientMapper());
 	}
 }

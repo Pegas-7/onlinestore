@@ -37,8 +37,6 @@ public class AuthenticationServiceAdministratorImpl implements AuthenticationSer
 			return false;
 		}
 
-		authenticationDao.get(username);
-
 		Boolean isAuthenticated = username.equals(personAbstractModel.getFirstName())
 				&& password.equals(personAbstractModel.getPassword()) && role.equals(personAbstractModel.getRole());
 

@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.CategoryDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,7 +24,7 @@ public class CategoryServiceImplTest {
 	private CategoryServiceImpl categoryServiceImpl;
 
 	@Inject
-	private EntityDao<Category> categoryDao;
+	private CategoryDao categoryDao;
 
 	Category category1;
 	Category category2;
@@ -80,7 +80,7 @@ public class CategoryServiceImplTest {
 
 		Assert.assertEquals(category1.getItemEn(), categoryFromDb1.getItemEn());
 		Assert.assertEquals(category2.getItemEn(), categoryFromDb2.getItemEn());
-		
+
 		Assert.assertEquals(category1.getItemRu(), categoryFromDb1.getItemRu());
 		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 	}
@@ -105,7 +105,7 @@ public class CategoryServiceImplTest {
 
 		Assert.assertEquals(category3.getItemEn(), categoryFromDb1.getItemEn());
 		Assert.assertEquals(category2.getItemEn(), categoryFromDb2.getItemEn());
-		
+
 		Assert.assertEquals(category3.getItemRu(), categoryFromDb1.getItemRu());
 		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 	}
@@ -142,7 +142,7 @@ public class CategoryServiceImplTest {
 
 		Assert.assertEquals(category3.getItemEn(), categoryFromDb1.getItemEn());
 		Assert.assertEquals(category2.getItemEn(), categoryFromDb2.getItemEn());
-		
+
 		Assert.assertEquals(category3.getItemRu(), categoryFromDb1.getItemRu());
 		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ClientDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.ClientCaching;
@@ -18,7 +18,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.externalizable.Extern
 public class ClientServiceImpl implements ClientService {
 
 	@Inject
-	private EntityDao<Client> clientDao;
+	private ClientDao clientDao;
 
 	public ClientCaching clientCaching = ExternalizableCacheClient.createInstanceClientCaching();
 
@@ -92,11 +92,6 @@ public class ClientServiceImpl implements ClientService {
 		return clientsForReturn;
 	}
 
-	@PreDestroy
-	private void writeCacheToFile() {
-		ExternalizableCacheClient.writeCacheInFile(clientCaching);
-	}
-
 	@Override
 	public Client getOwnData(String firstName) {
 		List<Client> clients = clientDao.getAll();
@@ -121,5 +116,10 @@ public class ClientServiceImpl implements ClientService {
 		}
 
 		return null;
+	}
+
+	@PreDestroy
+	private void writeCacheToFile() {
+		ExternalizableCacheClient.writeCacheInFile(clientCaching);
 	}
 }

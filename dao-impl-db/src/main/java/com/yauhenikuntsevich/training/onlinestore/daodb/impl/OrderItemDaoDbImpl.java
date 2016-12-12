@@ -13,12 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderItemDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.OrderItemMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 
 @Repository
-public class OrderItemDaoDbImpl implements EntityDao<OrderItem> {
+public class OrderItemDaoDbImpl implements OrderItemDao {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;
@@ -56,7 +56,8 @@ public class OrderItemDaoDbImpl implements EntityDao<OrderItem> {
 
 	@Override
 	public Integer update(OrderItem entity) {
-		return jdbcTemplate.update("update order_item set order_id = ?, product_id = ?, quantity = ? where order_item_id = ?",
+		return jdbcTemplate.update(
+				"update order_item set order_id = ?, product_id = ?, quantity = ? where order_item_id = ?",
 				entity.getOrder().getId(), entity.getProduct().getId(), entity.getQuantity(), entity.getId());
 
 	}

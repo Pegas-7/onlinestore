@@ -1,6 +1,7 @@
 package com.yauhenikuntsevich.training.onlinestore.daodb.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -14,12 +15,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.OrderMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 
 @Repository
-public class OrderDaoDbImpl implements EntityDao<Order> {
+public class OrderDaoDbImpl implements OrderDao {
 
 	@Inject
 	private JdbcTemplate jdbcTemplate;
@@ -76,5 +77,29 @@ public class OrderDaoDbImpl implements EntityDao<Order> {
 						+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM client) "
 						+ "c ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id",
 				new OrderMapper());
+	}
+
+	@Override
+	public List<Order> getOwnOrders(String firstName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getAllOrdersOneAdministrator(Long administratorId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getAllOrdersOneClient(Long clientId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Order> getAllOrdersIntervalDate(Date before, Date after) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

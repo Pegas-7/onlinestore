@@ -59,9 +59,6 @@ public class ClientCaching implements Externalizable, EntityCaching<Client> {
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		maxSizeCache = in.readLong();
-		minSizeCache = in.readLong();
-
 		Long idExternal = 0L;
 		Client сlientExternal = null;
 
@@ -75,9 +72,6 @@ public class ClientCaching implements Externalizable, EntityCaching<Client> {
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(maxSizeCache);
-		out.writeLong(minSizeCache);
-
 		for (Map.Entry<Long, Client> pair : cache.entrySet()) {
 			out.writeLong(pair.getKey());
 			out.writeObject(pair.getValue());

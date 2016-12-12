@@ -13,12 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.AdministratorDao;
 import com.yauhenikuntsevich.training.onlinestore.daodb.mapper.AdministratorMapper;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 
 @Repository
-public class AdministratorDaoDbImpl implements EntityDao<Administrator> {
+public class AdministratorDaoDbImpl implements AdministratorDao {
 	@Inject
 	private JdbcTemplate jdbcTemplate;
 

@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.AdministratorDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.AdministratorService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.AdministratorCaching;
@@ -18,7 +18,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.externalizable.Extern
 public class AdministratorServiceImpl implements AdministratorService {
 
 	@Inject
-	private EntityDao<Administrator> administratorDao;
+	private AdministratorDao administratorDao;
 
 	public static AdministratorCaching administratorCaching = ExternalizableCacheAdministrator
 			.createInstanceAdministratorCaching();

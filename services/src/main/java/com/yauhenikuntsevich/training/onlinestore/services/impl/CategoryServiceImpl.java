@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.CategoryDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 import com.yauhenikuntsevich.training.onlinestore.services.CategoryService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.CategoryCaching;
@@ -17,7 +17,7 @@ import com.yauhenikuntsevich.training.onlinestore.services.externalizable.Extern
 @Service
 public class CategoryServiceImpl implements CategoryService {
 	@Inject
-	private EntityDao<Category> categoryDao;
+	private CategoryDao categoryDao;
 
 	public CategoryCaching categoryCaching = ExternalizableCacheCategory.createInstanceCategoryCaching();
 

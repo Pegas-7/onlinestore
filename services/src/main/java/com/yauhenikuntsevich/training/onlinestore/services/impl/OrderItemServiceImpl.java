@@ -7,11 +7,13 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ClientDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderItemDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ProductDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
-import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderItemCaching;
 import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
@@ -21,13 +23,13 @@ import com.yauhenikuntsevich.training.onlinestore.services.externalizable.Extern
 public class OrderItemServiceImpl implements OrderItemService {
 
 	@Inject
-	private EntityDao<OrderItem> orderItemDao;
+	private OrderItemDao orderItemDao;
 	@Inject
-	private EntityDao<Product> productDao;
+	private ProductDao productDao;
 	@Inject
-	private EntityDao<Order> orderDao;
+	private OrderDao orderDao;
 	@Inject
-	private ClientService clientService;
+	private ClientDao clientDao;
 
 	public OrderItemCaching orderItemCaching = ExternalizableCacheOrderItem.createInstanceOrderItemCaching();
 
@@ -168,7 +170,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 		List<OrderItem> orderItems = orderItemDao.getAll();
 		List<OrderItem> orderItemForReturn = new LinkedList<>();
 
-		Long clientId = clientService.getIdByFirstName(firstName);
+		Long clientId = clientDao.getIdByFirstName(firstName);
 
 		for (OrderItem orderItem : orderItems) {
 			if (orderItem.getOrder().getClient().getId() == clientId) {

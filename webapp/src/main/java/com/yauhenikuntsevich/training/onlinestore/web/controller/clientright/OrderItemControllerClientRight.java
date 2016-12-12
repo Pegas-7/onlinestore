@@ -8,6 +8,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,15 @@ public class OrderItemControllerClientRight {
 				id = orderItemService.save(conversionService.convert(orderItemModel, OrderItem.class));
 			} catch (NotEnoughQuantityProductException e) {
 				return new ResponseEntity<String>("Not enough quantity product in the stock", HttpStatus.OK);
+			} catch (DataIntegrityViolationException e) {
+				return new ResponseEntity<String>(
+						"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+								+ "sended entity with null fields",
+						HttpStatus.UNPROCESSABLE_ENTITY);
+			} catch (EmptyResultDataAccessException e) {
+				return new ResponseEntity<String>(
+						"Incorrect data into request body. Perhaps have violations relations table's fields",
+						HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 
 		} else
@@ -110,6 +120,15 @@ public class OrderItemControllerClientRight {
 				}
 			} catch (NotEnoughQuantityProductException e) {
 				return new ResponseEntity<String>("Not enough quantity product in the stock", HttpStatus.OK);
+			} catch (DataIntegrityViolationException e) {
+				return new ResponseEntity<String>(
+						"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
+								+ "sended entity with null fields",
+						HttpStatus.UNPROCESSABLE_ENTITY);
+			} catch (EmptyResultDataAccessException e) {
+				return new ResponseEntity<String>(
+						"Incorrect data into request body. Perhaps have violations relations table's fields",
+						HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 		} else
 			return new ResponseEntity<String>("Attempt to update order item using no own order",
