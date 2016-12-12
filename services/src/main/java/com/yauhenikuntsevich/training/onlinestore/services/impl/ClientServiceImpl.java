@@ -20,7 +20,7 @@ public class ClientServiceImpl implements ClientService {
 	@Inject
 	private ClientDao clientDao;
 
-	public ClientCaching clientCaching = ExternalizableCacheClient.createInstanceClientCaching();
+	public static ClientCaching clientCaching = ExternalizableCacheClient.createInstanceClientCaching();
 
 	@Override
 	public List<Client> saveAll(List<Client> clients) {

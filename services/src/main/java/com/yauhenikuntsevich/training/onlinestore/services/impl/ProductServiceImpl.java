@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 	@Inject
 	private ProductDao productDao;
 
-	public ProductCaching productCaching = ExternalizableCacheProduct.createInstanceProductCaching();
+	public static ProductCaching productCaching = ExternalizableCacheProduct.createInstanceProductCaching();
 
 	@Override
 	public List<Product> saveAll(List<Product> products) {

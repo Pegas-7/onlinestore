@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
 	@Inject
 	private ClientService clientService;
 
-	public OrderCaching orderCaching = ExternalizableCacheOrder.createInstanceOrderCaching();
+	public static OrderCaching orderCaching = ExternalizableCacheOrder.createInstanceOrderCaching();
 
 	@Override
 	public List<Order> saveAll(List<Order> orders) {

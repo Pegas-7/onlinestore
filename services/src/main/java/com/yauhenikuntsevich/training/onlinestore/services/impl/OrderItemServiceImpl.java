@@ -31,7 +31,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	@Inject
 	private ClientDao clientDao;
 
-	public OrderItemCaching orderItemCaching = ExternalizableCacheOrderItem.createInstanceOrderItemCaching();
+	public static OrderItemCaching orderItemCaching = ExternalizableCacheOrderItem.createInstanceOrderItemCaching();
 
 	@Override
 	public List<OrderItem> saveAll(List<OrderItem> orderItems) {

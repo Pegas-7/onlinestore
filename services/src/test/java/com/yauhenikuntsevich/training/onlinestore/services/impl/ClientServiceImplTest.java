@@ -169,7 +169,7 @@ public class ClientServiceImplTest {
 		Assert.assertEquals(client2.getBlacklisted(), clientFromDb2.getBlacklisted());
 
 		// liberation variable
-		clientDao.delete(id1Updated);
+		clientServiceImpl.delete(id1Updated);
 	}
 
 	@Test

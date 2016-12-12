@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Inject
 	private CategoryDao categoryDao;
 
-	public CategoryCaching categoryCaching = ExternalizableCacheCategory.createInstanceCategoryCaching();
+	public static CategoryCaching categoryCaching = ExternalizableCacheCategory.createInstanceCategoryCaching();
 
 	@Override
 	public List<Category> saveAll(List<Category> categories) {
