@@ -14,13 +14,17 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderItemDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ProductDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Product;
+import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
+import com.yauhenikuntsevich.training.onlinestore.services.ProductService;
 import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,11 +33,15 @@ public class OrderItemServiceImplTest {
 	@Inject
 	private OrderItemServiceImpl orderItemServiceImpl;
 	@Inject
-	private EntityDao<Product> productDao;
+	private ProductService productService;
 	@Inject
-	private EntityDao<Order> orderDao;
+	private ProductDao productDao;
 	@Inject
-	private EntityDao<OrderItem> orderItemDao;
+	private OrderDao orderDao;
+	@Inject
+	private OrderItemDao orderItemDao;
+	@Inject
+	private OrderService orderService;
 
 	OrderItem orderItem1;
 	OrderItem orderItem2;
@@ -58,6 +66,12 @@ public class OrderItemServiceImplTest {
 
 		Client client1 = new Client();
 		client1.setId(1L);
+		client1.setFirstName("FirstName1");
+		client1.setLastName("LastName1");
+		client1.setAge(35);
+		client1.setBlacklisted(true);
+		client1.setPassword("user");
+		client1.setRole("USER_ROLE");
 
 		order1 = new Order();
 		order1.setDateOrder(Date.valueOf("2015-10-09"));
@@ -75,7 +89,7 @@ public class OrderItemServiceImplTest {
 		product1.setCategory(category1);
 		product1.setName("TestNameProduct1");
 		product1.setPrice(138.8);
-		id1Product = productDao.add(product1);
+		id1Product = productService.save(product1);
 		product1.setId(id1Product);
 
 		orderItem1 = new OrderItem();
@@ -85,6 +99,7 @@ public class OrderItemServiceImplTest {
 
 		Order order2 = new Order();
 		order2.setId(2L);
+		order2.setPriceAllPurchases(256.8);
 
 		Category category2 = new Category();
 		category2.setId(2L);
@@ -94,7 +109,7 @@ public class OrderItemServiceImplTest {
 		product2.setCategory(category2);
 		product2.setName("TestNameProduct2");
 		product2.setPrice(99.3);
-		id2Product = productDao.add(product2);
+		id2Product = productService.save(product2);
 		product2.setId(id2Product);
 
 		orderItem2 = new OrderItem();
@@ -106,7 +121,13 @@ public class OrderItemServiceImplTest {
 		administrator3.setId(1L);
 
 		Client client3 = new Client();
-		client3.setId(1L);
+		client3.setId(3L);
+		client3.setFirstName("FirstName3");
+		client3.setLastName("LastName3");
+		client3.setAge(56);
+		client3.setBlacklisted(true);
+		client3.setPassword("user");
+		client3.setRole("USER_ROLE");
 
 		Order order3 = new Order();
 		order3.setDateOrder(Date.valueOf("2015-05-12"));
@@ -124,7 +145,7 @@ public class OrderItemServiceImplTest {
 		product3.setCategory(category3);
 		product3.setName("TestNameProduct3");
 		product3.setPrice(56.7);
-		id3Product = productDao.add(product3);
+		id3Product = productService.save(product3);
 		product3.setId(id3Product);
 
 		orderItem3 = new OrderItem();
@@ -140,11 +161,11 @@ public class OrderItemServiceImplTest {
 	public void afterTest() {
 		orderItemServiceImpl.delete(id1);
 		orderItemServiceImpl.delete(id2);
-		productDao.delete(id1Product);
-		productDao.delete(id2Product);
-		productDao.delete(id3Product);
-		orderDao.delete(id1Order);
-		orderDao.delete(id3Order);
+		productService.delete(id1Product);
+		productService.delete(id2Product);
+		productService.delete(id3Product);
+		orderService.delete(id1Order);
+		orderService.delete(id3Order);
 	}
 
 	@Test
@@ -184,7 +205,7 @@ public class OrderItemServiceImplTest {
 		orderItem3.setId(id1);
 
 		// get product for recovery bd
-		Product product3 = productDao.get(orderItem2.getProduct().getId());
+		Product product3 = productService.get(orderItem2.getProduct().getId());
 		orderItemDao.delete(id2);
 		orderItem2.setId(null);
 
@@ -207,7 +228,7 @@ public class OrderItemServiceImplTest {
 		Assert.assertEquals(orderItem2.getQuantity(), orderItemFromDb2.getQuantity());
 
 		// recovery bd
-		productDao.update(product3);
+		productService.save(product3);
 	}
 
 	@Test
@@ -219,7 +240,7 @@ public class OrderItemServiceImplTest {
 		orderItems1.add(orderItem2);
 
 		// get product for recovery bd
-		Product product3 = productDao.get(orderItem2.getProduct().getId());
+		Product product3 = productService.get(orderItem2.getProduct().getId());
 
 		// liberation variable
 		orderItemDao.delete(id2);
@@ -252,8 +273,8 @@ public class OrderItemServiceImplTest {
 		Assert.assertEquals(orderItem2.getQuantity(), orderItemFromDb2.getQuantity());
 
 		// liberation variable
-		orderItemDao.delete(id1Updated);
-		productDao.update(product3);
+		orderItemServiceImpl.delete(id1Updated);
+		productService.save(product3);
 	}
 
 	@Test
@@ -272,7 +293,9 @@ public class OrderItemServiceImplTest {
 	public void subtractionQuantityTest() {
 		Product productBefore = productDao.get(id1Product);
 		Integer quantityProductBefore = productBefore.getQuantityStore();
+
 		orderItemServiceImpl.subtractionQuantityFromProductAdding(orderItem1);
+
 		Product productAfter = productDao.get(id1Product);
 		Integer quantityProductAfter = productAfter.getQuantityStore();
 

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.AdministratorDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 import com.yauhenikuntsevich.training.onlinestore.services.authentification.AuthenticationServiceAdministratorImpl;
 
@@ -25,7 +25,7 @@ public class AuthenticationServiceAdministratorImplTest {
 	private AdministratorServiceImpl administratorServiceImpl;
 
 	@Inject
-	private EntityDao<Administrator> administratorDao;
+	private AdministratorDao administratorDao;
 
 	Administrator administrator1;
 	Administrator administrator2;

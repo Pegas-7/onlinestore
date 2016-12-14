@@ -11,13 +11,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ClientDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.exception.XmlFileNotFoundedException;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 
 @Repository
-public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<Client> {
+public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements ClientDao {
 
 	@PostConstruct
 	private void intialize() throws IOException {
@@ -53,7 +53,7 @@ public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<
 	}
 
 	@Override
-	public void update(Client client) {
+	public Integer update(Client client) {
 		List<Client> allClients = readCollection();
 
 		for (Client client2 : allClients) {
@@ -69,10 +69,11 @@ public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<
 		}
 
 		writeCollection(allClients);
+		return 1;
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Integer delete(Long id) {
 		List<Client> allClients = readCollection();
 
 		for (int i = 0; i < allClients.size(); i++) {
@@ -82,6 +83,7 @@ public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<
 			}
 		}
 		writeCollection(allClients);
+		return 1;
 	}
 
 	@Override
@@ -103,5 +105,42 @@ public class ClientDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<
 
 	private Long getNextId(List<Client> allClients) {
 		return allClients.size() == 0 ? 1l : allClients.get(allClients.size() - 1).getId() + 1;
+	}
+
+	@Override
+	public Client getOwnData(String firstName) {
+		List<Client> allClients = readCollection();
+
+		for (Client client : allClients) {
+			if (client.getFirstName().equals(firstName)) {
+				return client;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Long getIdByFirstName(String firstName) {
+		List<Client> allClients = readCollection();
+
+		for (Client client : allClients) {
+			if (client.getFirstName().equals(firstName)) {
+				return client.getId();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<Client> getAllClientBlacklisted(Boolean blacklisted) {
+		List<Client> allClients = readCollection();
+		List<Client> clientsBlacklisted = new ArrayList<>();
+
+		for (Client client : allClients) {
+			if (client.getBlacklisted().equals(blacklisted)) {
+				clientsBlacklisted.add(client);
+			}
+		}
+		return clientsBlacklisted;
 	}
 }

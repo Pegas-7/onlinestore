@@ -150,7 +150,7 @@ public class AdministratorServiceImplTest {
 		Assert.assertEquals(administrator2.getLastName(), administratorFromDb2.getLastName());
 
 		// liberation variable
-		administratorDao.delete(id1Updated);
+		administratorServiceImpl.delete(id1Updated);
 	}
 
 	@Test

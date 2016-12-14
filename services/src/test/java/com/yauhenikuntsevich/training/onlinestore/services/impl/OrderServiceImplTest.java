@@ -41,7 +41,13 @@ public class OrderServiceImplTest {
 
 		Client client1 = new Client();
 		client1.setId(1L);
-
+		client1.setFirstName("FirstName1");
+		client1.setLastName("LastName1");
+		client1.setAge(35);
+		client1.setBlacklisted(true);
+		client1.setPassword("user");
+		client1.setRole("USER_ROLE");
+		
 		order1 = new Order();
 		order1.setAdministrator(administrator1);
 		order1.setClient(client1);
@@ -53,6 +59,12 @@ public class OrderServiceImplTest {
 
 		Client client2 = new Client();
 		client2.setId(2L);
+		client2.setFirstName("FirstName2");
+		client2.setLastName("LastName2");
+		client2.setAge(56);
+		client2.setBlacklisted(true);
+		client2.setPassword("user");
+		client2.setRole("USER_ROLE");
 
 		order2 = new Order();
 		order2.setAdministrator(administrator2);
@@ -65,7 +77,13 @@ public class OrderServiceImplTest {
 
 		Client client3 = new Client();
 		client3.setId(3L);
-
+		client3.setFirstName("FirstName3");
+		client3.setLastName("LastName3");
+		client3.setAge(15);
+		client3.setBlacklisted(true);
+		client3.setPassword("user");
+		client3.setRole("USER_ROLE");
+		
 		order3 = new Order();
 		order3.setAdministrator(administrator3);
 		order3.setClient(client3);
@@ -187,7 +205,7 @@ public class OrderServiceImplTest {
 		Assert.assertEquals(order2.getPriceAllPurchases(), orderFromDb2.getPriceAllPurchases());
 
 		// liberation variable
-		orderDao.delete(id1Updated);
+		orderServiceImpl.delete(id1Updated);
 	}
 
 	@Test

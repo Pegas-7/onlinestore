@@ -147,7 +147,7 @@ public class CategoryServiceImplTest {
 		Assert.assertEquals(category2.getItemRu(), categoryFromDb2.getItemRu());
 
 		// liberation variable
-		categoryDao.delete(id1Updated);
+		categoryServiceImpl.delete(id1Updated);
 	}
 
 	@Test

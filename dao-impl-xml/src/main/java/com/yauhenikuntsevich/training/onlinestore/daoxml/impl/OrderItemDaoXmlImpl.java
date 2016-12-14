@@ -11,13 +11,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderItemDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.exception.XmlFileNotFoundedException;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 
 @Repository
-public class OrderItemDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<OrderItem> {
+public class OrderItemDaoXmlImpl extends AbstractEntityDaoXml implements OrderItemDao {
 
 	@PostConstruct
 	private void intialize() throws IOException {
@@ -53,7 +53,7 @@ public class OrderItemDaoXmlImpl extends AbstractEntityDaoXml implements EntityD
 	}
 
 	@Override
-	public void update(OrderItem orderItem) {
+	public Integer update(OrderItem orderItem) {
 		List<OrderItem> allOrderItems = readCollection();
 
 		for (OrderItem orderItem2 : allOrderItems) {
@@ -67,10 +67,11 @@ public class OrderItemDaoXmlImpl extends AbstractEntityDaoXml implements EntityD
 		}
 
 		writeCollection(allOrderItems);
+		return 1;
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Integer delete(Long id) {
 		List<OrderItem> allOrderItems = readCollection();
 
 		for (int i = 0; i < allOrderItems.size(); i++) {
@@ -80,6 +81,7 @@ public class OrderItemDaoXmlImpl extends AbstractEntityDaoXml implements EntityD
 			}
 		}
 		writeCollection(allOrderItems);
+		return 1;
 	}
 
 	@Override

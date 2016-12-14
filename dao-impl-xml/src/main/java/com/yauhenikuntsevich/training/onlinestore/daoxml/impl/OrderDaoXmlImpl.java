@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.exception.XmlFileNotFoundedException;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
 
 @Repository
-public class OrderDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<Order> {
+public class OrderDaoXmlImpl extends AbstractEntityDaoXml implements OrderDao {
 
 	@PostConstruct
 	private void intialize() throws IOException {
@@ -53,7 +54,7 @@ public class OrderDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<O
 	}
 
 	@Override
-	public void update(Order order) {
+	public Integer update(Order order) {
 		List<Order> allOrders = readCollection();
 
 		for (Order order2 : allOrders) {
@@ -67,10 +68,11 @@ public class OrderDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<O
 		}
 
 		writeCollection(allOrders);
+		return 1;
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Integer delete(Long id) {
 		List<Order> allOrders = readCollection();
 
 		for (int i = 0; i < allOrders.size(); i++) {
@@ -80,6 +82,7 @@ public class OrderDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<O
 			}
 		}
 		writeCollection(allOrders);
+		return 1;
 	}
 
 	@Override
@@ -101,5 +104,41 @@ public class OrderDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<O
 
 	private Long getNextId(List<Order> allOrders) {
 		return allOrders.size() == 0 ? 1l : allOrders.get(allOrders.size() - 1).getId() + 1;
+	}
+
+	@Override
+	public List<Order> getOwnOrders(String firstName) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public List<Order> getAllOrdersOneAdministrator(Long administratorId) {
+		List<Order> allOrders = readCollection();
+		List<Order> ordersOneAdmin = new ArrayList<>();
+
+		for (Order order : allOrders) {
+			if (order.getAdministrator().getId().equals(administratorId)) {
+				ordersOneAdmin.add(order);
+			}
+		}
+		return ordersOneAdmin;
+	}
+
+	@Override
+	public List<Order> getAllOrdersOneClient(Long clientId) {
+		List<Order> allOrders = readCollection();
+		List<Order> ordersOneClient = new ArrayList<>();
+
+		for (Order order : allOrders) {
+			if (order.getClient().getId().equals(clientId)) {
+				ordersOneClient.add(order);
+			}
+		}
+		return ordersOneClient;
+	}
+
+	@Override
+	public List<Order> getAllOrdersIntervalDate(Date before, Date after) {
+		throw new UnsupportedOperationException();
 	}
 }

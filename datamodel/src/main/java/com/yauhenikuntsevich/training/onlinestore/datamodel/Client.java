@@ -37,8 +37,8 @@ public class Client extends PersonAbstractModel implements Externalizable {
 		lastName = (String) in.readObject();
 		password = (String) in.readObject();
 		role = (String) in.readObject();
-		age = (Integer) in.readInt();
-		blacklisted = (Boolean) in.readBoolean();
+		age = in.readInt();
+		blacklisted = in.readBoolean();
 	}
 
 	@Override

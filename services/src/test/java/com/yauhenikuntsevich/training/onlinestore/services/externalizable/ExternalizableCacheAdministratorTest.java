@@ -35,10 +35,14 @@ public class ExternalizableCacheAdministratorTest {
 		administrator1 = new Administrator();
 		administrator1.setFirstName("FirstNameAdministrator1");
 		administrator1.setLastName("LastNameAdministrator1");
+		administrator1.setPassword("adminTEST");
+		administrator1.setRole("ADMIN_ROLE_TEST");
 
 		administrator2 = new Administrator();
 		administrator2.setFirstName("FirstNameAdministrator2");
 		administrator2.setLastName("LastNameAdministrator2");
+		administrator2.setPassword("adminTEST");
+		administrator2.setRole("ADMIN_ROLE_TEST");
 
 		id1 = administratorServiceImpl.save(administrator1);
 		id2 = administratorServiceImpl.save(administrator2);
@@ -58,8 +62,7 @@ public class ExternalizableCacheAdministratorTest {
 
 		ExternalizableCacheAdministrator.writeCacheInFile(administratorCaching);
 
-		AdministratorCaching administratorCachingRecreate = ExternalizableCacheAdministrator
-				.readCacheFromFile();
+		AdministratorCaching administratorCachingRecreate = ExternalizableCacheAdministrator.readCacheFromFile();
 
 		Assert.assertEquals(administratorCachingRecreate.getCache().get(id1).getFirstName(),
 				administrator1.getFirstName());
@@ -75,17 +78,16 @@ public class ExternalizableCacheAdministratorTest {
 
 		HashMap<Long, Administrator> hashMap = new HashMap<Long, Administrator>();
 		Administrator administrator3 = new Administrator();
+		administrator3.setId(13L);
 		administrator3.setFirstName("FirstNameAdministrator3");
-		hashMap.put(1314L, administrator3);
+		hashMap.put(13L, administrator3);
 
 		administratorCaching1.setCache(hashMap);
 
 		ExternalizableCacheAdministrator.writeCacheInFile(administratorCaching1);
 
-		AdministratorCaching newAdministratorCaching = ExternalizableCacheAdministrator
-				.readCacheFromFile();
+		AdministratorCaching newAdministratorCaching = ExternalizableCacheAdministrator.readCacheFromFile();
 
-		Assert.assertEquals(newAdministratorCaching.getCache().get(1314L).getFirstName(),
-				administrator3.getFirstName());
+		Assert.assertEquals(newAdministratorCaching.getCache().get(13L).getFirstName(), administrator3.getFirstName());
 	}
 }

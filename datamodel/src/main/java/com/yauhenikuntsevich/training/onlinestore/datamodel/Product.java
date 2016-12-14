@@ -53,8 +53,8 @@ public class Product extends AbstractModel implements Externalizable {
 		id = in.readLong();
 		category = (Category) in.readObject();
 		name = (String) in.readObject();
-		price = (Double) in.readDouble();
-		quantityStore = (Integer) in.readInt();
+		price = in.readDouble();
+		quantityStore = in.readInt();
 	}
 
 	@Override

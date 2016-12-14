@@ -81,25 +81,32 @@ public class OrderDaoDbImpl implements OrderDao {
 
 	@Override
 	public List<Order> getOwnOrders(String firstName) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query(
+				"SELECT * FROM \"order\" WHERE client_id=(SELECT client_id FROM client WHERE first_name=?)",
+				new Object[] { firstName }, new OrderMapper());
 	}
 
 	@Override
 	public List<Order> getAllOrdersOneAdministrator(Long administratorId) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query("SELECT * FROM \"order\" o JOIN "
+				+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM client) c "
+				+ "ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id WHERE o.administrator_id = ?",
+				new Object[] { administratorId }, new OrderMapper());
 	}
 
 	@Override
 	public List<Order> getAllOrdersOneClient(Long clientId) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query("SELECT * FROM \"order\" o JOIN "
+				+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM client) c "
+				+ "ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id WHERE o.client_id = ?", new Object[] { clientId },
+				new OrderMapper());
 	}
 
 	@Override
 	public List<Order> getAllOrdersIntervalDate(Date before, Date after) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query("SELECT * FROM \"order\" o JOIN "
+				+ "(SELECT client_id,first_name AS first_name_client, last_name AS last_name_client, age, blacklisted, password AS password_client, role AS role_client FROM client) c "
+				+ "ON o.client_id = c.client_id JOIN administrator a ON o.administrator_id = a.administrator_id WHERE o.date_order > ? AND o.date_order < ?",
+				new Object[] { before, after }, new OrderMapper());
 	}
 }

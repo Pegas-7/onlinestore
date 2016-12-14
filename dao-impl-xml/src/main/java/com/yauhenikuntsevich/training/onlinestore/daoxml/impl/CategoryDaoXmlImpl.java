@@ -11,13 +11,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.CategoryDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.exception.XmlFileNotFoundedException;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Category;
 
 @Repository
-public class CategoryDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<Category> {
+public class CategoryDaoXmlImpl extends AbstractEntityDaoXml implements CategoryDao {
 
 	@PostConstruct
 	private void intialize() throws IOException {
@@ -53,21 +53,23 @@ public class CategoryDaoXmlImpl extends AbstractEntityDaoXml implements EntityDa
 	}
 
 	@Override
-	public void update(Category category) {
+	public Integer update(Category category) {
 		List<Category> allCategories = readCollection();
 
 		for (Category category2 : allCategories) {
 			if (category2.getId().equals(category.getId())) {
-				category2.setItem(category.getItem());
+				category2.setItemEn(category.getItemEn());
+				category2.setItemRu(category.getItemRu());
 				break;
 			}
 		}
 
 		writeCollection(allCategories);
+		return 1;
 	}
 
 	@Override
-	public void delete(Long id) {
+	public Integer delete(Long id) {
 		List<Category> allCategories = readCollection();
 
 		for (int i = 0; i < allCategories.size(); i++) {
@@ -77,6 +79,7 @@ public class CategoryDaoXmlImpl extends AbstractEntityDaoXml implements EntityDa
 			}
 		}
 		writeCollection(allCategories);
+		return 1;
 	}
 
 	@Override

@@ -11,13 +11,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Repository;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.AdministratorDao;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.AbstractEntityDaoXml;
 import com.yauhenikuntsevich.training.onlinestore.daoxml.exception.XmlFileNotFoundedException;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Administrator;
 
 @Repository
-public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements EntityDao<Administrator> {
+public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements AdministratorDao {
 
 	@PostConstruct
 	private void intialize() throws IOException {
@@ -50,7 +50,7 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 		return id;
 	}
 
-	public void update(Administrator administrator) {
+	public Integer update(Administrator administrator) {
 		List<Administrator> allAdministrators = readCollection();
 
 		for (Administrator administrator2 : allAdministrators) {
@@ -64,9 +64,10 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 		}
 
 		writeCollection(allAdministrators);
+		return 1;
 	}
 
-	public void delete(Long id) {
+	public Integer delete(Long id) {
 		List<Administrator> allAdministrators = readCollection();
 
 		for (int i = 0; i < allAdministrators.size(); i++) {
@@ -76,6 +77,7 @@ public class AdministratorDaoXmlImpl extends AbstractEntityDaoXml implements Ent
 			}
 		}
 		writeCollection(allAdministrators);
+		return 1;
 	}
 
 	public List<Administrator> getAll() {

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.yauhenikuntsevich.training.onlinestore.daoapi.EntityDao;
+import com.yauhenikuntsevich.training.onlinestore.daoapi.ClientDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Client;
 import com.yauhenikuntsevich.training.onlinestore.services.authentification.AuthenticationServiceClientImpl;
 
@@ -25,7 +25,7 @@ public class AuthenticationServiceClientImplTest {
 	private ClientServiceImpl clientServiceImpl;
 
 	@Inject
-	private EntityDao<Client> clientDao;
+	private ClientDao clientDao;
 
 	Client client1;
 	Client client2;

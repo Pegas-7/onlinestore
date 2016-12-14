@@ -55,7 +55,7 @@ public class Order extends AbstractModel implements Externalizable {
 		dateOrder = (Date) in.readObject();
 		client = (Client) in.readObject();
 		administrator = (Administrator) in.readObject();
-		priceAllPurchases = (Double) in.readDouble();
+		priceAllPurchases = in.readDouble();
 	}
 
 	@Override

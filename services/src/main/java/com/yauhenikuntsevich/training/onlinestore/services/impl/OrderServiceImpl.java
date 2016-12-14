@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.yauhenikuntsevich.training.onlinestore.daoapi.OrderDao;
 import com.yauhenikuntsevich.training.onlinestore.datamodel.Order;
-import com.yauhenikuntsevich.training.onlinestore.services.ClientService;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderService;
 import com.yauhenikuntsevich.training.onlinestore.services.caching.OrderCaching;
 import com.yauhenikuntsevich.training.onlinestore.services.externalizable.ExternalizableCacheOrder;
@@ -21,9 +20,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Inject
 	private OrderDao orderDao;
-
-	@Inject
-	private ClientService clientService;
 
 	public static OrderCaching orderCaching = ExternalizableCacheOrder.createInstanceOrderCaching();
 
@@ -85,64 +81,26 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<Order> getAllOrdersOneAdministrator(Long administratorId) {
-		List<Order> orders = orderDao.getAll();
-		List<Order> ordersForReturn = new LinkedList<>();
-
-		for (Order order : orders) {
-			if (order.getAdministrator().getId() == administratorId) {
-				ordersForReturn.add(order);
-			}
-		}
-
-		return ordersForReturn;
+		return orderDao.getAllOrdersOneAdministrator(administratorId);
 	}
 
 	@Override
 	public List<Order> getAllOrdersOneClient(Long clientId) {
-		List<Order> orders = orderDao.getAll();
-		List<Order> ordersForReturn = new LinkedList<>();
-
-		for (Order order : orders) {
-			if (order.getClient().getId() == clientId) {
-				ordersForReturn.add(order);
-			}
-		}
-
-		return ordersForReturn;
+		return orderDao.getAllOrdersOneClient(clientId);
 	}
 
 	@Override
 	public List<Order> getAllOrdersIntervalDate(Date after, Date before) {
-		List<Order> orders = orderDao.getAll();
-		List<Order> ordersForReturn = new LinkedList<>();
+		return orderDao.getAllOrdersIntervalDate(after, before);
+	}
 
-		for (Order order : orders) {
-			if (order.getDateOrder().after(after) && order.getDateOrder().before(before)) {
-				ordersForReturn.add(order);
-			}
-		}
-
-		return ordersForReturn;
+	@Override
+	public List<Order> getOwnOrders(String firstName) {
+		return orderDao.getOwnOrders(firstName);
 	}
 
 	@PreDestroy
 	private void writeCacheToFile() {
 		ExternalizableCacheOrder.writeCacheInFile(orderCaching);
-	}
-
-	@Override
-	public List<Order> getOwnOrders(String firstName) {
-		List<Order> orders = orderDao.getAll();
-		List<Order> ordersForReturn = new LinkedList<>();
-
-		Long clientId = clientService.getIdByFirstName(firstName);
-
-		for (Order order : orders) {
-			if (order.getClient().getId() == clientId) {
-				ordersForReturn.add(order);
-			}
-		}
-
-		return ordersForReturn;
 	}
 }

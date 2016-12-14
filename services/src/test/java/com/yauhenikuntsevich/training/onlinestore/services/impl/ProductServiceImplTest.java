@@ -176,7 +176,7 @@ public class ProductServiceImplTest {
 		Assert.assertEquals(product2.getQuantityStore(), productFromDb2.getQuantityStore());
 
 		// liberation variable
-		productDao.delete(id1Updated);
+		productServiceImpl.delete(id1Updated);
 	}
 
 	@Test
