@@ -104,7 +104,7 @@
           <stringProp name="CounterConfig.incr">1</stringProp>
           <stringProp name="CounterConfig.name">VarOrderItem</stringProp>
           <stringProp name="CounterConfig.format"></stringProp>
-          <boolProp name="CounterConfig.per_user">false</boolProp>
+          <boolProp name="CounterConfig.per_user">true</boolProp>
         </CounterConfig>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get all administrators" enabled="true">
@@ -520,10 +520,10 @@
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
 &quot;order&quot;: {&#xd;
-&quot;id&quot;: ${VarOrder}&#xd;
+&quot;id&quot;: ${VarOrderItem}&#xd;
 },&#xd;
 &quot;product&quot;: {&#xd;
-&quot;id&quot;: ${VarProduct}&#xd;
+&quot;id&quot;: ${VarOrderItem}&#xd;
 },&#xd;
 &quot;quantity&quot;: 1&#xd;
 }&#xd;
