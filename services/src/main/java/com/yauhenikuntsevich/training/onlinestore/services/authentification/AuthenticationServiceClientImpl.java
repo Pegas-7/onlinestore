@@ -20,7 +20,7 @@ public class AuthenticationServiceClientImpl implements AuthenticationService {
 	@Inject
 	private AuthenticationDao<Client> authenticationDao;
 
-	public AuthenticationServiceClientCaching authenticationServiceClientCaching = ExternalizableCacheClientAuthenticationService
+	public static AuthenticationServiceClientCaching authenticationServiceClientCaching = ExternalizableCacheClientAuthenticationService
 			.createInstanceAuthenticationServiceClientCaching();
 
 	@Override

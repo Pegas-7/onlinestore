@@ -63,7 +63,7 @@
 	<Loggers>
 		<Root level="info">
 			<AppenderRef ref="Console" />
-			<!-- <AppenderRef ref="databaseAppender" /> -->
+			<AppenderRef ref="databaseAppender" />
 			<AppenderRef ref="RollingFileWarn" />
 			<AppenderRef ref="RollingFileInfo" />
 			<AppenderRef ref="RollingFileDebug" />

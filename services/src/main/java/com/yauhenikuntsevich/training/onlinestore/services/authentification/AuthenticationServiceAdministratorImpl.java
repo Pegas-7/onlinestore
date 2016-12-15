@@ -20,7 +20,7 @@ public class AuthenticationServiceAdministratorImpl implements AuthenticationSer
 	@Inject
 	private AuthenticationDao<Administrator> authenticationDao;
 
-	public AuthenticationServiceAdministratorCaching authenticationServiceAdministratorCaching = ExternalizableCacheAdministratorAuthenticationService
+	public static AuthenticationServiceAdministratorCaching authenticationServiceAdministratorCaching = ExternalizableCacheAdministratorAuthenticationService
 			.createInstanceAuthenticationServiceAdministratorCaching();
 
 	@Override

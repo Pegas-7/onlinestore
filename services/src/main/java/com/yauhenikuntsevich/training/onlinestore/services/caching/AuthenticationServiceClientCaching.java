@@ -20,9 +20,9 @@ public class AuthenticationServiceClientCaching implements Externalizable {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceClientCaching.class);
 
-	private Long maxSizeCache = 200L;
-	private Long minSizeCache = 100L;
-	private Long delayCacheCleanig = 10000L;
+	private Integer maxSizeCache = 200;
+	private Integer minSizeCache = 100;
+	private Long delayCacheCleanig = 12000L;
 	private Map<String, PersonAbstractModel> cache = new LinkedHashMap<>();
 	private Date dateCleaningCache = settingDateCleaningCache();
 
@@ -79,13 +79,14 @@ public class AuthenticationServiceClientCaching implements Externalizable {
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		maxSizeCache = in.readLong();
-		minSizeCache = in.readLong();
+		maxSizeCache = in.readInt();
+		minSizeCache = in.readInt();
+		Integer sizeMap = in.readInt();
 
 		String firstNameExternal = "";
 		PersonAbstractModel personAbstractModelExternal = null;
 
-		while (in.available() > 0) {
+		for (int i = 0; i < sizeMap; i++) {
 			firstNameExternal = (String) in.readObject();
 			personAbstractModelExternal = (PersonAbstractModel) in.readObject();
 
@@ -95,8 +96,9 @@ public class AuthenticationServiceClientCaching implements Externalizable {
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(maxSizeCache);
-		out.writeLong(minSizeCache);
+		out.writeInt(maxSizeCache);
+		out.writeInt(minSizeCache);
+		out.writeInt(cache.size());
 
 		for (Map.Entry<String, PersonAbstractModel> pair : cache.entrySet()) {
 			out.writeObject(pair.getKey());
@@ -112,19 +114,19 @@ public class AuthenticationServiceClientCaching implements Externalizable {
 		this.cache = cache;
 	}
 
-	public Long getMaxSizeCache() {
+	public Integer getMaxSizeCache() {
 		return maxSizeCache;
 	}
 
-	public void setMaxSizeCache(Long maxSizeCache) {
+	public void setMaxSizeCache(Integer maxSizeCache) {
 		this.maxSizeCache = maxSizeCache;
 	}
 
-	public Long getMinSizeCache() {
+	public Integer getMinSizeCache() {
 		return minSizeCache;
 	}
 
-	public void setMinSizeCache(Long minSizeCache) {
+	public void setMinSizeCache(Integer minSizeCache) {
 		this.minSizeCache = minSizeCache;
 	}
 

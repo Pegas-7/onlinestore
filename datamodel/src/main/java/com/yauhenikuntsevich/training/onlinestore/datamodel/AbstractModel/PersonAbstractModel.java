@@ -49,18 +49,14 @@ public class PersonAbstractModel extends AbstractModel implements Externalizable
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		id = in.readLong();
 		firstName = (String) in.readObject();
-		lastName = (String) in.readObject();
 		password = (String) in.readObject();
 		role = (String) in.readObject();
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(id);
 		out.writeObject(firstName);
-		out.writeObject(lastName);
 		out.writeObject(password);
 		out.writeObject(role);
 	}
