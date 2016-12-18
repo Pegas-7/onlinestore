@@ -23,7 +23,7 @@ public class AuthenticationServiceAdministratorCaching implements Externalizable
 	private Integer maxSizeCache = 200;
 	private Integer minSizeCache = 100;
 	private Map<String, PersonAbstractModel> cache = new LinkedHashMap<>();
-	private Long delayCacheCleanig = 12000L;
+	private Long delayCacheCleanig = 80000L;
 	private Date dateCleaningCache = settingDateCleaningCache();
 
 	public AuthenticationServiceAdministratorCaching() {
@@ -48,7 +48,7 @@ public class AuthenticationServiceAdministratorCaching implements Externalizable
 			while (iter.hasNext()) {
 				i++;
 				iter.next();
-				if (i > minSizeCache) {
+				if (i < minSizeCache) {
 					iter.remove();
 				}
 			}

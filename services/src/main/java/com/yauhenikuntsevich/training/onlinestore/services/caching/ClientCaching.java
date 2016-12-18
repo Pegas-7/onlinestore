@@ -50,7 +50,7 @@ public class ClientCaching implements Externalizable, EntityCaching<Client> {
 			while (iter.hasNext()) {
 				i++;
 				iter.next();
-				if (i > minSizeCache) {
+				if (i < minSizeCache) {
 					iter.remove();
 				}
 			}

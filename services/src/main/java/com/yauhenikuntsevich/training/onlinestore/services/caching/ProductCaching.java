@@ -50,7 +50,7 @@ public class ProductCaching implements Externalizable, EntityCaching<Product> {
 			while (iter.hasNext()) {
 				i++;
 				iter.next();
-				if (i > minSizeCache) {
+				if (i < minSizeCache) {
 					iter.remove();
 				}
 			}

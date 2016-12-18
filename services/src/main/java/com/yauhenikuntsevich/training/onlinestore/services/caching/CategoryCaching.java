@@ -50,7 +50,7 @@ public class CategoryCaching implements Externalizable, EntityCaching<Category> 
 			while (iter.hasNext()) {
 				i++;
 				iter.next();
-				if (i > minSizeCache) {
+				if (i < minSizeCache) {
 					iter.remove();
 				}
 			}

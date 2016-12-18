@@ -50,7 +50,7 @@ public class OrderItemCaching implements Externalizable, EntityCaching<OrderItem
 			while (iter.hasNext()) {
 				i++;
 				iter.next();
-				if (i > minSizeCache) {
+				if (i < minSizeCache) {
 					iter.remove();
 				}
 			}
