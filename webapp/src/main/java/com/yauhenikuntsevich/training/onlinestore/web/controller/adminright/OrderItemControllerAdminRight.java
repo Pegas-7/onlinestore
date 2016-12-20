@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.yauhenikuntsevich.training.onlinestore.datamodel.OrderItem;
 import com.yauhenikuntsevich.training.onlinestore.services.OrderItemService;
+import com.yauhenikuntsevich.training.onlinestore.services.exception.NotEnoughQuantityProductException;
 import com.yauhenikuntsevich.training.onlinestore.web.model.OrderItemModel;
 
 @RestController
@@ -72,8 +73,9 @@ public class OrderItemControllerAdminRight {
 			return new ResponseEntity<String>(
 					"Incorrect data into request body. Perhaps have violations relations table's fields",
 					HttpStatus.UNPROCESSABLE_ENTITY);
-		} 
-		
+		} catch (NotEnoughQuantityProductException e) {
+			return new ResponseEntity<String>("Not enough quantity product in the stock", HttpStatus.OK);
+		}
 
 		return new ResponseEntity<String>("OrderItem was created in database with id = " + String.valueOf(id),
 				HttpStatus.CREATED);
@@ -96,10 +98,12 @@ public class OrderItemControllerAdminRight {
 					"Incorrect data into request body. Perhaps have violations uniqueness data in database or "
 							+ "sended entity with null fields",
 					HttpStatus.UNPROCESSABLE_ENTITY);
-		}catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<String>(
 					"Incorrect data into request body. Perhaps have violations relations table's fields",
 					HttpStatus.UNPROCESSABLE_ENTITY);
+		} catch (NotEnoughQuantityProductException e) {
+			return new ResponseEntity<String>("Not enough quantity product in the stock", HttpStatus.OK);
 		}
 	}
 
