@@ -1,3 +1,7 @@
+--Drop table
+DROP TABLE "application_log";
+
+--Create table
 CREATE TABLE "application_log" (
 	"date" TIMESTAMP NOT NULL,
 	"level" character varying NOT NULL,
